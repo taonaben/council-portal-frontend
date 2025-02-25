@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:portal/constants/colors/colors.dart';
 import 'package:portal/features/announcements/views/announcement_detail.dart';
 
@@ -27,22 +28,14 @@ class _AnnouncementCardState extends State<AnnouncementCard> {
         children: [
           profileDateSection(widget.announcement['date'] ?? ''),
           ListTile(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) {
-                    return AnnouncementDetail(
-                        announcement: widget.announcement);
-                  },
-                ),
-              );
-            },
+            onTap: () =>
+                context.go('/announcement/${widget.announcement['id']}'),
             trailing: Container(
               width: 100,
               height: 50,
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 color: primaryColor,
+                borderRadius: BorderRadius.circular(10),
               ),
             ),
             title: Text(
@@ -121,7 +114,7 @@ class _AnnouncementCardState extends State<AnnouncementCard> {
                 isVoted
                     ? CupertinoIcons.arrowtriangle_up_circle_fill
                     : CupertinoIcons.arrowtriangle_up_circle,
-                color: isVoted ? errorColor : textColor1),
+                color: isVoted ? redColor : textColor1),
           ),
           Text(
             likes.toString(),

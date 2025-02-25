@@ -45,7 +45,7 @@ class _MainHeaderState extends State<MainHeader>
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 16.0, right: 8, left: 8),
+      padding: const EdgeInsets.only(top: 16.0, right: 8, left: 8, bottom: 8),
       child: Container(
         height: 50,
         width: double.infinity,
