@@ -3,10 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:portal/constants/colors/colors.dart';
+import 'package:portal/features/announcements/components/anno_comment_btn.dart';
+import 'package:portal/features/announcements/components/anno_upVote_btn.dart';
+import 'package:portal/features/announcements/components/anno_share_btn.dart';
 import 'package:portal/features/announcements/views/announcement_detail.dart';
+import 'package:portal/features/announcements/views/announcements_main.dart';
 
 class AnnouncementCard extends StatefulWidget {
-  final Map<String, String> announcement;
+  final Map<String, dynamic> announcement;
   const AnnouncementCard({super.key, required this.announcement});
 
   @override
@@ -48,7 +52,7 @@ class _AnnouncementCardState extends State<AnnouncementCard> {
               widget.announcement['content'] ?? '',
               style: const TextStyle(color: textColor1),
               overflow: TextOverflow.ellipsis,
-              maxLines: 1, // Limit the number of lines for the content
+              maxLines: 4, // Limit the number of lines for the content
             ),
           ),
           Padding(
@@ -56,11 +60,11 @@ class _AnnouncementCardState extends State<AnnouncementCard> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                buildUpVoteButton(likes),
+                AnnoUpVoteBtn(likes: widget.announcement['up_votes']),
                 const Gap(8),
-                buildCommentsButton(commentCount),
+                AnnoCommentBtn(commentCount: widget.announcement['comments']),
                 const Gap(8),
-                shareBtn(),
+                const AnnoShareBtn(),
               ],
             ),
           )
@@ -82,61 +86,6 @@ class _AnnouncementCardState extends State<AnnouncementCard> {
         Text('Admin • $date',
             style: const TextStyle(color: secondaryColor, fontSize: 12)),
       ]),
-    );
-  }
-
-  Widget shareBtn() {
-    return TextButton(
-        onPressed: () {},
-        child: const Text(
-          'Share',
-          style: TextStyle(color: textColor1, fontSize: 12),
-        ));
-  }
-
-  Widget buildUpVoteButton(int likes) {
-    return Container(
-      padding: const EdgeInsets.only(right: 8),
-      decoration: BoxDecoration(
-        color: secondaryColor,
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Row(
-        children: [
-          IconButton(
-            onPressed: () {
-              setState(() {
-                isVoted = !isVoted;
-                isVoted ? likes++ : likes--;
-              });
-            },
-            icon: Icon(
-                isVoted
-                    ? CupertinoIcons.arrowtriangle_up_circle_fill
-                    : CupertinoIcons.arrowtriangle_up_circle,
-                color: isVoted ? redColor : textColor1),
-          ),
-          Text(
-            likes.toString(),
-            style: const TextStyle(color: textColor1),
-          ),
-          const Text(
-            " upvotes",
-            style: TextStyle(color: textColor1),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget buildCommentsButton(int commentCount) {
-    return Row(
-      children: [
-        Text(
-          "${commentCount.toString()} comments",
-          style: const TextStyle(color: textColor1, fontSize: 12),
-        ),
-      ],
     );
   }
 }
