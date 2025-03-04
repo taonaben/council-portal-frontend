@@ -30,7 +30,7 @@ final GoRouter router = GoRouter(
             path: '/announcements',
             builder: (context, state) => const AnnouncementsMain()),
         GoRoute(
-            path: '/issues', builder: (context, state) => const IssuesMain()),
+            path: '/issues', builder: (context, state) =>  IssuesMain()),
         GoRoute(path: '/water', builder: (context, state) => const WaterMain()),
         GoRoute(
             path: '/businesses',

@@ -29,8 +29,8 @@ class _AnnouncementsAddState extends State<AnnouncementsAdd> {
           borderRadius: BorderRadius.circular(10),
         ),
         constraints: BoxConstraints(
-          maxWidth: MediaQuery.of(context).size.width * 0.8,
-          maxHeight: MediaQuery.of(context).size.height * 0.6,
+          maxWidth: MediaQuery.of(context).size.width * 0.6,
+          // maxHeight: MediaQuery.of(context).size.height * 0.6,
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -82,7 +82,7 @@ class _AnnouncementsAddState extends State<AnnouncementsAdd> {
             border: InputBorder.none,
           ),
           style: const TextStyle(color: textColor1),
-          maxLines: 15,
+          maxLines: 10,
         ),
         const CustomDivider(),
       ],
@@ -102,7 +102,6 @@ class _AnnouncementsAddState extends State<AnnouncementsAdd> {
         const Gap(8),
         Tooltip(
           message: 'Add an image',
-          
           child: IconButton(
               onPressed: () {},
               icon: const Icon(
