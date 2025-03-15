@@ -22,3 +22,37 @@ int parseStringToNumber(String input) {
     return 0; // Return -1 if the string contains any other characters
   }
 }
+
+String capitalize(String input) {
+  return input[0].toUpperCase() + input.substring(1);
+}
+
+String dateFormatted(DateTime date) {
+  return '${date.day}/${date.month}/${date.year}';
+}
+
+String timeFormatted(DateTime date) {
+  return '${date.hour}:${date.minute}';
+}
+
+String dateTimeFormatted(DateTime date) {
+  return '${dateFormatted(date)} ${timeFormatted(date)}';
+}
+
+String numberFormatted(String number) {
+  return number.toString().replaceAllMapped(
+      RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},');
+}
+
+String formatLargeNumber(String number) {
+  double num = double.parse(number);
+  if (num >= 1000000000) {
+    return '${(num / 1000000000).round()}b';
+  } else if (num >= 1000000) {
+    return '${(num / 1000000).round()}m';
+  } else if (num >= 1000) {
+    return '${(num / 1000).round()}k';
+  } else {
+    return num.toString();
+  }
+}

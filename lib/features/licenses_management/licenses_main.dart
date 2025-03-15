@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class ParkingMain extends StatelessWidget {
-  const ParkingMain({super.key});
+class LicensesMain extends StatelessWidget {
+  const LicensesMain({super.key});
 
   @override
   Widget build(BuildContext context) {
-     return Center(
+    return Center(
       child: Container(
         height: 400,
         width: 400,
@@ -13,7 +13,7 @@ class ParkingMain extends StatelessWidget {
           border: Border.all(color: Colors.black),
           borderRadius: BorderRadius.circular(10),
         ),
-        child: const Center(child: Text('Parking')),
+        child: const Center(child: Text('Licenses')),
       ),
     );
   }

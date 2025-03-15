@@ -57,7 +57,7 @@ class _AlidaAiMainState extends State<AlidaAiMain> {
     return Padding(
       padding: const EdgeInsets.only(bottom: 25.0),
       child: Container(
-          padding: EdgeInsets.all(10),
+          padding: const EdgeInsets.all(10),
           width: MediaQuery.of(context).size.width * 0.6,
           decoration: BoxDecoration(
             color: background2,

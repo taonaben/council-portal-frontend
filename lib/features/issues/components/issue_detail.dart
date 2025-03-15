@@ -96,40 +96,43 @@ class _IssueDetailState extends State<IssueDetail> {
   }
 
   Widget buildStatusBtn(String status) {
-    return DropdownButton<String>(
-      value: status,
-      icon: const Padding(
-        padding: EdgeInsets.symmetric(horizontal: 8.0),
-        child: Icon(
-          CupertinoIcons.chevron_down,
-          color: primaryColor,
-          size: 16,
+    return Tooltip(
+      message: 'Change status',
+      child: DropdownButton<String>(
+        value: status,
+        icon: const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 8.0),
+          child: Icon(
+            CupertinoIcons.chevron_down,
+            color: primaryColor,
+            size: 16,
+          ),
         ),
+        underline: const SizedBox(),
+        elevation: 1,
+        dropdownColor: background2,
+        borderRadius: BorderRadius.circular(20),
+        style: const TextStyle(color: primaryColor),
+        items: const [
+          DropdownMenuItem(
+            value: 'active',
+            child: Text('Active'),
+          ),
+          DropdownMenuItem(
+            value: 'pending',
+            child: Text('Pending'),
+          ),
+          DropdownMenuItem(
+            value: 'resolved',
+            child: Text('Resolved'),
+          ),
+        ],
+        onChanged: (value) {
+          setState(() {
+            widget.issue['status'] = value!;
+          });
+        },
       ),
-      underline: const SizedBox(),
-      elevation: 1,
-      dropdownColor: background2,
-      borderRadius: BorderRadius.circular(20),
-      style: const TextStyle(color: primaryColor),
-      items: const [
-        DropdownMenuItem(
-          value: 'active',
-          child: Text('Active'),
-        ),
-        DropdownMenuItem(
-          value: 'pending',
-          child: Text('Pending'),
-        ),
-        DropdownMenuItem(
-          value: 'resolved',
-          child: Text('Resolved'),
-        ),
-      ],
-      onChanged: (value) {
-        setState(() {
-          widget.issue['status'] = value!;
-        });
-      },
     );
   }
 }

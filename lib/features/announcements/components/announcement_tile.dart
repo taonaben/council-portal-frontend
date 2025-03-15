@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -6,18 +5,16 @@ import 'package:portal/constants/colors/colors.dart';
 import 'package:portal/features/announcements/components/anno_comment_btn.dart';
 import 'package:portal/features/announcements/components/anno_upVote_btn.dart';
 import 'package:portal/features/announcements/components/anno_share_btn.dart';
-import 'package:portal/features/announcements/views/announcement_detail.dart';
-import 'package:portal/features/announcements/views/announcements_main.dart';
 
-class AnnouncementCard extends StatefulWidget {
+class AnnouncementTile extends StatefulWidget {
   final Map<String, dynamic> announcement;
-  const AnnouncementCard({super.key, required this.announcement});
+  const AnnouncementTile({super.key, required this.announcement});
 
   @override
-  State<AnnouncementCard> createState() => _AnnouncementCardState();
+  State<AnnouncementTile> createState() => _AnnouncementTileState();
 }
 
-class _AnnouncementCardState extends State<AnnouncementCard> {
+class _AnnouncementTileState extends State<AnnouncementTile> {
   bool isVoted = false;
   int likes = 56;
   int commentCount = 34;
@@ -82,7 +79,7 @@ class _AnnouncementCardState extends State<AnnouncementCard> {
           minRadius: 8,
           maxRadius: 10,
         ),
-        Gap(8),
+        const Gap(8),
         Text('Admin • $date',
             style: const TextStyle(color: secondaryColor, fontSize: 12)),
       ]),

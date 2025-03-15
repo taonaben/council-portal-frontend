@@ -45,7 +45,7 @@ List<Map<String, dynamic>> issues = [
 ];
 
 class IssuesMain extends StatefulWidget {
-  IssuesMain({super.key});
+  const IssuesMain({super.key});
 
   @override
   State<IssuesMain> createState() => _IssuesMainState();
@@ -62,14 +62,23 @@ class _IssuesMainState extends State<IssuesMain> {
           color: background2,
           borderRadius: BorderRadius.circular(10),
         ),
-        child: SingleChildScrollView(
-            child: Column(
+        child: Column(
           children: [
             buildHeader(),
             const Gap(8),
-            buildTableView(),
+            Expanded(
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  if (constraints.maxWidth < 600) {
+                    return buildResponsiveSmallView();
+                  } else {
+                    return buildTableView();
+                  }
+                },
+              ),
+            ),
           ],
-        )),
+        ),
       ),
     );
   }
@@ -257,17 +266,6 @@ class _IssuesMainState extends State<IssuesMain> {
     );
   }
 
-  Widget buildResponsiveSmallView() {
-    return ListView.builder(
-      itemCount: issues.length,
-      itemBuilder: (context, index) {
-        return IssuesCard(
-          issue: issues[index],
-        );
-      },
-    );
-  }
-
   Widget tableCell(String value, bool isHeader) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
@@ -280,6 +278,17 @@ class _IssuesMainState extends State<IssuesMain> {
         ),
         overflow: TextOverflow.ellipsis,
       ),
+    );
+  }
+
+  Widget buildResponsiveSmallView() {
+    return ListView.builder(
+      itemCount: issues.length,
+      itemBuilder: (context, index) {
+        return IssuesCard(
+          issue: issues[index],
+        );
+      },
     );
   }
 }

@@ -1,23 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:portal/components/widgets/custom_divider.dart';
 // import 'package:flutter/widgets.dart';
 import 'package:portal/constants/colors/colors.dart';
 import 'package:portal/core/main_nav/main_header.dart';
-import 'package:portal/features/alida_ai/alida_ai_main.dart';
-import 'package:portal/features/announcements/views/announcements_main.dart';
-import 'package:portal/features/business_management/businesses_main.dart';
-import 'package:portal/features/dashboard/dashboard_main.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
-import 'package:portal/features/issues/issues_main.dart';
-import 'package:portal/features/parking_management/parking_main.dart';
-import 'package:portal/features/properties_management/properties_main.dart';
-import 'package:portal/features/settings/settings_main.dart';
-import 'package:portal/core/utils/shared_prefs.dart';
-import 'package:portal/features/water_management/water_main.dart';
 
 class MainNavigation extends StatefulWidget {
   final Widget child;
@@ -62,6 +51,7 @@ class _MainNavigationState extends State<MainNavigation> {
                 buildListTile(context, 'Announcements', '/announcements'),
                 buildListTile(context, 'Issues', '/issues'),
                 buildListTile(context, 'Water Management', '/water'),
+                buildListTile(context, 'Licenses', '/licenses'),
                 buildListTile(context, 'Businesses', '/businesses'),
                 buildListTile(context, 'Parking', '/parking'),
                 buildListTile(context, 'Properties', '/properties'),

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:go_router/go_router.dart';
 import 'package:portal/components/widgets/custom_filled_btn.dart';
-import 'package:portal/features/announcements/components/announcement_card.dart';
+import 'package:portal/features/announcements/components/announcement_box.dart';
+import 'package:portal/features/announcements/components/announcement_tile.dart';
 import 'package:portal/features/announcements/views/announcements_add.dart';
 
 String _loremIpsum() {
@@ -43,7 +43,7 @@ List<Map<String, dynamic>> announcements = [
     'content': _loremIpsum(),
     'up_votes': 64,
     'comments': 30,
-    'image_url': 'announcement_image_4.jpg',
+    'image_url': 'announcement_image_4.png',
     'date': '2023-08-04'
   },
   {
@@ -52,7 +52,7 @@ List<Map<String, dynamic>> announcements = [
     'content': _loremIpsum(),
     'up_votes': 89,
     'comments': 50,
-    'image_url': 'announcement_image_5.jpg',
+    'image_url': 'announcement_image_5.png',
     'date': '2023-08-05'
   },
 ];
@@ -81,23 +81,45 @@ class _AnnouncementsMainState extends State<AnnouncementsMain> {
               children: [
                 const Spacer(),
                 CustomFilledButton(
-                    btnLabel: 'Post',
-                    onTap: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return const AnnouncementsAdd();
-                        },
-                      );
-                    }),
+                  btnLabel: 'Post',
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return const AnnouncementsAdd();
+                      },
+                    );
+                  },
+                ),
               ],
             ),
             const Gap(16),
             Expanded(
-              child: ListView.builder(
-                itemCount: announcements.length,
-                itemBuilder: (context, index) {
-                  return AnnouncementCard(announcement: announcements[index]);
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  if (constraints.maxWidth > 600) {
+                    return GridView.builder(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                      ),
+                      itemBuilder: (context, index) {
+                        return AnnouncementBox(
+                          announcement: announcements[index],
+                        );
+                      },
+                      itemCount: announcements.length,
+                    );
+                  } else {
+                    return ListView.builder(
+                      itemCount: announcements.length,
+                      itemBuilder: (context, index) {
+                        return AnnouncementTile(
+                          announcement: announcements[index],
+                        );
+                      },
+                    );
+                  }
                 },
               ),
             ),

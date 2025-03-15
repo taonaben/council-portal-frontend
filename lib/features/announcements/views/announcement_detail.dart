@@ -118,7 +118,7 @@ class AnnouncementDetail extends StatelessWidget {
         children: [
           IconButton(
             onPressed: () => context.pop(),
-            icon: Icon(
+            icon: const Icon(
               CupertinoIcons.arrow_left_circle,
               color: textColor1,
             ),
