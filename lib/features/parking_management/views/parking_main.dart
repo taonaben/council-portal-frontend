@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:portal/constants/colors/colors.dart';
 import 'package:portal/core/utils/string_methods.dart';
-import 'package:portal/features/parking_management/components/daily_revenue_box.dart';
+import 'package:portal/features/parking_management/components/daily_income_graph/income_points.dart';
+import 'package:portal/features/parking_management/components/weekly_income_graph/weekly_income_stats_graph.dart';
+import 'package:portal/features/parking_management/components/daily_income_graph/daily_income_stats_graph.dart';
 import 'package:portal/features/parking_management/components/ticket_tile.dart';
 
 List<Map<String, dynamic>> tickets = [
@@ -108,22 +110,22 @@ class ParkingMain extends StatelessWidget {
                   StaggeredGridTile.count(
                     crossAxisCellCount: crossAxisCount >= 4 ? 2 : 1,
                     mainAxisCellCount: 1,
-                    child: Center(child: incomeStatsSection()),
+                    child: Center(child: weeklyIncomeStatsSection()),
                   ),
                   StaggeredGridTile.count(
-                    crossAxisCellCount: 1,
+                    crossAxisCellCount: crossAxisCount >= 4 ? 2 : 1,
                     mainAxisCellCount: 1,
-                    child: Center(child: dailyRevenueSection()),
+                    child: Center(child: dailyIncomeStats()),
+                  ),
+                  StaggeredGridTile.count(
+                    crossAxisCellCount: crossAxisCount >= 4 ? 2 : 2,
+                    mainAxisCellCount: 1,
+                    child: Center(child: arrearsSection()),
                   ),
                   StaggeredGridTile.count(
                     crossAxisCellCount: 1,
                     mainAxisCellCount: 1,
                     child: Center(child: ticketsIssuedSection()),
-                  ),
-                  StaggeredGridTile.count(
-                    crossAxisCellCount: crossAxisCount >= 4 ? 2 : 1,
-                    mainAxisCellCount: 1,
-                    child: Center(child: arrearsSection()),
                   ),
                 ],
               ),
@@ -146,9 +148,13 @@ Widget buildBox(String label, Widget child) {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(capitalize(label),
-              style: const TextStyle(
-                  color: textColor1, fontWeight: FontWeight.w900)),
+          Text(
+            capitalize(label),
+            style: const TextStyle(
+                color: textColor1,
+                fontWeight: FontWeight.w900,
+                overflow: TextOverflow.ellipsis),
+          ),
           const SizedBox(height: 8),
           Expanded(child: child),
         ],
@@ -169,14 +175,18 @@ Widget ticketsSection() {
   );
 }
 
-Widget incomeStatsSection() {
-  return buildBox('daily income', const Center(child: Text('Daily Income')));
+Widget weeklyIncomeStatsSection() {
+  double total = weeklyIncomeData.reduce((a, b) => a + b);
+  return buildBox('Weekly income: \$${numberFormatted(total.toString())}',
+      const Center(child: WeeklyIncomeStatsGraph()));
 }
 
-Widget dailyRevenueSection() {
+Widget dailyIncomeStats() {
   return buildBox(
-    'today revenue',
-    const DailyRevenueBox(revenue: 100000.0),
+    'Daily revenue',
+    DailyIncomeStatsGraph(
+      incomePoints: incomePoints,
+    ),
   );
 }
 
