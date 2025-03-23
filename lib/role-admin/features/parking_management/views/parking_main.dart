@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:go_router/go_router.dart';
 import 'package:portal/constants/colors/colors.dart';
 import 'package:portal/core/utils/string_methods.dart';
-import 'package:portal/features/parking_management/components/daily_income_graph/income_points.dart';
-import 'package:portal/features/parking_management/components/weekly_income_graph/weekly_income_stats_graph.dart';
-import 'package:portal/features/parking_management/components/daily_income_graph/daily_income_stats_graph.dart';
-import 'package:portal/features/parking_management/components/ticket_tile.dart';
+import 'package:portal/role-admin/features/parking_management/components/daily_income_graph/income_points.dart';
+import 'package:portal/role-admin/features/parking_management/components/weekly_income_graph/weekly_income_stats_graph.dart';
+import 'package:portal/role-admin/features/parking_management/components/daily_income_graph/daily_income_stats_graph.dart';
+import 'package:portal/role-admin/features/parking_management/components/ticket_tile.dart';
 
 List<Map<String, dynamic>> tickets = [
   {
     'id': '1',
     'vehicle': 'AEF 4567',
-    'issued_time': "30min",
+    'issued_time': 30,
     'issued_at': DateTime.now(),
     'expiry_at': DateTime.now().add(
-      const Duration(minutes: 30),
+      const Duration(minutes: 2),
     ),
     'amount': 1,
     'status': 'active',
@@ -22,7 +23,7 @@ List<Map<String, dynamic>> tickets = [
   {
     'id': '2',
     'vehicle': 'AEF 4067',
-    'issued_time': "1hr",
+    'issued_time': 60,
     'issued_at': DateTime.now(),
     'expiry_at': DateTime.now().add(
       const Duration(minutes: 60),
@@ -33,7 +34,7 @@ List<Map<String, dynamic>> tickets = [
   {
     'id': '3',
     'vehicle': 'AEF 4867',
-    'issued_time': "30min",
+    'issued_time': 30,
     'issued_at': DateTime.now(),
     'expiry_at': DateTime.now().add(
       const Duration(minutes: 30),
@@ -44,7 +45,7 @@ List<Map<String, dynamic>> tickets = [
   {
     'id': '4',
     'vehicle': 'AEF 4967',
-    'issued_time': "2hr",
+    'issued_time': 120,
     'issued_at': DateTime.now(),
     'expiry_at': DateTime.now().add(
       const Duration(minutes: 120),
@@ -55,7 +56,7 @@ List<Map<String, dynamic>> tickets = [
   {
     'id': '5',
     'vehicle': 'AEF 5067',
-    'issued_time': "45min",
+    'issued_time': 45,
     'issued_at': DateTime.now(),
     'expiry_at': DateTime.now().add(
       const Duration(minutes: 45),
@@ -66,7 +67,7 @@ List<Map<String, dynamic>> tickets = [
   {
     'id': '6',
     'vehicle': 'AEF 5167',
-    'issued_time': "1hr 30min",
+    'issued_time': 90,
     'issued_at': DateTime.now(),
     'expiry_at': DateTime.now().add(
       const Duration(minutes: 90),
@@ -105,7 +106,7 @@ class ParkingMain extends StatelessWidget {
                   StaggeredGridTile.count(
                     crossAxisCellCount: crossAxisCount >= 4 ? 3 : 2,
                     mainAxisCellCount: 2,
-                    child: Center(child: ticketsSection()),
+                    child: Center(child: ticketsSection(context)),
                   ),
                   StaggeredGridTile.count(
                     crossAxisCellCount: crossAxisCount >= 4 ? 2 : 1,
@@ -137,73 +138,78 @@ class ParkingMain extends StatelessWidget {
   }
 }
 
-Widget buildBox(String label, Widget child) {
-  return Card(
-    color: background2,
-    shadowColor: primaryColor,
-    elevation: 5,
-    child: Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            capitalize(label),
-            style: const TextStyle(
-                color: textColor1,
-                fontWeight: FontWeight.w900,
-                overflow: TextOverflow.ellipsis),
-          ),
-          const SizedBox(height: 8),
-          Expanded(child: child),
-        ],
+Widget buildBox(String label, Widget child, Function? onTap) {
+  return GestureDetector(
+    onTap: () => onTap != null ? onTap() : null,
+    child: Card(
+      color: background2,
+      shadowColor: primaryColor,
+      elevation: 5,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              capitalize(label),
+              style: const TextStyle(
+                  color: textColor1,
+                  fontWeight: FontWeight.w900,
+                  overflow: TextOverflow.ellipsis),
+            ),
+            const SizedBox(height: 8),
+            Expanded(child: child),
+          ],
+        ),
       ),
     ),
   );
 }
 
-Widget ticketsSection() {
+Widget ticketsSection(BuildContext context) {
   return buildBox(
-    'Tickets',
-    ListView.builder(
-        itemCount: tickets.length,
-        itemBuilder: (context, index) {
-          final ticket = tickets[index];
-          return TicketTile(ticket: ticket);
-        }),
-  );
+      'Tickets',
+      ListView.builder(
+          itemCount: tickets.length,
+          itemBuilder: (context, index) {
+            final ticket = tickets[index];
+            return TicketTile(ticket: ticket);
+          }), () {
+    context.go('/parking/tickets');
+  });
 }
 
 Widget weeklyIncomeStatsSection() {
   double total = weeklyIncomeData.reduce((a, b) => a + b);
   return buildBox('Weekly income: \$${numberFormatted(total.toString())}',
-      const Center(child: WeeklyIncomeStatsGraph()));
+      const Center(child: WeeklyIncomeStatsGraph()), null);
 }
 
 Widget dailyIncomeStats() {
+  // double total = incomePoints.reduce((a, b) => a + b);
   return buildBox(
-    'Daily revenue',
-    DailyIncomeStatsGraph(
-      incomePoints: incomePoints,
-    ),
-  );
+      'Daily revenue',
+      DailyIncomeStatsGraph(
+        incomePoints: incomePoints,
+      ),
+      null);
 }
 
 Widget ticketsIssuedSection() {
   return buildBox(
-    'ticket issued',
-    const Center(
-      child: Text('Ticket Issued'),
-    ),
-  );
+      'ticket issued',
+      const Center(
+        child: Text('Ticket Issued'),
+      ),
+      null);
 }
 
 Widget arrearsSection() {
   return buildBox(
-    'arrears',
-    const Center(
-      child: Text('Arrears'),
-    ),
-  );
+      'arrears',
+      const Center(
+        child: Text('Arrears'),
+      ),
+      null);
 }

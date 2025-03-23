@@ -28,7 +28,7 @@ String capitalize(String input) {
 }
 
 String dateFormatted(DateTime date) {
-  return '${date.day}/${date.month}/${date.year}';
+  return '${date.day}-${date.month}-${date.year}';
 }
 
 String timeFormatted(DateTime date) {
@@ -36,7 +36,7 @@ String timeFormatted(DateTime date) {
 }
 
 String dateTimeFormatted(DateTime date) {
-  return '${dateFormatted(date)} ${timeFormatted(date)}';
+  return '${timeFormatted(date)} • ${dateFormatted(date)}';
 }
 
 String numberFormatted(String number) {

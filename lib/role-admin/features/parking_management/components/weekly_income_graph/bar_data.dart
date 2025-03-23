@@ -1,4 +1,4 @@
-import 'package:portal/features/parking_management/components/weekly_income_graph/individual_bar.dart';
+import 'package:portal/role-admin/features/parking_management/components/weekly_income_graph/individual_bar.dart';
 
 class BarData {
   final double monAmount;

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:portal/constants/colors/colors.dart';
-import 'package:portal/features/announcements/components/anno_comment_btn.dart';
-import 'package:portal/features/announcements/components/anno_upVote_btn.dart';
-import 'package:portal/features/announcements/components/anno_share_btn.dart';
+import 'package:portal/shared/features/announcements/components/anno_comment_btn.dart';
+import 'package:portal/shared/features/announcements/components/anno_upVote_btn.dart';
+import 'package:portal/shared/features/announcements/components/anno_share_btn.dart';
 
 class AnnouncementTile extends StatefulWidget {
   final Map<String, dynamic> announcement;

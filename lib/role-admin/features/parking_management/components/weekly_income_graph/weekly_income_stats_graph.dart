@@ -3,7 +3,7 @@ import 'package:fl_chart/fl_chart.dart';
 
 import 'package:flutter/material.dart';
 import 'package:portal/constants/colors/colors.dart';
-import 'package:portal/features/parking_management/components/weekly_income_graph/bar_data.dart';
+import 'package:portal/role-admin/features/parking_management/components/weekly_income_graph/bar_data.dart';
 
 List<double> weeklyIncomeData = List.generate(
   7,

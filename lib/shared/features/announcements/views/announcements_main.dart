@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:portal/components/widgets/custom_filled_btn.dart';
-import 'package:portal/features/announcements/components/announcement_box.dart';
-import 'package:portal/features/announcements/components/announcement_tile.dart';
-import 'package:portal/features/announcements/views/announcements_add.dart';
+import 'package:portal/shared/features/announcements/components/announcement_box.dart';
+import 'package:portal/shared/features/announcements/components/announcement_tile.dart';
+import 'package:portal/shared/features/announcements/views/announcements_add.dart';
 
 String _loremIpsum() {
   return 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.';
@@ -77,21 +77,28 @@ class _AnnouncementsMainState extends State<AnnouncementsMain> {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            Row(
-              children: [
-                const Spacer(),
-                CustomFilledButton(
-                  btnLabel: 'Post',
-                  onTap: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return const AnnouncementsAdd();
-                      },
-                    );
-                  },
-                ),
-              ],
+            // TODO change visibility depending on user role
+            Visibility(
+              visible: true,
+              replacement: const SizedBox.shrink(),
+              maintainState: false,
+              maintainAnimation: false,
+              child: Row(
+                children: [
+                  const Spacer(),
+                  CustomFilledButton(
+                    btnLabel: 'Post',
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return const AnnouncementsAdd();
+                        },
+                      );
+                    },
+                  ),
+                ],
+              ),
             ),
             const Gap(16),
             Expanded(
