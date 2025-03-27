@@ -59,16 +59,16 @@ class DailyIncomeStatsGraph extends StatelessWidget {
           ),
           titlesData: const FlTitlesData(
             show: false,
-            leftTitles: const AxisTitles(
+            leftTitles: AxisTitles(
               sideTitles: SideTitles(showTitles: false),
             ),
-            rightTitles: const AxisTitles(
+            rightTitles: AxisTitles(
               sideTitles: SideTitles(showTitles: false),
             ),
-            topTitles: const AxisTitles(
+            topTitles: AxisTitles(
               sideTitles: SideTitles(showTitles: false),
             ),
-            bottomTitles: const AxisTitles(
+            bottomTitles: AxisTitles(
               sideTitles: SideTitles(showTitles: false),
             ),
           ),

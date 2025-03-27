@@ -56,7 +56,7 @@ class _CustomLinearProgressIndicatorState
             return LinearProgressIndicator(
               value: controller.value,
               backgroundColor: secondaryColor,
-              valueColor: AlwaysStoppedAnimation<Color>(primaryColor),
+              valueColor: const AlwaysStoppedAnimation<Color>(primaryColor),
               minHeight: 8,
             );
           },

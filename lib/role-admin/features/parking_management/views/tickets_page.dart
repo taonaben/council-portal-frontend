@@ -5,7 +5,6 @@ import 'package:go_router/go_router.dart';
 import 'package:portal/components/widgets/custom_linear_progress_indicator.dart';
 import 'package:portal/constants/colors/colors.dart';
 import 'package:portal/core/utils/string_methods.dart';
-import 'package:portal/role-admin/features/parking_management/components/ticket_tile.dart';
 import 'package:portal/role-admin/features/parking_management/views/parking_main.dart';
 
 class TicketsPage extends StatefulWidget {

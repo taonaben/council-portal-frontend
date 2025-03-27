@@ -123,8 +123,8 @@ class WeeklyIncomeStatsGraph extends StatelessWidget {
     }
 
     return SideTitleWidget(
-      child: text,
       meta: meta,
+      child: text,
     );
   }
 }

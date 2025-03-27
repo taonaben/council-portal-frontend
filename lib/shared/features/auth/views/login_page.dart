@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -9,7 +8,6 @@ import 'package:portal/components/widgets/custom_snackbar.dart';
 import 'package:portal/components/widgets/custom_textfield.dart';
 import 'package:portal/constants/colors/colors.dart';
 import 'package:portal/shared/features/auth/model/user_model.dart';
-import 'package:portal/shared/features/auth/provider/user_provider.dart';
 import 'package:portal/shared/features/auth/users_list.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:portal/shared/features/auth/providers/auth_providers.dart';

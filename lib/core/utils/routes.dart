@@ -65,7 +65,7 @@ final GoRouter router = GoRouter(
             path: '/admin/announcements',
             builder: (context, state) => const AnnouncementsMain()),
         GoRoute(
-            path: '/admin/issues', builder: (context, state) => IssuesMain()),
+            path: '/admin/issues', builder: (context, state) => const IssuesMain()),
         GoRoute(
             path: '/admin/water',
             builder: (context, state) => const WaterMain()),
@@ -138,7 +138,7 @@ final GoRouter router = GoRouter(
             path: '/client/announcements',
             builder: (context, state) => const AnnouncementsMain()),
         GoRoute(
-            path: '/client/issues', builder: (context, state) => IssuesMain()),
+            path: '/client/issues', builder: (context, state) => const IssuesMain()),
         GoRoute(
             path: '/client/water',
             builder: (context, state) => const WaterMain()),

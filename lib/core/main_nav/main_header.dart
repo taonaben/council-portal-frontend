@@ -1,10 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:portal/constants/colors/colors.dart';
-import 'package:portal/shared/features/auth/model/user_model.dart';
 
 class MainHeader extends StatefulWidget {
   final String currentCity;

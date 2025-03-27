@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:portal/constants/colors/colors.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:portal/core/utils/routes.dart';
-import 'package:portal/shared/features/auth/provider/user_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // void main() {
 //   runApp(MultiProvider(
