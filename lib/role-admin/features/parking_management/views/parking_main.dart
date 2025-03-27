@@ -176,7 +176,7 @@ Widget ticketsSection(BuildContext context) {
             final ticket = tickets[index];
             return TicketTile(ticket: ticket);
           }), () {
-    context.go('/parking/tickets');
+    context.go('client/parking/tickets');
   });
 }
 
