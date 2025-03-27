@@ -8,15 +8,15 @@ import 'package:portal/constants/colors/colors.dart';
 import 'package:portal/core/main_nav/main_header.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 
-class MainNavigation extends StatefulWidget {
+class MainNavigationClient extends StatefulWidget {
   final Widget child;
-  const MainNavigation({super.key, required this.child});
+  const MainNavigationClient({super.key, required this.child});
 
   @override
-  State<MainNavigation> createState() => _MainNavigationState();
+  State<MainNavigationClient> createState() => _MainNavigationClientState();
 }
 
-class _MainNavigationState extends State<MainNavigation> {
+class _MainNavigationClientState extends State<MainNavigationClient> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,7 +26,7 @@ class _MainNavigationState extends State<MainNavigation> {
           Expanded(
             child: Column(
               children: [
-                const MainHeader(currentCity: 'Mutare'),
+                const MainHeader(currentCity: 'client'),
                 Expanded(child: widget.child), // Display the routed widget here
               ],
             ),
@@ -47,16 +47,16 @@ class _MainNavigationState extends State<MainNavigation> {
           Expanded(
             child: ListView(
               children: [
-                buildListTile(context, 'Dashboard', '/dashboard'),
-                buildListTile(context, 'Announcements', '/announcements'),
-                buildListTile(context, 'Issues', '/issues'),
-                buildListTile(context, 'Water Management', '/water'),
-                buildListTile(context, 'Licenses', '/licenses'),
-                buildListTile(context, 'Businesses', '/businesses'),
-                buildListTile(context, 'Parking', '/parking'),
-                buildListTile(context, 'Properties', '/properties'),
-                buildListTile(context, 'Alida AI', '/alida-ai'),
-                buildListTile(context, 'Settings', '/settings'),
+                buildListTile(context, 'Dashboard', 'dashboard'),
+                buildListTile(context, 'Announcements', 'announcements'),
+                buildListTile(context, 'Issues', 'issues'),
+                buildListTile(context, 'Water Management', 'water'),
+                buildListTile(context, 'Licenses', 'licenses'),
+                buildListTile(context, 'Businesses', 'businesses'),
+                buildListTile(context, 'Parking', 'parking'),
+                buildListTile(context, 'Properties', 'properties'),
+                buildListTile(context, 'Alida AI', 'alida-ai'),
+                buildListTile(context, 'Settings', 'settings'),
               ],
             ),
           ),
@@ -125,7 +125,7 @@ class _MainNavigationState extends State<MainNavigation> {
       title: Text(title,
           style: const TextStyle(color: textColor1),
           overflow: TextOverflow.ellipsis),
-      onTap: () => context.go(route), // Navigate using GoRouter
+      onTap: () => context.go("/client/$route"), // Navigate using GoRouter
     );
   }
 }
