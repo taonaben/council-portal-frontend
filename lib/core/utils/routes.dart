@@ -3,6 +3,12 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:portal/core/main_nav/role-admin/main_navigation_admin.dart';
 import 'package:portal/core/main_nav/role-client/main_navigation_client.dart';
+import 'package:portal/role-client/features/assets/assets_main.dart';
+import 'package:portal/role-client/features/dashboard/dashboard_main.dart';
+import 'package:portal/role-client/features/issues/issues_main.dart';
+import 'package:portal/role-client/features/licensing/licensing_main.dart';
+import 'package:portal/role-client/features/parking/parking_main.dart';
+import 'package:portal/role-client/features/water/water_main.dart';
 import 'package:portal/shared/features/alida_ai/alida_ai_main.dart';
 import 'package:portal/shared/features/announcements/views/announcement_detail.dart';
 import 'package:portal/shared/features/announcements/views/announcements_add.dart';
@@ -134,61 +140,32 @@ final GoRouter router = GoRouter(
       routes: [
         GoRoute(
             path: '/client/dashboard',
-            builder: (context, state) => const DashboardMain()),
+            builder: (context, state) => const DashboardMainClient()),
         GoRoute(
             path: '/client/announcements',
             builder: (context, state) => const AnnouncementsMain()),
         GoRoute(
             path: '/client/issues',
-            builder: (context, state) => const IssuesMain()),
+            builder: (context, state) => const IssuesMainClient()),
         GoRoute(
             path: '/client/water',
-            builder: (context, state) => const WaterMain()),
+            builder: (context, state) => const WaterMainClient()),
         GoRoute(
             path: '/client/licenses',
-            builder: (context, state) => const LicensesMain()),
+            builder: (context, state) => const LicensingMainClient()),
         GoRoute(
-            path: '/client/businesses',
-            builder: (context, state) => const BusinessesMain()),
+            path: '/client/assets',
+            builder: (context, state) => const AssetsMainClient()),
         GoRoute(
-            path: '/client/parking',
-            builder: (context, state) => const ParkingMain(),
-            routes: [
-              GoRoute(
-                path: '/tickets',
-                builder: (context, state) {
-                  tickets = tickets;
-
-                  return TicketsPage(
-                    tickets: tickets,
-                    totalPages: 24,
-                  );
-                },
-              ),
-            ]),
-        GoRoute(
-            path: '/client/properties',
-            builder: (context, state) => const PropertiesMain()),
+          path: '/client/parking',
+          builder: (context, state) => const ParkingMainClient(),
+        ),
         GoRoute(
             path: '/client/alida-ai',
             builder: (context, state) => const AlidaAiMain()),
         GoRoute(
             path: '/client/settings',
             builder: (context, state) => const SettingsMain()),
-        GoRoute(
-            path: '/client/announcements_add',
-            builder: (context, state) => const AnnouncementsAdd()),
-        GoRoute(
-          path: '/client/announcement/:id',
-          builder: (context, state) {
-            final String? id = state.pathParameters['id'];
-            final announcement = announcements.firstWhere(
-              (a) => a['id'] == id,
-              orElse: () => {},
-            );
-            return AnnouncementDetail(announcement: announcement);
-          },
-        ),
       ],
     ),
   ],

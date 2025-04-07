@@ -72,7 +72,10 @@ class MainNavigationClient extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
         child: _buildDrawer(context, isMobile: true),
       ),
-      body: child,
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        child: child,
+      ),
     );
   }
 
@@ -154,9 +157,8 @@ class MainNavigationClient extends StatelessWidget {
       {'title': 'Issues', 'route': 'issues'},
       {'title': 'Water Management', 'route': 'water'},
       {'title': 'Licenses', 'route': 'licenses'},
-      {'title': 'Businesses', 'route': 'businesses'},
+      {'title': 'Assets', 'route': 'assets'},
       {'title': 'Parking', 'route': 'parking'},
-      {'title': 'Properties', 'route': 'properties'},
       {'title': 'Alida AI', 'route': 'alida-ai'},
       {'title': 'Settings', 'route': 'settings'},
     ];

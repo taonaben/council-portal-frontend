@@ -28,11 +28,11 @@ String capitalize(String input) {
 }
 
 String dateFormatted(DateTime date) {
-  return '${date.day}-${date.month}-${date.year}';
+  return '${twoDigits(date.day)}-${twoDigits(date.month)}-${date.year}';
 }
 
 String timeFormatted(DateTime date) {
-  return '${date.hour}:${date.minute}';
+  return '${twoDigits(date.hour)}:${twoDigits(date.minute)}';
 }
 
 String dateTimeFormatted(DateTime date) {
@@ -56,3 +56,5 @@ String formatLargeNumber(String number) {
     return num.toString();
   }
 }
+
+String twoDigits(int n) => n.toString().padLeft(2, '0');
