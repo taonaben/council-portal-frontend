@@ -40,7 +40,7 @@ class ParkingMainClient extends StatelessWidget {
 
   Widget buildSubHeader(BuildContext context) {
     return Text(
-      "Park your vehicle and track the time",
+      "Track and manage your spot",
       style: TextStyle(
         fontFamily: GoogleFonts.staatliches().fontFamily,
         color: textColor2,

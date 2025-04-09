@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:portal/constants/colors/colors.dart';
 import 'package:portal/constants/colors/dimensions.dart';
@@ -24,7 +25,7 @@ class _ParkingMainSectionState extends State<ParkingMainSection> {
         borderRadius: BorderRadius.circular(uniBorderRadius),
         border: Border.all(
           color: background2,
-          width: 2,
+          // width: 2,
         ),
       ),
       child: Column(
@@ -55,53 +56,22 @@ class _ParkingMainSectionState extends State<ParkingMainSection> {
             const Gap(16),
             Row(
               children: [
-                const Icon(
-                  CupertinoIcons.car_detailed,
-                  color: textColor1,
-                  size: 14,
-                ),
-                const Gap(8),
-                Text(
-                  'ID: $id',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: textColor1,
-                  ),
-                ),
-              ],
-            ),
-            const Gap(16),
-            Text("Current Vehicle: $vehicleName",
-                style: TextStyle(
-                  color: textColor1,
-                )),
-            const Gap(8),
-            Row(
-              children: [
                 Text(
                   vehiclePlate,
-                  style: TextStyle(
+                  style: const TextStyle(
                     // fontFamily: GoogleFonts.staatliches().fontFamily,
                     color: textColor1,
                     fontSize: 30,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const Gap(8),
-                Tooltip(
-                  message: "Change Vehicle",
-                  child: IconButton(
-                    onPressed: () {},
-                    icon: const Icon(
-                      CupertinoIcons.arrow_right_arrow_left,
-                      color: textColor1,
-                      size: 28,
-                    ),
-                  ),
-                )
               ],
             ),
+            const Gap(8),
+            Text(vehicleName,
+                style: const TextStyle(
+                  color: textColor1,
+                )),
           ],
         ),
       ),
@@ -109,6 +79,118 @@ class _ParkingMainSectionState extends State<ParkingMainSection> {
   }
 
   Widget buildContents() {
-    return Container();
+    return SizedBox(
+      // height: 350, // Adjust this value based on your needs
+      child: GridView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        padding: const EdgeInsets.all(16.0),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          crossAxisSpacing: 16.0,
+          mainAxisSpacing: 16.0,
+          childAspectRatio: 3, // Adjust this value to control button height
+        ),
+        itemCount: options.length,
+        itemBuilder: (context, index) {
+          final option = options[index];
+          return buildOptionButton(
+            text: option['text'],
+            icon: option['icon'],
+            route: option['route'],
+          );
+        },
+      ),
+    );
+  }
+
+  List<Map<String, dynamic>> options = [
+    {
+      "text": "Find Parking",
+      "icon": const Icon(
+        Icons.location_on_outlined,
+        color: textColor2,
+      ),
+      "route": "",
+    },
+    {
+      "text": "Buy Ticket",
+      "icon": const Icon(
+        CupertinoIcons.ticket,
+        color: textColor2,
+      ),
+      "route": "/client/parking/purchase_ticket",
+    },
+    {
+      "text": "History",
+      "icon": const Icon(
+        CupertinoIcons.clock,
+        color: textColor2,
+      ),
+      "route": "",
+    },
+    {
+      "text": "My Cars",
+      "icon": const Icon(
+        Icons.directions_car_filled_outlined,
+        color: textColor2,
+      ),
+      "route": "",
+    },
+    {
+      "text": "Alerts",
+      "icon": const Icon(
+        CupertinoIcons.bell,
+        color: textColor2,
+      ),
+      "route": "",
+    },
+    {
+      "text": "Account",
+      "icon": const Icon(
+        Icons.settings_outlined,
+        color: textColor2,
+      ),
+      "route": "",
+    },
+  ];
+
+  Widget buildOptionButton({
+    required String text,
+    required Icon icon,
+    required String route,
+  }) {
+    return GestureDetector(
+      onTap: () => context.go(route),
+      child: Container(
+        // width: 200,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(uniBorderRadius),
+          border: Border.all(
+            color: background2,
+            width: 2,
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              icon,
+              const Gap(8),
+              Text(
+                text,
+                style: const TextStyle(
+                  color: textColor2,
+                  fontSize: 14,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

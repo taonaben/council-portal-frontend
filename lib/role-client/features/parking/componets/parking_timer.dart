@@ -101,44 +101,24 @@ class _ParkingTimerState extends State<ParkingTimer> {
     final minutes = twoDigits(_remainingTime.inMinutes.remainder(60));
     final seconds = twoDigits(_remainingTime.inSeconds.remainder(60));
 
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            _buildTimeLabel(hours, 'hours', true),
-            // const Gap(8),
-            _buildTimeLabel(minutes, 'minutes', false),
-            // const Gap(8),
-            _buildTimeLabel(seconds, 'seconds', false),
-          ],
-        ),
-      ],
-    );
-  }
+    // return Row(
+    //   mainAxisAlignment: MainAxisAlignment.center,
+    //   children: [
+    //     _buildTimeLabel(hours, 'hours', true),
+    //     // const Gap(8),
+    //     _buildTimeLabel(minutes, 'minutes', false),
+    //     // const Gap(8),
+    //     _buildTimeLabel(seconds, 'seconds', false),
+    //   ],
+    // );
 
-  Widget _buildTimeLabel(String unit, String label, bool isHour) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Text(
-          isHour ? unit : " : $unit",
-          style: TextStyle(
-            fontSize: 50,
-            fontWeight: FontWeight.w900,
-            color: primaryColor,
-            fontFamily: GoogleFonts.unbounded().fontFamily,
-          ),
-        ),
-        Text(
-          label,
-          style: const TextStyle(
-            fontSize: 12,
-            color: textColor1,
-          ),
-        ),
-      ],
+    return Text(
+      "${hours != "00" ? "${hours}h" : ""}${minutes}m ${seconds}s left",
+      style: const TextStyle(
+        fontSize: 30,
+        fontWeight: FontWeight.w900,
+        color: primaryColor,
+      ),
     );
   }
 
@@ -149,15 +129,7 @@ class _ParkingTimerState extends State<ParkingTimer> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          'Paid: ${dateTimeFormatted(DateTime.now())} ',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 10,
-            color: textColor1,
-          ),
-        ),
-        Text(
-          'ID: $id',
+          'Paid: ${timeFormatted(DateTime.now())} ',
           textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: 10,
