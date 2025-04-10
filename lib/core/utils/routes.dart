@@ -8,6 +8,8 @@ import 'package:portal/role-client/features/dashboard/dashboard_main.dart';
 import 'package:portal/role-client/features/issues/issues_main.dart';
 import 'package:portal/role-client/features/licensing/licensing_main.dart';
 import 'package:portal/role-client/features/parking/views/parking_main.dart';
+import 'package:portal/role-client/features/parking/views/tickets/buy_for_other_page.dart';
+import 'package:portal/role-client/features/parking/views/tickets/ticket_purchase_summary_page.dart';
 import 'package:portal/role-client/features/parking/views/tickets/tickets_main.dart';
 import 'package:portal/role-client/features/water/water_main.dart';
 import 'package:portal/shared/features/alida_ai/alida_ai_main.dart';
@@ -158,14 +160,23 @@ final GoRouter router = GoRouter(
             path: '/client/assets',
             builder: (context, state) => const AssetsMainClient()),
         GoRoute(
-          path: '/client/parking',
-          builder: (context, state) => const ParkingMainClient(),
-          routes: [
-               GoRoute(
-            path: '/purchase_ticket',
-            builder: (context, state) => const TicketsMainClient()),
-          ]
-        ),
+            path: '/client/parking',
+            builder: (context, state) => const ParkingMainClient(),
+            routes: [
+              GoRoute(
+                  path: '/purchase_ticket',
+                  builder: (context, state) => const TicketsMainClient(),
+                  routes: [
+                    GoRoute(
+                        path: '/ticket_purchase_summary',
+                        builder: (context, state) =>
+                            const TicketPurchaseSummaryPage()),
+                    GoRoute(
+                        path: '/buy_for_other',
+                        builder: (context, state) =>
+                            const BuyTicketForOtherPage()),
+                  ]),
+            ]),
         GoRoute(
             path: '/client/alida-ai',
             builder: (context, state) => const AlidaAiMain()),

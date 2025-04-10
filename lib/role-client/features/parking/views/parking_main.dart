@@ -11,16 +11,19 @@ class ParkingMainClient extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          buildHeader(context),
-          buildSubHeader(context),
-          const Gap(16),
-          ParkingTimer(),
-          const Gap(8),
-          ParkingMainSection(),
-        ],
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            buildHeader(context),
+            buildSubHeader(context),
+            const Gap(16),
+            ParkingTimer(),
+            const Gap(8),
+            ParkingMainSection(),
+          ],
+        ),
       ),
     );
   }

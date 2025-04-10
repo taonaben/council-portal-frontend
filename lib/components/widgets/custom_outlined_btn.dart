@@ -2,26 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:portal/constants/colors/colors.dart';
 import 'package:portal/constants/colors/dimensions.dart';
 
-class CustomFilledButton extends StatefulWidget {
+class CustomOutlinedButton extends StatefulWidget {
   final String btnLabel;
   final bool? expand;
   final Function()? onTap;
-  final Color? backgroundColor;
+  final Color? borderColor;
   final Color? textColor;
 
-  const CustomFilledButton(
+  const CustomOutlinedButton(
       {super.key,
       required this.btnLabel,
       required this.onTap,
       this.expand,
-      this.backgroundColor,
+      this.borderColor,
       this.textColor});
 
   @override
-  State<CustomFilledButton> createState() => _CustomFilledButtonState();
+  State<CustomOutlinedButton> createState() => _CustomOutlinedButtonState();
 }
 
-class _CustomFilledButtonState extends State<CustomFilledButton>
+class _CustomOutlinedButtonState extends State<CustomOutlinedButton>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
@@ -79,13 +79,17 @@ class _CustomFilledButtonState extends State<CustomFilledButton>
               width: (widget.expand ?? false) ? double.infinity : null,
               height: 60,
               decoration: BoxDecoration(
-                color: widget.backgroundColor ?? primaryColor,
+                color: background1,
                 borderRadius: BorderRadius.circular(uniBorderRadius),
+                border: Border.all(
+                  color: widget.borderColor ?? primaryColor,
+                  width: 2,
+                ),
                 boxShadow: _isPressed
                     ? []
                     : [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.1),
+                          color: blackColor.withOpacity(0.1),
                           spreadRadius: 1,
                           blurRadius: 3,
                           offset: const Offset(0, 2),

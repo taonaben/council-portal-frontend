@@ -72,10 +72,7 @@ class MainNavigationClient extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
         child: _buildDrawer(context, isMobile: true),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-        child: child,
-      ),
+      body: child,
     );
   }
 

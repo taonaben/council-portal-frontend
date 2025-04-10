@@ -8,4 +8,5 @@ const textColor2 = Color(0xFF060A16);
 const secondaryColor = Color(0xFF697072);
 const accentColor = Color(0xFF443dff);
 const redColor = Color(0xFFFF4D4D);
+const blackColor = Color(0xFF000000);
 
