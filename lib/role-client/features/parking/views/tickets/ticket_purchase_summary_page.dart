@@ -6,6 +6,12 @@ import 'package:portal/components/widgets/custom_divider.dart';
 import 'package:portal/components/widgets/custom_filled_btn.dart';
 import 'package:portal/constants/colors/colors.dart';
 import 'package:portal/constants/colors/dimensions.dart';
+import 'package:portal/core/payments/bank_transfer.dart';
+import 'package:portal/core/payments/ecocash.dart';
+import 'package:portal/core/payments/mastercard.dart';
+import 'package:portal/core/payments/omari.dart';
+import 'package:portal/core/payments/onemoney.dart';
+import 'package:portal/core/payments/visa.dart';
 
 class TicketPurchaseSummaryPage extends StatefulWidget {
   const TicketPurchaseSummaryPage({super.key});
@@ -21,8 +27,18 @@ class _TicketPurchaseSummaryPageState extends State<TicketPurchaseSummaryPage> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         buildHeader(),
+        const Gap(16),
+        const Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: const Text("Select Payment Method",
+              style: TextStyle(
+                  color: secondaryColor,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold)),
+        ),
         const Gap(16),
         Expanded(child: SingleChildScrollView(child: buildBody())),
         buildFooter()
@@ -93,18 +109,7 @@ class _TicketPurchaseSummaryPageState extends State<TicketPurchaseSummaryPage> {
   Widget buildBody() {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text("Select Payment Method",
-              style: TextStyle(
-                  color: secondaryColor,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold)),
-          const Gap(16),
-          buildPaymentSection(),
-        ],
-      ),
+      child: buildPaymentSection(),
     );
   }
 
@@ -227,10 +232,26 @@ class _TicketPurchaseSummaryPageState extends State<TicketPurchaseSummaryPage> {
     );
   }
 
+  final Map<PaymentMethod, Widget Function(BuildContext)> _paymentDialogs = {
+    PaymentMethod.ecocash: (context) => const Ecocash(),
+    PaymentMethod.oneMoney: (context) => const Onemoney(),
+    PaymentMethod.bankTransfer: (context) => const BankTransfer(),
+    PaymentMethod.masterCard: (context) => const Mastercard(),
+    PaymentMethod.visa: (context) => const Visa(),
+    PaymentMethod.omari: (context) => const Omari(),
+  };
+
   void _handlePayment() {
     if (_selectedPayment == null) return;
-    // Implement payment logic here
-    debugPrint(
-        'Processing payment with ${PaymentAssets.names[_selectedPayment]}');
+
+    final dialogBuilder = _paymentDialogs[_selectedPayment];
+    if (dialogBuilder != null) {
+      showDialog(
+        context: context,
+        builder: dialogBuilder,
+      );
+    } else {
+      debugPrint('No payment method selected');
+    }
   }
 }

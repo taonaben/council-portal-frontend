@@ -7,8 +7,10 @@ import 'package:portal/core/utils/string_methods.dart';
 class CustomTextfield extends StatefulWidget {
   final String? hintText;
   final String labelText;
+  final Color? labelTextColor;
   final String? helperText;
   final int? maxLines;
+  final int? maxLength;
   final TextInputType? textInputType;
   final TextEditingController? controller;
   final void Function(String)? onChanged;
@@ -24,7 +26,9 @@ class CustomTextfield extends StatefulWidget {
     this.helperText,
     this.hintText,
     required this.labelText,
+    this.labelTextColor,
     this.textInputType,
+    this.maxLength,
     this.controller,
     this.onChanged,
     this.focusNode,
@@ -57,8 +61,10 @@ class _CustomTextfieldState extends State<CustomTextfield> {
         children: [
           Text(
             '${capitalize(widget.labelText)}:',
-            style: const TextStyle(
-                color: textColor1, fontSize: 14, fontWeight: FontWeight.bold),
+            style: TextStyle(
+                color: widget.labelTextColor ?? textColor1,
+                fontSize: 14,
+                fontWeight: FontWeight.bold),
           ),
           TextFormField(
             validator: (value) {
@@ -73,12 +79,13 @@ class _CustomTextfieldState extends State<CustomTextfield> {
             keyboardType: widget.textInputType,
             obscureText: widget.obscureText ?? false,
             controller: widget.controller,
+            maxLength: widget.maxLength,
             onChanged: widget.onChanged,
             focusNode: widget.focusNode,
             inputFormatters: widget.textInputType == TextInputType.number
                 ? [FilteringTextInputFormatter.allow(RegExp(r'[0-9\.]'))]
                 : null,
-            style: const TextStyle(color: textColor1),
+            style: TextStyle(color: widget.labelTextColor ?? textColor1),
             decoration: InputDecoration(
                 hintText: widget.hintText,
                 hintStyle: const TextStyle(color: secondaryColor, fontSize: 12),
