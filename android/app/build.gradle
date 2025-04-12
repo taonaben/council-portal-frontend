@@ -65,3 +65,7 @@ flutter {
 }
 
 dependencies {}
+
+tasks.withType(Jar).configureEach {
+    duplicatesStrategy = org.gradle.api.file.DuplicatesStrategy.EXCLUDE
+}
