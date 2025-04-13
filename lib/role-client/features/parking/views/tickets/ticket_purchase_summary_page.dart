@@ -8,10 +8,9 @@ import 'package:portal/constants/colors/colors.dart';
 import 'package:portal/constants/colors/dimensions.dart';
 import 'package:portal/core/payments/bank_transfer.dart';
 import 'package:portal/core/payments/ecocash.dart';
-import 'package:portal/core/payments/mastercard.dart';
+import 'package:portal/core/payments/card_payment.dart';
 import 'package:portal/core/payments/omari.dart';
 import 'package:portal/core/payments/onemoney.dart';
-import 'package:portal/core/payments/visa.dart';
 
 class TicketPurchaseSummaryPage extends StatefulWidget {
   const TicketPurchaseSummaryPage({super.key});
@@ -236,8 +235,7 @@ class _TicketPurchaseSummaryPageState extends State<TicketPurchaseSummaryPage> {
     PaymentMethod.ecocash: (context) => const Ecocash(),
     PaymentMethod.oneMoney: (context) => const Onemoney(),
     PaymentMethod.bankTransfer: (context) => const BankTransfer(),
-    PaymentMethod.masterCard: (context) => const Mastercard(),
-    PaymentMethod.visa: (context) => const Visa(),
+    PaymentMethod.card: (context) => const CardPayment(),
     PaymentMethod.omari: (context) => const Omari(),
   };
 
