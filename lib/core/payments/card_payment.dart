@@ -46,6 +46,7 @@ class CardPayment extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Image.asset(
             "lib/assets/payments/card.png",
@@ -95,7 +96,7 @@ class CardPayment extends StatelessWidget {
             labelTextColor: textColor2,
           ),
           const Gap(16),
-          Text(
+          const Text(
             "Billing Address",
             style: TextStyle(
               color: textColor2,
@@ -103,7 +104,6 @@ class CardPayment extends StatelessWidget {
               fontWeight: FontWeight.w600,
             ),
           ),
-          const Gap(8),
           const CustomTextfield(
             labelText: "Country",
             labelTextColor: textColor2,
@@ -143,7 +143,6 @@ class CardPayment extends StatelessWidget {
             labelTextColor: textColor2,
             hintText: "State/Province/Region",
           ),
-          const Gap(16),
         ],
       ),
     );
