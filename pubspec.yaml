@@ -48,6 +48,8 @@ dependencies:
   collection: ^1.19.1
   flutter_riverpod: ^2.6.1
   flutter_lints: ^3.0.0
+  json_annotation: ^4.9.0
+  dio: ^5.8.0+1
 
   
 

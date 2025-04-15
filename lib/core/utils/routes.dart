@@ -7,10 +7,11 @@ import 'package:portal/role-client/features/assets/assets_main.dart';
 import 'package:portal/role-client/features/dashboard/dashboard_main.dart';
 import 'package:portal/role-client/features/issues/issues_main.dart';
 import 'package:portal/role-client/features/licensing/licensing_main.dart';
-import 'package:portal/role-client/features/parking/views/parking_main.dart';
-import 'package:portal/role-client/features/parking/views/tickets/buy_for_other_page.dart';
-import 'package:portal/role-client/features/parking/views/tickets/ticket_purchase_summary_page.dart';
-import 'package:portal/role-client/features/parking/views/tickets/tickets_main.dart';
+import 'package:portal/role-client/features/parking/main/parking_main.dart';
+import 'package:portal/role-client/features/parking/tickets/buy_for_other_page.dart';
+import 'package:portal/role-client/features/parking/tickets/ticket_purchase_summary_page.dart';
+import 'package:portal/role-client/features/parking/tickets/tickets_main.dart';
+import 'package:portal/role-client/features/parking/vehicles/views/vehicle_management.dart';
 import 'package:portal/role-client/features/water/water_main.dart';
 import 'package:portal/shared/features/alida_ai/alida_ai_main.dart';
 import 'package:portal/shared/features/announcements/views/announcement_detail.dart';
@@ -176,6 +177,9 @@ final GoRouter router = GoRouter(
                         builder: (context, state) =>
                             const BuyTicketForOtherPage()),
                   ]),
+              GoRoute(
+                  path: '/vehicles',
+                  builder: (context, state) => const VehicleManagement()),
             ]),
         GoRoute(
             path: '/client/alida-ai',

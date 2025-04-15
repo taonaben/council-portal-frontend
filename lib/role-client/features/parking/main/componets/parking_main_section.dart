@@ -135,7 +135,7 @@ class _ParkingMainSectionState extends State<ParkingMainSection> {
         Icons.directions_car_filled_outlined,
         color: textColor2,
       ),
-      "route": "",
+      "route": "/client/parking/vehicles",
     },
     {
       "text": "Alerts",
