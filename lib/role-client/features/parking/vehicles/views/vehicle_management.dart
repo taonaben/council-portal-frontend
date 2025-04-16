@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:portal/components/widgets/custom_circularProgressIndicator.dart';
 import 'package:portal/components/widgets/custom_snackbar.dart';
 import 'package:portal/constants/colors/colors.dart';
+import 'package:portal/role-client/features/parking/vehicles/components/vehicle_card.dart';
 import 'package:portal/role-client/features/parking/vehicles/provider/vehicle_provider.dart';
 
 class VehicleManagement extends ConsumerStatefulWidget {
@@ -28,12 +29,7 @@ class _VehicleManagementState extends ConsumerState<VehicleManagement> {
             itemCount: vehicles.length,
             itemBuilder: (context, index) {
               final vehicle = vehicles[index];
-              return ListTile(
-                title: Text(vehicle.plate_number),
-                subtitle: Text(vehicle.brand),
-                leading: Image.asset(vehicle.image),
-                trailing: Text(vehicle.approval_status),
-              );
+              return VehicleCard(vehicle: vehicle);
             },
           );
         }
