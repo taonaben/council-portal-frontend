@@ -16,6 +16,7 @@ VehicleModel _$VehicleModelFromJson(Map<String, dynamic> json) => VehicleModel(
       vehicle_type: json['vehicle_type'] as String,
       ticket_count: (json['ticket_count'] as num).toInt(),
       approval_status: json['approval_status'] as String,
+      is_active: json['is_active'] as bool,
     );
 
 Map<String, dynamic> _$VehicleModelToJson(VehicleModel instance) =>
@@ -29,4 +30,5 @@ Map<String, dynamic> _$VehicleModelToJson(VehicleModel instance) =>
       'vehicle_type': instance.vehicle_type,
       'ticket_count': instance.ticket_count,
       'approval_status': instance.approval_status,
+      'is_active': instance.is_active,
     };

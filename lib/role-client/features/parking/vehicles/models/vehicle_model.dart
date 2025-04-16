@@ -13,6 +13,7 @@ class VehicleModel {
   String vehicle_type;
   int ticket_count;
   String approval_status;
+  bool is_active;
 
   VehicleModel({
     required this.id,
@@ -24,6 +25,7 @@ class VehicleModel {
     required this.vehicle_type,
     required this.ticket_count,
     required this.approval_status,
+    required this.is_active,
   });
 
   factory VehicleModel.fromJson(Map<String, dynamic> json) =>

@@ -1,12 +1,18 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:portal/constants/colors/colors.dart';
 import 'package:portal/constants/colors/dimensions.dart';
 import 'package:portal/role-client/features/parking/vehicles/models/vehicle_model.dart';
 
-class VehicleCard extends StatelessWidget {
+class VehicleCard extends StatefulWidget {
   final VehicleModel vehicle;
   const VehicleCard({super.key, required this.vehicle});
 
+  @override
+  State<VehicleCard> createState() => _VehicleCardState();
+}
+
+class _VehicleCardState extends State<VehicleCard> {
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -19,39 +25,50 @@ class VehicleCard extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: ListTile(
-          leading: leadingImage(),
+          leading: ClipRRect(
+            borderRadius: BorderRadius.circular(uniBorderRadius),
+            child: Image.asset(widget.vehicle.image),
+          ),
           title: Text(
-            vehicle.plate_number,
+            widget.vehicle.plate_number,
             style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             overflow: TextOverflow.ellipsis,
           ),
           subtitle: Text(
-            "${vehicle.brand} ${vehicle.model}",
+            "${widget.vehicle.brand} ${widget.vehicle.model}",
             style: const TextStyle(color: secondaryColor),
+          ),
+          trailing: buildStatusCard(),
+        ),
+      ),
+    );
+  }
+
+  Widget buildStatusCard() {
+    return GestureDetector(
+      onTap: () => changeStatus(),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        // margin: const EdgeInsets.only(top: 8),
+        decoration: BoxDecoration(
+          color:
+              widget.vehicle.is_active == true ? primaryColor : secondaryColor,
+          borderRadius: BorderRadius.circular(uniBorderRadius),
+        ),
+        child: Text(
+          widget.vehicle.is_active == true ? "Active" : "Inactive",
+          style: const TextStyle(
+            color: textColor1,
+            fontWeight: FontWeight.bold,
           ),
         ),
       ),
     );
   }
 
-  Widget leadingImage() {
-    return Stack(children: [
-      ClipRRect(
-          borderRadius: BorderRadius.circular(uniBorderRadius),
-          child: Image.asset(vehicle.image)),
-      Positioned(
-        top: 6,
-        right: 10,
-        //shows active ticket on a car
-        child: Container(
-          width: 10,
-          height: 10,
-          decoration: BoxDecoration(
-            color: primaryColor,
-            borderRadius: BorderRadius.circular(10),
-          ),
-        ),
-      ),
-    ]);
+  changeStatus() {
+    setState(() {
+      widget.vehicle.is_active = !widget.vehicle.is_active;
+    });
   }
 }

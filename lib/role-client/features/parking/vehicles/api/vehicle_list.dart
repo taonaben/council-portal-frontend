@@ -9,6 +9,7 @@ List<Map<String, dynamic>> vehicles = [
     "vehicle_type": "car",
     "ticket_count": 21,
     "approval_status": "approved",
+    "is_active": true,
   },
   {
     'id': "2",
@@ -20,6 +21,7 @@ List<Map<String, dynamic>> vehicles = [
     "vehicle_type": "bus",
     "ticket_count": 10,
     "approval_status": "pending",
+    "is_active": false,
   },
   {
     'id': "3",
@@ -31,6 +33,7 @@ List<Map<String, dynamic>> vehicles = [
     "vehicle_type": "motorbike",
     "ticket_count": 5,
     "approval_status": "approved",
+    "is_active": false,
   },
   {
     'id': "4",
@@ -42,6 +45,7 @@ List<Map<String, dynamic>> vehicles = [
     "vehicle_type": "truck",
     "ticket_count": 15,
     "approval_status": "rejected",
+    "is_active": false,
   },
   {
     "id": "5",
@@ -53,6 +57,7 @@ List<Map<String, dynamic>> vehicles = [
     "vehicle_type": "other",
     "ticket_count": 8,
     "approval_status": "approved",
+    "is_active": false,
   },
   {
     'id': "6",
@@ -64,5 +69,6 @@ List<Map<String, dynamic>> vehicles = [
     "vehicle_type": "car",
     "ticket_count": 12,
     "approval_status": "pending",
+    "is_active": false,
   },
 ];
