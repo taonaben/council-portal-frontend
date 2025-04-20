@@ -23,7 +23,7 @@ class _AnnouncementTileState extends State<AnnouncementTile> {
   Widget build(BuildContext context) {
     return Card(
       color: background2,
-      shadowColor: primaryColor,
+      shadowColor: blackColor.withOpacity(0.5),
       elevation: 5,
       child: Column(
         children: [

@@ -119,7 +119,7 @@ class _ParkingMainSectionState extends State<ParkingMainSection> {
         CupertinoIcons.ticket,
         color: textColor2,
       ),
-      "route": "/client/parking/purchase_ticket",
+      "route": "purchase-ticket",
     },
     {
       "text": "History",
@@ -135,7 +135,7 @@ class _ParkingMainSectionState extends State<ParkingMainSection> {
         Icons.directions_car_filled_outlined,
         color: textColor2,
       ),
-      "route": "/client/parking/vehicles",
+      "route": "my-vehicles",
     },
     {
       "text": "Alerts",
@@ -161,7 +161,7 @@ class _ParkingMainSectionState extends State<ParkingMainSection> {
     required String route,
   }) {
     return GestureDetector(
-      onTap: () => context.go(route),
+      onTap: () => context.pushNamed(route),
       child: Container(
         // width: 200,
         decoration: BoxDecoration(

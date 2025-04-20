@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:portal/constants/colors/colors.dart';
 import 'package:portal/constants/colors/dimensions.dart';
 import 'package:portal/role-client/features/parking/vehicles/models/vehicle_model.dart';
@@ -17,14 +18,19 @@ class _VehicleCardState extends State<VehicleCard> {
   Widget build(BuildContext context) {
     return Card(
       color: background1,
-      elevation: 2,
-      shadowColor: secondaryColor,
+      elevation: 5,
+      shadowColor: blackColor.withOpacity(0.5),
       shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(uniBorderRadius),
-          side: const BorderSide(color: secondaryColor)),
+        borderRadius: BorderRadius.circular(uniBorderRadius),
+      ),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: ListTile(
+          onTap: () => context.pushNamed(
+            'vehicle-details',
+            pathParameters: {'plate_number': widget.vehicle.plate_number},
+            extra: widget.vehicle,
+          ),
           leading: ClipRRect(
             borderRadius: BorderRadius.circular(uniBorderRadius),
             child: Image.asset(widget.vehicle.image),

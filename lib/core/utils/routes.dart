@@ -8,9 +8,12 @@ import 'package:portal/role-client/features/dashboard/dashboard_main.dart';
 import 'package:portal/role-client/features/issues/issues_main.dart';
 import 'package:portal/role-client/features/licensing/licensing_main.dart';
 import 'package:portal/role-client/features/parking/main/parking_main.dart';
-import 'package:portal/role-client/features/parking/tickets/buy_for_other_page.dart';
-import 'package:portal/role-client/features/parking/tickets/ticket_purchase_summary_page.dart';
-import 'package:portal/role-client/features/parking/tickets/tickets_main.dart';
+import 'package:portal/role-client/features/parking/tickets/views/buy_for_other_page.dart';
+import 'package:portal/role-client/features/parking/tickets/views/ticket_purchase_summary_page.dart';
+import 'package:portal/role-client/features/parking/tickets/views/tickets_main.dart';
+import 'package:portal/role-client/features/parking/vehicles/api/vehicle_list.dart';
+import 'package:portal/role-client/features/parking/vehicles/models/vehicle_model.dart';
+import 'package:portal/role-client/features/parking/vehicles/views/vehicle_detail.dart';
 import 'package:portal/role-client/features/parking/vehicles/views/vehicle_management.dart';
 import 'package:portal/role-client/features/water/water_main.dart';
 import 'package:portal/shared/features/alida_ai/alida_ai_main.dart';
@@ -33,6 +36,7 @@ import 'package:portal/shared/features/auth/views/login_page.dart';
 
 final GoRouter router = GoRouter(
   initialLocation: '/login',
+  debugLogDiagnostics: true,
   routes: [
     GoRoute(
       path: '/login',
@@ -167,19 +171,33 @@ final GoRouter router = GoRouter(
               GoRoute(
                   path: '/purchase_ticket',
                   builder: (context, state) => const TicketsMainClient(),
+                  name: "purchase-ticket",
                   routes: [
                     GoRoute(
                         path: '/ticket_purchase_summary',
+                        name: "parking-ticket-purchase-summary",
                         builder: (context, state) =>
                             const TicketPurchaseSummaryPage()),
                     GoRoute(
                         path: '/buy_for_other',
+                        name: "buy-parking-for-other",
                         builder: (context, state) =>
                             const BuyTicketForOtherPage()),
                   ]),
               GoRoute(
                   path: '/vehicles',
-                  builder: (context, state) => const VehicleManagement()),
+                  builder: (context, state) => const VehicleManagement(),
+                  name: "my-vehicles",
+                  routes: [
+                    GoRoute(
+                      path: 'vehicle_details/:plate_number',
+                      name: 'vehicle-details',
+                      builder: (context, state) {
+                        final vehicle = state.extra as VehicleModel;
+                        return VehicleDetail(vehicle: vehicle);
+                      },
+                    ),
+                  ]),
             ]),
         GoRoute(
             path: '/client/alida-ai',

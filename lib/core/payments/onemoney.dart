@@ -18,7 +18,7 @@ class Onemoney extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
       ),
-      shadowColor: secondaryColor,
+      shadowColor:  blackColor.withOpacity(0.5),
       backgroundColor: background1,
       child: Padding(
         padding: const EdgeInsets.all(16.0),

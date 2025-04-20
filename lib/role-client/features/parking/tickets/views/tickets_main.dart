@@ -309,8 +309,9 @@ class _TicketsMainClientState extends State<TicketsMainClient> {
             Expanded(
                 child: CustomFilledButton(
               btnLabel: "Buy For Me",
-              onTap: () => context.go(
-                  "/client/parking/purchase_ticket/ticket_purchase_summary"),
+              onTap: () => context.pushNamed(
+                "parking-ticket-purchase-summary",
+              ),
               expand: true,
               backgroundColor: background2,
               textColor: textColor1,
@@ -319,8 +320,7 @@ class _TicketsMainClientState extends State<TicketsMainClient> {
             Expanded(
                 child: CustomFilledButton(
               btnLabel: "Buy For Other",
-              onTap: () =>
-                  context.go("/client/parking/purchase_ticket/buy_for_other"),
+              onTap: () => context.pushNamed("buy-parking-for-other"),
               expand: true,
               backgroundColor: secondaryColor,
               textColor: textColor1,

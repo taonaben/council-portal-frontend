@@ -69,7 +69,7 @@ class _ParkingTimerState extends State<ParkingTimer> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(uniBorderRadius),
       ),
-      shadowColor: primaryColor.withOpacity(0.5),
+      shadowColor:  blackColor.withOpacity(0.5),
       elevation: 5,
       child: Padding(
         padding: const EdgeInsets.all(16.0),

@@ -54,7 +54,7 @@ class _TicketPurchaseSummaryPageState extends State<TicketPurchaseSummaryPage> {
           borderRadius: BorderRadius.circular(uniBorderRadius),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.25),
+              color:  blackColor.withOpacity(0.5),
               offset: Offset(0, 4),
               blurRadius: 8,
               spreadRadius: 1,
@@ -119,7 +119,7 @@ class _TicketPurchaseSummaryPageState extends State<TicketPurchaseSummaryPage> {
         borderRadius: BorderRadius.circular(uniBorderRadius),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.25),
+            color:  blackColor.withOpacity(0.5),
             offset: const Offset(0, 4),
             blurRadius: 8,
             spreadRadius: 1,
@@ -193,7 +193,7 @@ class _TicketPurchaseSummaryPageState extends State<TicketPurchaseSummaryPage> {
         color: background1,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.25),
+            color:  blackColor.withOpacity(0.5),
             offset: Offset(0, -4),
             blurRadius: 8,
             spreadRadius: 1,

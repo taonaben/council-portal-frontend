@@ -143,7 +143,7 @@ Widget buildBox(String label, Widget child, Function? onTap) {
     onTap: () => onTap != null ? onTap() : null,
     child: Card(
       color: background2,
-      shadowColor: primaryColor,
+      shadowColor:  blackColor.withOpacity(0.5),
       elevation: 5,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
