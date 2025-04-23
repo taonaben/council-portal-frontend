@@ -9,7 +9,7 @@ List<Map<String, dynamic>> vehicles = [
     "vehicle_type": "car",
     "ticket_count": 21,
     "approval_status": "approved",
-    "is_active": true,
+    "is_active": false,
   },
   {
     'id': "2",
@@ -45,7 +45,7 @@ List<Map<String, dynamic>> vehicles = [
     "vehicle_type": "truck",
     "ticket_count": 15,
     "approval_status": "rejected",
-    "is_active": false,
+    "is_active": true,
   },
   {
     "id": "5",
@@ -72,3 +72,24 @@ List<Map<String, dynamic>> vehicles = [
     "is_active": false,
   },
 ];
+
+Map<String, dynamic>? getActiveVehicle() {
+  try {
+    return vehicles.firstWhere((vehicle) => vehicle['is_active'] == true);
+  } catch (e) {
+    return null;
+  }
+}
+
+void setVehicleActive(String vehicleId) {
+  for (var vehicle in vehicles) {
+    // Set all vehicles to inactive first
+    vehicle['is_active'] = false;
+  }
+  // Find and set only the selected vehicle to active
+  final vehicleToActivate = vehicles.firstWhere(
+    (vehicle) => vehicle['id'] == vehicleId,
+    orElse: () => throw Exception('Vehicle not found'),
+  );
+  vehicleToActivate['is_active'] = true;
+}

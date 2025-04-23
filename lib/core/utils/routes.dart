@@ -171,7 +171,10 @@ final GoRouter router = GoRouter(
             routes: [
               GoRoute(
                   path: '/purchase_ticket',
-                  builder: (context, state) => const TicketsMainClient(),
+                  builder: (context, state) {
+                    final vehicle = state.extra as VehicleModel;
+                    return  TicketsMainClient(vehicle: vehicle);
+                  },
                   name: "purchase-ticket",
                   routes: [
                     GoRoute(
@@ -185,7 +188,7 @@ final GoRouter router = GoRouter(
                         builder: (context, state) =>
                             const BuyTicketForOtherPage()),
                         GoRoute(
-                        path: '/purchase_successful',
+                        path: '/purchase_successful', 
                         name: "ticket-purchase-successful",
                         builder: (context, state) =>
                             const TicketPurchaseSuccessfulPage()),

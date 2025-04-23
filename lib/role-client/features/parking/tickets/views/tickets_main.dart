@@ -7,9 +7,11 @@ import 'package:portal/components/widgets/custom_outlined_btn.dart';
 import 'package:portal/constants/colors/colors.dart';
 import 'package:portal/constants/colors/dimensions.dart';
 import 'package:portal/role-admin/features/issues/issues_main.dart';
+import 'package:portal/role-client/features/parking/vehicles/models/vehicle_model.dart';
 
 class TicketsMainClient extends StatefulWidget {
-  const TicketsMainClient({super.key});
+  final VehicleModel vehicle;
+  const TicketsMainClient({super.key, required this.vehicle});
 
   @override
   State<TicketsMainClient> createState() => _TicketsMainClientState();
@@ -100,7 +102,7 @@ class _TicketsMainClientState extends State<TicketsMainClient> {
     return const Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
+        Text(
           "Select Duration",
           style: TextStyle(
             color: textColor2,

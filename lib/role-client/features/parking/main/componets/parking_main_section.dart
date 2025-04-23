@@ -1,25 +1,28 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:portal/components/widgets/custom_circularProgressIndicator.dart';
+import 'package:portal/components/widgets/custom_snackbar.dart';
 import 'package:portal/constants/colors/colors.dart';
 import 'package:portal/constants/colors/dimensions.dart';
 import 'package:portal/core/utils/string_methods.dart';
+import 'package:portal/role-client/features/parking/vehicles/models/vehicle_model.dart';
+import 'package:portal/role-client/features/parking/vehicles/provider/vehicle_provider.dart';
 
-class ParkingMainSection extends StatefulWidget {
-  const ParkingMainSection({super.key});
-
-  @override
-  State<ParkingMainSection> createState() => _ParkingMainSectionState();
-}
-
-class _ParkingMainSectionState extends State<ParkingMainSection> {
-  String vehicleName = "Honda Civic Type R";
-  String vehiclePlate = "AFE 8044";
+class ParkingMainSection extends ConsumerWidget {
+  ParkingMainSection({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final activeVehicle = ref.watch(activeVehicleProvider);
+
+    if (activeVehicle == null) {
+      return const Center(child: Text("No vehicle data available"));
+    }
+
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(uniBorderRadius),
@@ -30,8 +33,8 @@ class _ParkingMainSectionState extends State<ParkingMainSection> {
       ),
       child: Column(
         children: [
-          buildHeader(),
-          buildContents(),
+          buildHeader(context, activeVehicle),
+          buildContents(activeVehicle),
         ],
       ),
     );
@@ -39,7 +42,7 @@ class _ParkingMainSectionState extends State<ParkingMainSection> {
 
   String id = generateRandomString(26);
 
-  Widget buildHeader() {
+  Widget buildHeader(BuildContext context, VehicleModel vehicle) {
     return Container(
       decoration: BoxDecoration(
         color: background2,
@@ -57,7 +60,7 @@ class _ParkingMainSectionState extends State<ParkingMainSection> {
             Row(
               children: [
                 Text(
-                  vehiclePlate,
+                  vehicle.plate_number,
                   style: const TextStyle(
                     // fontFamily: GoogleFonts.staatliches().fontFamily,
                     color: textColor1,
@@ -68,7 +71,7 @@ class _ParkingMainSectionState extends State<ParkingMainSection> {
               ],
             ),
             const Gap(8),
-            Text(vehicleName,
+            Text("${vehicle.brand} ${vehicle.model}",
                 style: const TextStyle(
                   color: textColor1,
                 )),
@@ -78,7 +81,58 @@ class _ParkingMainSectionState extends State<ParkingMainSection> {
     );
   }
 
-  Widget buildContents() {
+  Widget buildContents(VehicleModel vehicle) {
+    List<Map<String, dynamic>> options = [
+      {
+        "text": "Find Parking",
+        "icon": const Icon(
+          Icons.location_on_outlined,
+          color: textColor2,
+        ),
+        "route": "",
+      },
+      {
+        "text": "Buy Ticket",
+        "icon": const Icon(
+          CupertinoIcons.ticket,
+          color: textColor2,
+        ),
+        "route": "purchase-ticket",
+        "extra": vehicle,
+      },
+      {
+        "text": "History",
+        "icon": const Icon(
+          CupertinoIcons.clock,
+          color: textColor2,
+        ),
+        "route": "",
+      },
+      {
+        "text": "My Cars",
+        "icon": const Icon(
+          Icons.directions_car_filled_outlined,
+          color: textColor2,
+        ),
+        "route": "my-vehicles",
+      },
+      {
+        "text": "Alerts",
+        "icon": const Icon(
+          CupertinoIcons.bell,
+          color: textColor2,
+        ),
+        "route": "",
+      },
+      {
+        "text": "Account",
+        "icon": const Icon(
+          Icons.settings_outlined,
+          color: textColor2,
+        ),
+        "route": "",
+      },
+    ];
     return SizedBox(
       // height: 350, // Adjust this value based on your needs
       child: GridView.builder(
@@ -98,70 +152,36 @@ class _ParkingMainSectionState extends State<ParkingMainSection> {
             text: option['text'],
             icon: option['icon'],
             route: option['route'],
+            extra: option['extra'],
+            pathParameters: option['pathParameters'],
+            context: context,
           );
         },
       ),
     );
   }
 
-  List<Map<String, dynamic>> options = [
-    {
-      "text": "Find Parking",
-      "icon": const Icon(
-        Icons.location_on_outlined,
-        color: textColor2,
-      ),
-      "route": "",
-    },
-    {
-      "text": "Buy Ticket",
-      "icon": const Icon(
-        CupertinoIcons.ticket,
-        color: textColor2,
-      ),
-      "route": "purchase-ticket",
-    },
-    {
-      "text": "History",
-      "icon": const Icon(
-        CupertinoIcons.clock,
-        color: textColor2,
-      ),
-      "route": "",
-    },
-    {
-      "text": "My Cars",
-      "icon": const Icon(
-        Icons.directions_car_filled_outlined,
-        color: textColor2,
-      ),
-      "route": "my-vehicles",
-    },
-    {
-      "text": "Alerts",
-      "icon": const Icon(
-        CupertinoIcons.bell,
-        color: textColor2,
-      ),
-      "route": "",
-    },
-    {
-      "text": "Account",
-      "icon": const Icon(
-        Icons.settings_outlined,
-        color: textColor2,
-      ),
-      "route": "",
-    },
-  ];
-
   Widget buildOptionButton({
     required String text,
     required Icon icon,
     required String route,
+    required BuildContext context,
+    Object? extra,
+    Map<String, String>? pathParameters,
   }) {
     return GestureDetector(
-      onTap: () => context.pushNamed(route),
+      onTap: () {
+        if (route.isNotEmpty) {
+          context.pushNamed(
+            route,
+            extra: extra,
+            pathParameters: pathParameters ?? {}, // Use an empty map if null
+          );
+        } else {
+          // Handle cases where the route is empty
+          print("Route is not defined for $text");
+        }
+      },
       child: Container(
         // width: 200,
         decoration: BoxDecoration(
