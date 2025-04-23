@@ -3,6 +3,7 @@ import 'package:portal/constants/colors/colors.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:portal/core/utils/routes.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_web_plugins/url_strategy.dart';
 // void main() {
 //   runApp(MultiProvider(
 //     providers: [
@@ -12,6 +13,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 // }
 
 Future<void> main() async {
+  usePathUrlStrategy();
   runApp(
     const ProviderScope(
       child: MyApp(),

@@ -31,6 +31,9 @@ dependencies:
   flutter:
     sdk: flutter
 
+  flutter_web_plugins:
+    sdk: flutter
+
   flutter_vector_icons: ^2.0.0
   flutter_svg: ^2.0.7
 
