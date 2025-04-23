@@ -6,6 +6,7 @@ import 'package:portal/components/widgets/custom_circularProgressIndicator.dart'
 import 'package:portal/components/widgets/custom_snackbar.dart';
 import 'package:portal/constants/colors/colors.dart';
 import 'package:portal/constants/colors/dimensions.dart';
+import 'package:portal/core/utils/string_methods.dart';
 import 'package:portal/role-client/features/parking/tickets/model/parking_ticket_model.dart';
 import 'package:portal/role-client/features/parking/tickets/provider/parking_ticket_provider.dart';
 import 'package:portal/role-client/features/parking/vehicles/components/parking_ticket_card.dart';
@@ -35,7 +36,7 @@ class _VehicleDetailState extends ConsumerState<VehicleDetail> {
           );
         } else {
           return Scaffold(
-            backgroundColor: primaryColor,
+            backgroundColor: background2,
             body: Column(
               children: [
                 const SizedBox(height: 16),
@@ -68,7 +69,7 @@ class _VehicleDetailState extends ConsumerState<VehicleDetail> {
           right: 0,
           bottom: 0,
           child: Image.asset(
-            "lib/assets/images/car_vector_shadow.png",
+            "lib/assets/images/car_vector.png",
             width: 220,
           ),
         ),
@@ -102,19 +103,20 @@ class _VehicleDetailState extends ConsumerState<VehicleDetail> {
                       style: const TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
-                        color: Colors.black,
+                        color: textColor1,
                       ),
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      "${widget.vehicle.brand} ${widget.vehicle.model}",
+                      capitalize(
+                          "${widget.vehicle.brand} ${widget.vehicle.model}"),
                       style: const TextStyle(
                         fontSize: 16,
                         color: secondaryColor,
                       ),
                     ),
                     Text(
-                      widget.vehicle.vehicle_type,
+                      capitalize(widget.vehicle.vehicle_type),
                       style: const TextStyle(
                         fontSize: 16,
                         color: secondaryColor,
@@ -161,17 +163,45 @@ class _VehicleDetailState extends ConsumerState<VehicleDetail> {
             ),
           ),
           Expanded(
-            child: ListView.builder(
-              itemBuilder: (_, index) {
-                final ticket = tickets[index];
-                return ParkingTicketCard(
-                  ticket: ticket,
-                );
-              },
-              itemCount: tickets.length,
-            ),
-          ),
+              child: ListView(
+            children: [
+              buildRechargeHistoryTime(),
+              const Gap(16),
+              ...tickets.map((ticket) {
+                return ParkingTicketCard(ticket: ticket);
+              }),
+              const Gap(16),
+            ],
+          )),
         ],
+      ),
+    );
+  }
+
+  Widget buildRechargeHistoryTime() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        decoration: BoxDecoration(
+          color: primaryColor.withOpacity(.2),
+          borderRadius: BorderRadius.circular(uniBorderRadius),
+        ),
+        child: const Row(
+          children: [
+            Icon(
+              CupertinoIcons.smiley,
+              color: primaryColor,
+            ),
+            Gap(8),
+            Text(
+              "Ticket history in the past 6 months",
+              style: TextStyle(
+                color: primaryColor,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

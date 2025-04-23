@@ -29,10 +29,10 @@ List<Map<String, dynamic>> generateTickets(int count) {
       "ticket_number": generateTicketNumber(),
       "user": 'John Doe',
       "vehicle": (random.nextInt(6) + 1).toString(), // IDs 1 to 6
-      "city": cities[random.nextInt(cities.length)], 
-      "issued_length": '${durationHours} hours',
-      "issued_at": issuedAt.toIso8601String(),
-      "expiry_at": expiryAt.toIso8601String(),
+      "city": cities[random.nextInt(cities.length)],
+      "issued_length": '$durationHours hours',
+      "issued_at": issuedAt.toIso8601String(), // Convert to string
+      "expiry_at": expiryAt.toIso8601String(), // Convert to string
       "amount": random.nextInt(5) + 1,
       "status": statuses[random.nextInt(statuses.length)],
     };

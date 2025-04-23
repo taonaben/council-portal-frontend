@@ -10,8 +10,8 @@ class ParkingTicketModel {
   String vehicle;
   String city;
   String issued_length;
-  String issued_at;
-  String expiry_at;
+  DateTime issued_at;
+  DateTime expiry_at;
   double amount;
   String status;
 
