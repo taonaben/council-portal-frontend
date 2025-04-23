@@ -7,7 +7,8 @@ import 'package:portal/components/widgets/custom_textfield.dart';
 import 'package:portal/constants/colors/colors.dart';
 
 class BankTransfer extends StatelessWidget {
-  const BankTransfer({super.key});
+  final Map<String, dynamic> ticketData;
+  const BankTransfer({super.key, required this.ticketData});
 
   @override
   Widget build(BuildContext context) {

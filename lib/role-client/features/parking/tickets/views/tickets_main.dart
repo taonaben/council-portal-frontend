@@ -4,9 +4,12 @@ import 'package:go_router/go_router.dart';
 import 'package:portal/components/widgets/custom_divider.dart';
 import 'package:portal/components/widgets/custom_filled_btn.dart';
 import 'package:portal/components/widgets/custom_outlined_btn.dart';
+import 'package:portal/components/widgets/custom_snackbar.dart';
 import 'package:portal/constants/colors/colors.dart';
 import 'package:portal/constants/colors/dimensions.dart';
+import 'package:portal/core/utils/logs.dart';
 import 'package:portal/role-admin/features/issues/issues_main.dart';
+import 'package:portal/role-client/features/parking/tickets/services/parking_ticket_services.dart';
 import 'package:portal/role-client/features/parking/vehicles/models/vehicle_model.dart';
 
 class TicketsMainClient extends StatefulWidget {
@@ -301,6 +304,13 @@ class _TicketsMainClientState extends State<TicketsMainClient> {
   }
 
   Widget buildSelectRecipient() {
+    Map<String, dynamic> ticketData = {
+      "vehicle": widget.vehicle,
+      "issued_time": timeController.text.toString(),
+      "issued_at": null,
+      "expiry_at": null,
+      "amount": calculateTotalCost()
+    };
     return Column(
       children: [
         Row(
@@ -311,9 +321,8 @@ class _TicketsMainClientState extends State<TicketsMainClient> {
             Expanded(
                 child: CustomFilledButton(
               btnLabel: "Buy For Me",
-              onTap: () => context.pushNamed(
-                "parking-ticket-purchase-summary",
-              ),
+              onTap: () => context.pushNamed("parking-ticket-purchase-summary",
+                  extra: ticketData),
               expand: true,
               backgroundColor: background2,
               textColor: textColor1,
@@ -322,7 +331,8 @@ class _TicketsMainClientState extends State<TicketsMainClient> {
             Expanded(
                 child: CustomFilledButton(
               btnLabel: "Buy For Other",
-              onTap: () => context.pushNamed("buy-parking-for-other"),
+              onTap: () =>
+                  context.pushNamed("buy-parking-for-other", extra: ticketData),
               expand: true,
               backgroundColor: secondaryColor,
               textColor: textColor1,

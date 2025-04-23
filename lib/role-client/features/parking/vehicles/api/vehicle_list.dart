@@ -37,7 +37,7 @@ List<Map<String, dynamic>> vehicles = [
   },
   {
     'id': "4",
-    "plate_number": "TRK 7890",
+    "plate_number": "AFD 7890",
     "brand": "Ford",
     "model": "F-150",
     "color": "blue",

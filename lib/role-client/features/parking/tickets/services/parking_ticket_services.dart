@@ -1,6 +1,8 @@
 import 'package:portal/core/utils/logs.dart';
 import 'package:portal/role-client/features/parking/tickets/api/ticket_api.dart';
+import 'package:portal/role-client/features/parking/tickets/api/ticket_list.dart';
 import 'package:portal/role-client/features/parking/tickets/model/parking_ticket_model.dart';
+import 'package:uuid/v4.dart';
 
 class ParkingTicketServices {
   var ticketApi = TicketApi();
@@ -28,6 +30,50 @@ class ParkingTicketServices {
     } catch (e) {
       DevLogs.logError('Error: ${e.toString()}');
       return [];
+    }
+  }
+
+  Future<bool> addTicket(ParkingTicketModel ticket) async {
+    try {
+      var result = await ticketApi.addTicket(ticket);
+      if (!result.success) {
+        DevLogs.logError(
+            'Error adding ticket: ${result.message ?? 'Unknown error'}');
+        return false;
+      }
+      return true;
+    } catch (e) {
+      DevLogs.logError('Error: ${e.toString()}');
+      return false;
+    }
+  }
+
+  Future<bool> submitTicket({
+    required String vehicle_id,
+    required String issued_length,
+    required DateTime issued_at,
+    required DateTime expiry_at,
+    required double amount,
+  }) async {
+    try {
+      ParkingTicketModel ticket = ParkingTicketModel(
+        id: const UuidV4().toString(),
+        ticket_number: generateTicketNumber(),
+        user: 'Benjamin',
+        vehicle: vehicle_id,
+        city: cities[random.nextInt(cities.length)],
+        issued_length: issued_length,
+        issued_at: issued_at,
+        expiry_at: expiry_at,
+        amount: amount,
+        status: "active",
+      );
+
+      var result = addTicket(ticket);
+      return result;
+    } catch (e) {
+      DevLogs.logError('Error: ${e.toString()}');
+      return false;
     }
   }
 }

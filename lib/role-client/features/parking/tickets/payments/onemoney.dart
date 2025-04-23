@@ -7,7 +7,8 @@ import 'package:portal/components/widgets/custom_textfield.dart';
 import 'package:portal/constants/colors/colors.dart';
 
 class Onemoney extends StatelessWidget {
-  const Onemoney({super.key});
+  final Map<String, dynamic> ticketData;
+  const Onemoney({super.key, required this.ticketData});
 
   @override
   Widget build(BuildContext context) {

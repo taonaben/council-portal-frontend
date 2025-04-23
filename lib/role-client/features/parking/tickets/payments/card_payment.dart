@@ -7,7 +7,8 @@ import 'package:portal/components/widgets/custom_textfield.dart';
 import 'package:portal/constants/colors/colors.dart';
 
 class CardPayment extends StatelessWidget {
-  const CardPayment({super.key});
+  final Map<String, dynamic> ticketData;
+  const CardPayment({super.key, required this.ticketData});
 
   @override
   @override

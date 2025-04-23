@@ -180,8 +180,10 @@ final GoRouter router = GoRouter(
                     GoRoute(
                         path: '/ticket_purchase_summary',
                         name: "parking-ticket-purchase-summary",
-                        builder: (context, state) =>
-                            const TicketPurchaseSummaryPage()),
+                        builder: (context, state) {
+                          final ticketData = state.extra as Map<String, dynamic>;
+                          return  TicketPurchaseSummaryPage(ticketData: ticketData,);
+                        }),
                     GoRoute(
                         path: '/buy_for_other',
                         name: "buy-parking-for-other",

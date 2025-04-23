@@ -10,9 +10,11 @@ import 'package:portal/role-client/features/parking/tickets/payments/bank_transf
 import 'package:portal/role-client/features/parking/tickets/payments/ecocash.dart';
 import 'package:portal/role-client/features/parking/tickets/payments/card_payment.dart';
 import 'package:portal/role-client/features/parking/tickets/payments/onemoney.dart';
+import 'package:portal/role-client/features/parking/vehicles/models/vehicle_model.dart';
 
 class TicketPurchaseSummaryPage extends StatefulWidget {
-  const TicketPurchaseSummaryPage({super.key});
+  final Map<String, dynamic> ticketData;
+  const TicketPurchaseSummaryPage({super.key, required this.ticketData});
 
   @override
   State<TicketPurchaseSummaryPage> createState() =>
@@ -24,10 +26,12 @@ class _TicketPurchaseSummaryPageState extends State<TicketPurchaseSummaryPage> {
 
   @override
   Widget build(BuildContext context) {
+    VehicleModel vehicle = widget.ticketData['vehicle'];
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        buildHeader(),
+        buildHeader(vehicle),
         const Gap(16),
         const Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -44,7 +48,7 @@ class _TicketPurchaseSummaryPageState extends State<TicketPurchaseSummaryPage> {
     );
   }
 
-  Widget buildHeader() {
+  Widget buildHeader(VehicleModel vehicle) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
@@ -54,7 +58,7 @@ class _TicketPurchaseSummaryPageState extends State<TicketPurchaseSummaryPage> {
           borderRadius: BorderRadius.circular(uniBorderRadius),
           boxShadow: [
             BoxShadow(
-              color:  blackColor.withOpacity(0.5),
+              color: blackColor.withOpacity(0.5),
               offset: Offset(0, 4),
               blurRadius: 8,
               spreadRadius: 1,
@@ -64,16 +68,16 @@ class _TicketPurchaseSummaryPageState extends State<TicketPurchaseSummaryPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const ListTile(
+            ListTile(
               leading: CircleAvatar(
                   backgroundColor: background2,
                   child: Icon(
                     Icons.directions_car_filled_outlined,
                     color: textColor1,
                   )),
-              title: Text("Honda Civic Type R"),
+              title: Text("${vehicle.brand} ${vehicle.model}"),
               subtitle: Text(
-                "AFE 8044",
+                vehicle.plate_number,
                 style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
               ),
             ),
@@ -91,13 +95,13 @@ class _TicketPurchaseSummaryPageState extends State<TicketPurchaseSummaryPage> {
   }
 
   Widget boughtTicketCard() {
-    return const Row(
+    return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text("1 Hour",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+        Text("${widget.ticketData["issued_time"]} hours",
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
         Text(
-          "USD\$ 1.34",
+          "USD\$ ${widget.ticketData["amount"]}",
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
         )
       ],
@@ -119,7 +123,7 @@ class _TicketPurchaseSummaryPageState extends State<TicketPurchaseSummaryPage> {
         borderRadius: BorderRadius.circular(uniBorderRadius),
         boxShadow: [
           BoxShadow(
-            color:  blackColor.withOpacity(0.5),
+            color: blackColor.withOpacity(0.5),
             offset: const Offset(0, 4),
             blurRadius: 8,
             spreadRadius: 1,
@@ -193,7 +197,7 @@ class _TicketPurchaseSummaryPageState extends State<TicketPurchaseSummaryPage> {
         color: background1,
         boxShadow: [
           BoxShadow(
-            color:  blackColor.withOpacity(0.5),
+            color: blackColor.withOpacity(0.5),
             offset: Offset(0, -4),
             blurRadius: 8,
             spreadRadius: 1,
@@ -202,18 +206,18 @@ class _TicketPurchaseSummaryPageState extends State<TicketPurchaseSummaryPage> {
       ),
       child: Row(
         children: [
-          const Column(
+          Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Total"),
+              const Text("Total"),
               Text(
-                "USD\$ 1.34",
-                style: TextStyle(
+                "USD\$ ${widget.ticketData["amount"]}",
+                style: const TextStyle(
                     color: redColor, fontWeight: FontWeight.bold, fontSize: 18),
               )
             ],
           ),
-          Spacer(),
+          const Spacer(),
           Expanded(
             child: CustomFilledButton(
               btnLabel: 'Buy',
@@ -230,11 +234,20 @@ class _TicketPurchaseSummaryPageState extends State<TicketPurchaseSummaryPage> {
     );
   }
 
-  final Map<PaymentMethod, Widget Function(BuildContext)> _paymentDialogs = {
-    PaymentMethod.ecocash: (context) => const Ecocash(),
-    PaymentMethod.oneMoney: (context) => const Onemoney(),
-    PaymentMethod.bankTransfer: (context) => const BankTransfer(),
-    PaymentMethod.card: (context) => const CardPayment(),
+  final Map<PaymentMethod,
+          Widget Function(BuildContext, Map<String, dynamic> ticketData)>
+      _paymentDialogs = {
+    PaymentMethod.ecocash: (context, ticketData) => Ecocash(
+          ticketData: ticketData,
+        ),
+    PaymentMethod.oneMoney: (context, ticketData) =>
+        Onemoney(ticketData: ticketData),
+    PaymentMethod.bankTransfer: (context, ticketData) => BankTransfer(
+          ticketData: ticketData,
+        ),
+    PaymentMethod.card: (context, ticketData) => CardPayment(
+          ticketData: ticketData,
+        ),
   };
 
   void _handlePayment() {
@@ -244,7 +257,7 @@ class _TicketPurchaseSummaryPageState extends State<TicketPurchaseSummaryPage> {
     if (dialogBuilder != null) {
       showDialog(
         context: context,
-        builder: dialogBuilder,
+        builder: (context) => dialogBuilder(context, widget.ticketData),
       );
     } else {
       debugPrint('No payment method selected');
