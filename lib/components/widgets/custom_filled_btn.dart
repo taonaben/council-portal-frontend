@@ -76,8 +76,11 @@ class _CustomFilledButtonState extends State<CustomFilledButton>
           return Transform.scale(
             scale: _scaleAnimation.value,
             child: Container(
+              padding: EdgeInsets.symmetric(
+                vertical: 12,
+                horizontal: widget.expand == true ? 0 : 16,
+              ),
               width: (widget.expand ?? false) ? double.infinity : null,
-              height: 60,
               decoration: BoxDecoration(
                 color: widget.backgroundColor ?? primaryColor,
                 borderRadius: BorderRadius.circular(uniBorderRadius),

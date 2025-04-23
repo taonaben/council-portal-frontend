@@ -6,10 +6,10 @@ import 'package:portal/components/widgets/custom_divider.dart';
 import 'package:portal/components/widgets/custom_filled_btn.dart';
 import 'package:portal/constants/colors/colors.dart';
 import 'package:portal/constants/colors/dimensions.dart';
-import 'package:portal/core/payments/bank_transfer.dart';
-import 'package:portal/core/payments/ecocash.dart';
-import 'package:portal/core/payments/card_payment.dart';
-import 'package:portal/core/payments/onemoney.dart';
+import 'package:portal/role-client/features/parking/tickets/payments/bank_transfer.dart';
+import 'package:portal/role-client/features/parking/tickets/payments/ecocash.dart';
+import 'package:portal/role-client/features/parking/tickets/payments/card_payment.dart';
+import 'package:portal/role-client/features/parking/tickets/payments/onemoney.dart';
 
 class TicketPurchaseSummaryPage extends StatefulWidget {
   const TicketPurchaseSummaryPage({super.key});

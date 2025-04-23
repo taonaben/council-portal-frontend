@@ -4,16 +4,16 @@ part 'parking_ticket_model.g.dart';
 
 @JsonSerializable()
 class ParkingTicketModel {
-  String id;
-  String ticket_number;
-  String user;
-  String vehicle;
-  String city;
-  String issued_length;
-  DateTime issued_at;
-  DateTime expiry_at;
-  double amount;
-  String status;
+  String id; //auto
+  String ticket_number; //auto
+  String user; //auto
+  String vehicle; //manual
+  String city; //auto
+  String issued_length; //manual
+  DateTime issued_at; //manual
+  DateTime expiry_at; //manual
+  double amount; //manual
+  String status; //auto
 
   ParkingTicketModel({
     required this.id,

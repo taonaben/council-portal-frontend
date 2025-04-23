@@ -9,6 +9,7 @@ import 'package:portal/role-client/features/issues/issues_main.dart';
 import 'package:portal/role-client/features/licensing/licensing_main.dart';
 import 'package:portal/role-client/features/parking/main/parking_main.dart';
 import 'package:portal/role-client/features/parking/tickets/views/buy_for_other_page.dart';
+import 'package:portal/role-client/features/parking/tickets/views/purchase_successful.dart';
 import 'package:portal/role-client/features/parking/tickets/views/ticket_purchase_summary_page.dart';
 import 'package:portal/role-client/features/parking/tickets/views/tickets_main.dart';
 import 'package:portal/role-client/features/parking/vehicles/api/vehicle_list.dart';
@@ -183,6 +184,11 @@ final GoRouter router = GoRouter(
                         name: "buy-parking-for-other",
                         builder: (context, state) =>
                             const BuyTicketForOtherPage()),
+                        GoRoute(
+                        path: '/purchase_successful',
+                        name: "ticket-purchase-successful",
+                        builder: (context, state) =>
+                            const TicketPurchaseSuccessfulPage()),
                   ]),
               GoRoute(
                   path: '/vehicles',

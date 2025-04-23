@@ -77,7 +77,10 @@ class _CustomOutlinedButtonState extends State<CustomOutlinedButton>
             scale: _scaleAnimation.value,
             child: Container(
               width: (widget.expand ?? false) ? double.infinity : null,
-              height: 60,
+              padding: EdgeInsets.symmetric(
+                vertical: 12,
+                horizontal: widget.expand == true ? 0 : 16,
+              ),
               decoration: BoxDecoration(
                 color: background1,
                 borderRadius: BorderRadius.circular(uniBorderRadius),

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:portal/components/widgets/custom_filled_btn.dart';
 import 'package:portal/components/widgets/custom_outlined_btn.dart';
 import 'package:portal/components/widgets/custom_textfield.dart';
@@ -18,7 +19,7 @@ class Ecocash extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
       ),
-      shadowColor:  blackColor.withOpacity(0.5),
+      shadowColor: blackColor.withOpacity(0.5),
       backgroundColor: background1,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -57,12 +58,21 @@ class Ecocash extends StatelessWidget {
                     btnLabel: "Cancel", onTap: () => Navigator.pop(context))),
             const Gap(16),
             Expanded(
-                child: CustomFilledButton(btnLabel: "Verify", onTap: () {}))
+              child: CustomFilledButton(
+                btnLabel: "Verify",
+                onTap: () => handleEcocashPayment(context),
+              ),
+            ),
           ],
         ),
       ],
     );
   }
 
-  void handleEcocashPayment(BuildContext context) {}
+  void handleEcocashPayment(BuildContext context) {
+    context.pop(); // Close the Ecocash dialog
+    context.pushNamed(
+      "ticket-purchase-successful",
+    );
+  }
 }
