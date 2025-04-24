@@ -34,8 +34,9 @@ class TicketsCrud {
     } catch (e) {
       DevLogs.logError("Error: ${e.toString()}");
       const CustomSnackbar(
-              message: 'An error occurred. Please try again.', color: redColor)
-          .showSnackBar(context);
+        message: 'An error occurred. Please try again.',
+        color: redColor,
+      ).showSnackBar(context);
       return false;
     }
   }

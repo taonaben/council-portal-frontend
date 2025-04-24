@@ -35,9 +35,13 @@ import 'package:portal/role-admin/features/water_management/water_main.dart';
 import 'package:portal/shared/features/auth/providers/auth_providers.dart';
 import 'package:portal/shared/features/auth/views/login_page.dart';
 
+
+
+
 final GoRouter router = GoRouter(
   initialLocation: '/login',
   debugLogDiagnostics: true,
+  // extraCodec: const ExtraCodec(),
   routes: [
     GoRoute(
       path: '/login',
@@ -192,8 +196,10 @@ final GoRouter router = GoRouter(
                         GoRoute(
                         path: '/purchase_successful', 
                         name: "ticket-purchase-successful",
-                        builder: (context, state) =>
-                            const TicketPurchaseSuccessfulPage()),
+                        builder: (context, state) {
+                          final ticketData = state.extra as Map<String, dynamic>;
+                          return  TicketPurchaseSuccessfulPage(ticketData: ticketData,);
+                        }),
                   ]),
               GoRoute(
                   path: '/vehicles',
@@ -220,3 +226,5 @@ final GoRouter router = GoRouter(
     ),
   ],
 );
+
+

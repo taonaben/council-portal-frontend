@@ -11,6 +11,7 @@ import 'package:portal/core/utils/logs.dart';
 import 'package:portal/role-admin/features/issues/issues_main.dart';
 import 'package:portal/role-client/features/parking/tickets/services/parking_ticket_services.dart';
 import 'package:portal/role-client/features/parking/vehicles/models/vehicle_model.dart';
+import 'package:flutter/services.dart';
 
 class TicketsMainClient extends StatefulWidget {
   final VehicleModel vehicle;
@@ -255,6 +256,10 @@ class _TicketsMainClientState extends State<TicketsMainClient> {
                     isDense: true,
                     contentPadding: EdgeInsets.zero,
                   ),
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))
+                  ],
                   style: const TextStyle(
                     color: textColor2,
                     fontSize: 30,
@@ -303,6 +308,18 @@ class _TicketsMainClientState extends State<TicketsMainClient> {
     );
   }
 
+  bool checkTicketValidity() {
+    if (timeController.text.isEmpty) {
+      return false;
+    }
+
+    if (double.parse(timeController.text) < 1) {
+      return false;
+    }
+
+    return true;
+  }
+
   Widget buildSelectRecipient() {
     Map<String, dynamic> ticketData = {
       "vehicle": widget.vehicle,
@@ -321,20 +338,28 @@ class _TicketsMainClientState extends State<TicketsMainClient> {
             Expanded(
                 child: CustomFilledButton(
               btnLabel: "Buy For Me",
-              onTap: () => context.pushNamed("parking-ticket-purchase-summary",
-                  extra: ticketData),
+              onTap: () => checkTicketValidity() == false
+                  ? null
+                  : context.pushNamed("parking-ticket-purchase-summary",
+                      extra: ticketData),
               expand: true,
-              backgroundColor: background2,
+              backgroundColor: checkTicketValidity() == false
+                  ? background2.withOpacity(0.5)
+                  : background2,
               textColor: textColor1,
             )),
             const Gap(4),
             Expanded(
                 child: CustomFilledButton(
               btnLabel: "Buy For Other",
-              onTap: () =>
-                  context.pushNamed("buy-parking-for-other", extra: ticketData),
+              onTap: () => checkTicketValidity() == false
+                  ? null
+                  : context.pushNamed("buy-parking-for-other",
+                      extra: ticketData),
               expand: true,
-              backgroundColor: secondaryColor,
+              backgroundColor: checkTicketValidity() == false
+                  ? secondaryColor.withOpacity(0.5)
+                  : secondaryColor,
               textColor: textColor1,
             )),
           ],

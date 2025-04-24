@@ -2,6 +2,7 @@ import 'package:portal/core/utils/logs.dart';
 import 'package:portal/role-client/features/parking/tickets/api/ticket_api.dart';
 import 'package:portal/role-client/features/parking/tickets/api/ticket_list.dart';
 import 'package:portal/role-client/features/parking/tickets/model/parking_ticket_model.dart';
+import 'package:uuid/uuid.dart';
 import 'package:uuid/v4.dart';
 
 class ParkingTicketServices {
@@ -36,12 +37,13 @@ class ParkingTicketServices {
   Future<bool> addTicket(ParkingTicketModel ticket) async {
     try {
       var result = await ticketApi.addTicket(ticket);
-      if (!result.success) {
-        DevLogs.logError(
-            'Error adding ticket: ${result.message ?? 'Unknown error'}');
-        return false;
+      if (result.success) {
+        DevLogs.logInfo('Ticket added successfully: ${ticket.toJson()}');
+        return true;
       }
-      return true;
+      DevLogs.logError(
+          'Error adding ticket: ${result.message }');
+      return false;
     } catch (e) {
       DevLogs.logError('Error: ${e.toString()}');
       return false;
@@ -56,8 +58,11 @@ class ParkingTicketServices {
     required double amount,
   }) async {
     try {
+      var uuid = const Uuid();
+      String uuidString = uuid.v4(); // Generates a UUID v4 string
+
       ParkingTicketModel ticket = ParkingTicketModel(
-        id: const UuidV4().toString(),
+        id: uuidString,
         ticket_number: generateTicketNumber(),
         user: 'Benjamin',
         vehicle: vehicle_id,
@@ -69,8 +74,7 @@ class ParkingTicketServices {
         status: "active",
       );
 
-      var result = addTicket(ticket);
-      return result;
+      return await addTicket(ticket);
     } catch (e) {
       DevLogs.logError('Error: ${e.toString()}');
       return false;

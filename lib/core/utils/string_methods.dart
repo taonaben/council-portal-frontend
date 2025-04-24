@@ -36,7 +36,7 @@ String timeFormatted(DateTime date) {
 }
 
 String dateTimeFormatted(DateTime date) {
-  return '${timeFormatted(date)} • ${dateFormatted(date)}';
+  return '${date.year}-${twoDigits(date.month)}-${twoDigits(date.day)} ${timeFormatted(date)}';
 }
 
 String numberFormatted(String number) {

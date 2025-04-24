@@ -109,6 +109,7 @@ class Ecocash extends StatelessWidget {
       context.pop(); // Close the Ecocash dialog
       context.pushNamed(
         "ticket-purchase-successful",
+        extra: ticketData,
       );
     } catch (e) {
       DevLogs.logError("Error $e");

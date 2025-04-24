@@ -1,12 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:portal/components/widgets/custom_filled_btn.dart';
 import 'package:portal/components/widgets/custom_outlined_btn.dart';
 import 'package:portal/constants/colors/colors.dart';
 import 'package:portal/constants/colors/dimensions.dart';
+import 'package:portal/core/utils/string_methods.dart';
+import 'package:portal/role-client/features/parking/vehicles/models/vehicle_model.dart';
 
 class TicketPurchaseSuccessfulPage extends StatelessWidget {
-  const TicketPurchaseSuccessfulPage({super.key});
+  final Map<String, dynamic> ticketData;
+  const TicketPurchaseSuccessfulPage({super.key, required this.ticketData});
 
   @override
   Widget build(BuildContext context) {
@@ -33,13 +37,22 @@ class TicketPurchaseSuccessfulPage extends StatelessWidget {
           const Gap(16),
           buildTicketDetails(),
           const Gap(32),
-          buildButtonSection()
+          buildButtonSection(context)
         ],
       ),
     );
   }
 
   Widget buildTicketDetails() {
+    VehicleModel vehicle = ticketData["vehicle"];
+
+    // Prepare ticket data
+    var plate_number = vehicle.plate_number;
+
+    var issued_length = ticketData["issued_length"];
+    var issued_at = ticketData["issued_at"];
+    var expiry_at = ticketData["expiry_at"];
+    var amount = ticketData["amount"];
     return Container(
       padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
@@ -52,24 +65,32 @@ class TicketPurchaseSuccessfulPage extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           buildRow(title: 'Ticket Number', value: "123456"),
-          buildRow(title: 'Vehicle', value: "ABC123"),
+          buildRow(title: 'Vehicle', value: plate_number),
           buildRow(title: 'City', value: "New York"),
-          buildRow(title: 'Issued At', value: "2023-10-01 12:00"),
-          buildRow(title: 'Expiry At', value: "2023-10-01 13:00"),
-          buildRow(title: 'Amount', value: "\$1.00"),
+          buildRow(title: 'Issued At', value: dateTimeFormatted(issued_at)),
+          buildRow(title: 'Expiry At', value: dateTimeFormatted(expiry_at)),
+          buildRow(title: 'Amount', value: "USD\$$amount"),
         ],
       ),
     );
   }
 
-  Widget buildButtonSection() {
+  Widget buildButtonSection(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       mainAxisSize: MainAxisSize.min,
       children: [
-        CustomFilledButton(btnLabel: "Back Home", onTap: () {}),
-        const Gap(16),
-        CustomOutlinedButton(btnLabel: "Buy Another", onTap: () {})
+        CustomFilledButton(
+          btnLabel: "Back Home",
+          onTap: () {
+            while (context.canPop()) {
+              context.pop();
+            }
+            context.pushReplacement(
+              '/client/parking',
+            );
+          },
+        ),
       ],
     );
   }
