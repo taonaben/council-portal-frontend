@@ -16,7 +16,7 @@ import 'package:portal/role-client/features/parking/vehicles/api/vehicle_list.da
 import 'package:portal/role-client/features/parking/vehicles/models/vehicle_model.dart';
 import 'package:portal/role-client/features/parking/vehicles/views/vehicle_detail.dart';
 import 'package:portal/role-client/features/parking/vehicles/views/vehicle_management.dart';
-import 'package:portal/role-client/features/water/water_main.dart';
+import 'package:portal/role-client/features/water/views/water_main.dart';
 import 'package:portal/shared/features/alida_ai/alida_ai_main.dart';
 import 'package:portal/shared/features/announcements/views/announcement_detail.dart';
 import 'package:portal/shared/features/announcements/views/announcements_add.dart';
