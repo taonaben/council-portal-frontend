@@ -5,8 +5,8 @@ import 'package:portal/core/utils/shared_prefs.dart';
 
 class UserApi {
   final Dio _dio = Dio();
-  Future<ApiResponse> getUser() async {
-    String url = "$baseUrlLocal/users/all";
+  Future<ApiResponse> getUser(int userId) async {
+    String url = "$baseUrlLocal/users/$userId";
     String token = await getSP("token");
 
     try {
@@ -15,7 +15,7 @@ class UserApi {
             headers: {
               'Content-Type': 'application/json',
               'Accept': 'application/json',
-              'Authorization': 'Bearer $token ',
+              'Authorization': 'Bearer ${token.trim()}',
             },
           ));
 

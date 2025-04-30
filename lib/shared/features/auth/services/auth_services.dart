@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+import 'package:portal/core/utils/logs.dart';
 import 'package:portal/core/utils/shared_prefs.dart';
 import 'package:portal/shared/features/auth/api/auth_api.dart';
 import 'package:portal/shared/features/auth/model/user_model.dart';
@@ -13,9 +15,9 @@ class AuthServices {
     final usernameRegex =
         RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
     try {
-      if (!usernameRegex.hasMatch(usernameEmail)) {
-        throw Exception('Invalid email format');
-      }
+      // if (!usernameRegex.hasMatch(usernameEmail)) {
+      //   throw Exception('Invalid email format');
+      // }
 
       final response = await authApi.login(usernameEmail, password);
       if (response.success) {
@@ -23,17 +25,24 @@ class AuthServices {
         saveSP("refresh_token", response.data["refresh"]);
         saveSP("user", response.data["user"]);
 
-        final user = UserService().getUserById(response.data["user"]);
+        final userId = response.data["user"] is int
+            ? response.data["user"]
+            : response.data["user"]?["id"];
+        if (userId == null) throw Exception("Invalid user data in response");
+        final user = await UserService().getUserById(userId);
 
-        // Add to GetX storage
-        Get.put(user, tag: "user");
-        // user.obs;
+        // // Add to GetX storage
+        // Get.put(user, tag: "user");
+        // // user.obs;
+
+        DevLogs.logInfo("User logged in: ${user.username}");
 
         return user;
       }
       throw Exception('Login failed');
     } catch (e) {
-      rethrow;
+      DevLogs.logError("Login error: $e");
+      return User.empty();
     }
   }
 }

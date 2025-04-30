@@ -35,4 +35,18 @@ class User {
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
   Map<String, dynamic> toJson() => _$UserToJson(this);
+
+  factory User.empty() => User(
+  id: 0,
+  first_name: "",
+  last_name: "",
+  email: "",
+  city: "",
+  phone_number: "",
+  username: "",
+  is_superuser: false,
+  is_staff: false,
+  is_active: false,
+);
+
 }

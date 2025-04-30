@@ -34,6 +34,8 @@ import 'package:portal/role-admin/features/settings/settings_main.dart';
 import 'package:portal/role-admin/features/water_management/water_main.dart';
 import 'package:portal/shared/features/auth/providers/auth_providers.dart';
 import 'package:portal/shared/features/auth/views/login_page.dart';
+import 'package:portal/shared/global/documents/privacy_policy.dart';
+import 'package:portal/shared/global/documents/terms_of_service.dart';
 
 final GoRouter router = GoRouter(
   initialLocation: '/login',
@@ -67,6 +69,13 @@ final GoRouter router = GoRouter(
         return null; // No redirection if everything is fine
       },
     ),
+
+    GoRoute(
+        path: '/terms-of-service',
+        builder: (context, state) => const TermsOfService()),
+    GoRoute(
+        path: '/privacy-policy',
+        builder: (context, state) => const PrivacyPolicy()),
 
     // 🔹 Admin Navigation
     ShellRoute(
