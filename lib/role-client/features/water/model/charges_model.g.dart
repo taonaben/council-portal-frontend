@@ -7,7 +7,7 @@ part of 'charges_model.dart';
 // **************************************************************************
 
 ChargesModel _$ChargesModelFromJson(Map<String, dynamic> json) => ChargesModel(
-      balance_forward: (json['balance_forward'] as num).toDouble(),
+      rates: (json['rates'] as num).toDouble(),
       water_charges: (json['water_charges'] as num).toDouble(),
       sewerage: (json['sewerage'] as num).toDouble(),
       street_lighting: (json['street_lighting'] as num).toDouble(),
@@ -18,7 +18,7 @@ ChargesModel _$ChargesModelFromJson(Map<String, dynamic> json) => ChargesModel(
 
 Map<String, dynamic> _$ChargesModelToJson(ChargesModel instance) =>
     <String, dynamic>{
-      'balance_forward': instance.balance_forward,
+      'rates': instance.rates,
       'water_charges': instance.water_charges,
       'sewerage': instance.sewerage,
       'street_lighting': instance.street_lighting,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:portal/constants/colors/colors.dart';
-import 'package:portal/constants/colors/dimensions.dart';
+import 'package:portal/constants/colors.dart';
+import 'package:portal/constants/dimensions.dart';
 
 class CustomFilledButton extends StatefulWidget {
   final String btnLabel;

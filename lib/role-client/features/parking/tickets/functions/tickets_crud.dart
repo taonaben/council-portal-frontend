@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:portal/components/widgets/custom_snackbar.dart';
-import 'package:portal/constants/colors/colors.dart';
+import 'package:portal/constants/colors.dart';
 import 'package:portal/core/utils/logs.dart';
 import 'package:portal/role-client/features/parking/tickets/services/parking_ticket_services.dart';
 

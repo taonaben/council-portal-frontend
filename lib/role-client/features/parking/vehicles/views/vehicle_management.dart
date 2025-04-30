@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:portal/components/widgets/custom_circularProgressIndicator.dart';
 import 'package:portal/components/widgets/custom_snackbar.dart';
-import 'package:portal/constants/colors/colors.dart';
+import 'package:portal/constants/colors.dart';
 import 'package:portal/role-client/features/parking/vehicles/components/vehicle_card.dart';
 import 'package:portal/role-client/features/parking/vehicles/provider/vehicle_provider.dart';
 

@@ -4,8 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
 import 'package:portal/components/widgets/custom_divider.dart';
 import 'package:portal/components/widgets/custom_snackbar.dart';
-import 'package:portal/constants/colors/colors.dart';
-import 'package:portal/constants/colors/dimensions.dart';
+import 'package:portal/constants/colors.dart';
+import 'package:portal/constants/dimensions.dart';
 import 'package:portal/core/utils/string_methods.dart';
 import 'package:portal/role-client/features/parking/tickets/model/parking_ticket_model.dart';
 

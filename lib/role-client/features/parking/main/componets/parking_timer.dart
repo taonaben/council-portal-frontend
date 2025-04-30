@@ -4,8 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:portal/constants/colors/colors.dart';
-import 'package:portal/constants/colors/dimensions.dart';
+import 'package:portal/constants/colors.dart';
+import 'package:portal/constants/dimensions.dart';
 import 'package:portal/core/utils/string_methods.dart';
 
 class ParkingTimer extends StatefulWidget {

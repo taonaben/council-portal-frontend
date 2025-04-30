@@ -1,13 +1,12 @@
-
 import 'package:json_annotation/json_annotation.dart';
 
 part 'billing_period_model.g.dart';
 
 @JsonSerializable()
 class BillingPeriodModel {
-  DateTime last_recipt_date;
-  DateTime bill_date;
-  DateTime due_date;
+  final DateTime last_recipt_date;
+  final DateTime bill_date;
+  final DateTime due_date;
 
   BillingPeriodModel({
     required this.last_recipt_date,

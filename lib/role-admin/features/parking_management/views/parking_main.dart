@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:go_router/go_router.dart';
-import 'package:portal/constants/colors/colors.dart';
+import 'package:portal/constants/colors.dart';
 import 'package:portal/core/utils/string_methods.dart';
 import 'package:portal/role-admin/features/parking_management/components/daily_income_graph/income_points.dart';
 import 'package:portal/role-admin/features/parking_management/components/weekly_income_graph/weekly_income_stats_graph.dart';

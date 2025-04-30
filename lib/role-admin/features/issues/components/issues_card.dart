@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:portal/constants/colors/colors.dart';
+import 'package:portal/constants/colors.dart';
 import 'package:portal/role-admin/features/issues/components/issue_detail.dart';
 
 class IssuesCard extends StatefulWidget {

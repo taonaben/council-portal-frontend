@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:portal/constants/colors/colors.dart';
-import 'package:portal/constants/colors/dimensions.dart';
+import 'package:portal/constants/colors.dart';
+import 'package:portal/constants/dimensions.dart';
 import 'package:portal/role-client/features/parking/vehicles/models/vehicle_model.dart';
 
 class VehicleCard extends StatefulWidget {

@@ -6,7 +6,7 @@ import 'package:portal/components/widgets/custom_filled_btn.dart';
 import 'package:portal/components/widgets/custom_outlined_btn.dart';
 import 'package:portal/components/widgets/custom_snackbar.dart';
 import 'package:portal/components/widgets/custom_textfield.dart';
-import 'package:portal/constants/colors/colors.dart';
+import 'package:portal/constants/colors.dart';
 import 'package:portal/core/utils/logs.dart';
 import 'package:portal/role-client/features/parking/tickets/api/ticket_list.dart';
 import 'package:portal/role-client/features/parking/tickets/functions/tickets_crud.dart';

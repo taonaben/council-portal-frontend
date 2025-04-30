@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:portal/components/widgets/custom_divider.dart';
-import 'package:portal/constants/colors/colors.dart';
+import 'package:portal/constants/colors.dart';
 import 'package:portal/core/main_nav/main_header.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 

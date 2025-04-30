@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:gap/gap.dart';
-import 'package:portal/constants/colors/colors.dart';
+import 'package:portal/constants/colors.dart';
 
 class AnnoShareBtn extends StatelessWidget {
   const AnnoShareBtn({super.key});

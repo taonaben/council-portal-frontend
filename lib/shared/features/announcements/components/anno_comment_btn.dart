@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:portal/constants/colors/colors.dart';
+import 'package:portal/constants/colors.dart';
 
 class AnnoCommentBtn extends StatelessWidget {
   final int commentCount;

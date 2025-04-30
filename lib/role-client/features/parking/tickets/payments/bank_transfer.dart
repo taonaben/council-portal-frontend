@@ -4,7 +4,7 @@ import 'package:gap/gap.dart';
 import 'package:portal/components/widgets/custom_filled_btn.dart';
 import 'package:portal/components/widgets/custom_outlined_btn.dart';
 import 'package:portal/components/widgets/custom_textfield.dart';
-import 'package:portal/constants/colors/colors.dart';
+import 'package:portal/constants/colors.dart';
 
 class BankTransfer extends StatelessWidget {
   final Map<String, dynamic> ticketData;

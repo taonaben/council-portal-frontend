@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:portal/constants/colors/colors.dart';
+import 'package:portal/constants/colors.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:portal/core/utils/routes.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

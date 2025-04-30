@@ -6,7 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:portal/components/widgets/custom_filled_btn.dart';
 import 'package:portal/components/widgets/custom_snackbar.dart';
 import 'package:portal/components/widgets/custom_textfield.dart';
-import 'package:portal/constants/colors/colors.dart';
+import 'package:portal/constants/colors.dart';
 import 'package:portal/shared/features/auth/model/user_model.dart';
 import 'package:portal/shared/features/auth/users_list.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

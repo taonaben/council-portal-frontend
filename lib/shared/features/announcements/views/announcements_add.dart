@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:portal/components/widgets/custom_divider.dart';
 import 'package:portal/components/widgets/custom_filled_btn.dart';
-import 'package:portal/constants/colors/colors.dart';
+import 'package:portal/constants/colors.dart';
 
 class AnnouncementsAdd extends StatefulWidget {
   const AnnouncementsAdd({super.key});

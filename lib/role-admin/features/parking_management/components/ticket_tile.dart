@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:portal/constants/colors/colors.dart';
+import 'package:portal/constants/colors.dart';
 import 'package:portal/core/utils/string_methods.dart';
 
 class TicketTile extends StatefulWidget {
