@@ -1,6 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:portal/shared/features/auth/model/user_model.dart';
-import 'package:portal/shared/features/auth/services/user_services.dart';
+import 'package:portal/shared/features/auth/services/auth_services.dart';
+
+final authServicesProvider = Provider<AuthServices>((ref) => AuthServices());
 
 final authNotifierProvider =
     StateNotifierProvider<AuthNotifier, AuthState>((ref) {
@@ -27,13 +29,14 @@ class AuthNotifier extends StateNotifier<AuthState> {
   AuthNotifier(this._ref) : super(AuthState());
 
   Future<bool> login(String emailOrUsername, String password) async {
-    state = state.copyWith(isLoading: true);
-    final user = await _ref.read(userServiceProvider)
-        .login(emailOrUsername, password); // Dummy login logic
-    if (user != null) {
+    try {
+      state = state.copyWith(isLoading: true);
+      final user = await _ref
+          .read(authServicesProvider)
+          .login(emailOrUsername, password);
       state = state.copyWith(user: user, isLoading: false);
       return true;
-    } else {
+    } catch (e) {
       state = state.copyWith(isLoading: false);
       return false;
     }

@@ -7,27 +7,35 @@ part of 'user_model.dart';
 // **************************************************************************
 
 User _$UserFromJson(Map<String, dynamic> json) => User(
-      id: (json['id'] as num).toInt(),
+      id: (json['id'] as num?)?.toInt(),
       username: json['username'] as String,
-      firstName: json['firstName'] as String,
-      lastName: json['lastName'] as String,
-      emailAddress: json['emailAddress'] as String,
-      phoneNumber: json['phoneNumber'] as String,
+      first_name: json['first_name'] as String,
+      last_name: json['last_name'] as String,
+      email: json['email'] as String,
+      phone_number: json['phoneNumber'] as String,
       city: json['city'] as String,
-      isAdmin: json['isAdmin'] as bool,
-      isStaff: json['isStaff'] as bool,
-      isActive: json['isActive'] as bool,
+      is_superuser: json['is_superuser'] as bool?,
+      is_staff: json['is_staff'] as bool?,
+      is_active: json['is_active'] as bool?,
+      accounts: (json['accounts'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
+      properties: (json['properties'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
     );
 
 Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'id': instance.id,
       'username': instance.username,
-      'firstName': instance.firstName,
-      'lastName': instance.lastName,
-      'emailAddress': instance.emailAddress,
-      'phoneNumber': instance.phoneNumber,
+      'first_name': instance.first_name,
+      'last_name': instance.last_name,
+      'accounts': instance.accounts,
+      'email': instance.email,
+      'phoneNumber': instance.phone_number,
+      'properties': instance.properties,
       'city': instance.city,
-      'isAdmin': instance.isAdmin,
-      'isStaff': instance.isStaff,
-      'isActive': instance.isActive,
+      'is_superuser': instance.is_superuser,
+      'is_staff': instance.is_staff,
+      'is_active': instance.is_active,
     };

@@ -157,7 +157,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       passwordController.text,
                     );
                     if (success) {
-                      if (authNotifier.state.user!.isStaff) {
+                      if (authNotifier.state.user!.is_staff!) {
                         context.go('/admin/dashboard');
                       } else {
                         context.go('/client/dashboard');
@@ -195,14 +195,14 @@ class _LoginPageState extends ConsumerState<LoginPage> {
         return User(
           id: user['id'],
           username: user['username'],
-          firstName: user['first_name'],
-          lastName: user['last_name'],
-          emailAddress: user['email_address'],
-          phoneNumber: user['phone_number'],
+          first_name: user['first_name'],
+          last_name: user['last_name'],
+          email: user['email_address'],
+          phone_number: user['phone_number'],
           city: user['city'],
-          isAdmin: user['isAdmin'],
-          isStaff: user['isStaff'],
-          isActive: user['isActive'],
+          is_active: user['is_active'],
+          is_staff: user['is_staff'],
+          is_superuser: user['is_superuser'],
         );
       }
     }

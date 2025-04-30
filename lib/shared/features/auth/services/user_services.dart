@@ -1,33 +1,65 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:portal/core/utils/logs.dart';
+import 'package:portal/shared/features/auth/api/user_api.dart';
 import 'package:portal/shared/features/auth/model/user_model.dart';
 import 'package:portal/shared/features/auth/users_list.dart';
 
-final userServiceProvider = Provider<UserService>((ref) {
+final authServiceProvider = Provider<UserService>((ref) {
   return UserService();
 });
 
 class UserService {
-  Future<User?> login(String emailOrUsername, String password) async {
-    // Simulate API call with dummy data
-    await Future.delayed(const Duration(seconds: 1));
-    for (var user in users) {
-      if ((emailOrUsername == user['email_address'] ||
-              emailOrUsername == user['username']) &&
-          password == user['password']) {
-        return User(
-          id: user['id'],
-          username: user['username'],
-          firstName: user['first_name'],
-          lastName: user['last_name'],
-          emailAddress: user['email_address'],
-          phoneNumber: user['phone_number'],
-          city: user['city'],
-          isAdmin: user['isAdmin'],
-          isStaff: user['isStaff'],
-          isActive: user['isActive'],
-        );
+  final userApi = UserApi();
+  Future<User> getUserById(int userId) async {
+    var results = await userApi.getUser();
+    try {
+      if (results.success) {
+        Map<String, dynamic> dataMap = results.data as Map<String, dynamic>;
+
+        List<dynamic> userList = dataMap["users"] as List<dynamic>;
+
+        return userList.map((user) => User.fromJson(user)).toList().firstWhere(
+              (user) => user.id == userId,
+              orElse: () => User(
+                id: 0,
+                first_name: "",
+                last_name: "",
+                email: "",
+                city: "",
+                phone_number: "",
+                username: "",
+                is_superuser: false,
+                is_staff: false,
+                is_active: false,
+              ),
+            );
       }
+    } catch (e) {
+      DevLogs.logError('Error: $e');
+      return User(
+        id: 0,
+        first_name: "",
+        last_name: "",
+        email: "",
+        city: "",
+        phone_number: "",
+        username: "",
+        is_superuser: false,
+        is_staff: false,
+        is_active: false,
+      );
     }
-    return null;
+    return User(
+      id: 0,
+      first_name: "",
+      last_name: "",
+      email: "",
+      city: "",
+      phone_number: "",
+      username: "",
+      is_superuser: false,
+      is_staff: false,
+      is_active: false,
+    );
   }
 }

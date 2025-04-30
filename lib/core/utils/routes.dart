@@ -35,9 +35,6 @@ import 'package:portal/role-admin/features/water_management/water_main.dart';
 import 'package:portal/shared/features/auth/providers/auth_providers.dart';
 import 'package:portal/shared/features/auth/views/login_page.dart';
 
-
-
-
 final GoRouter router = GoRouter(
   initialLocation: '/login',
   debugLogDiagnostics: true,
@@ -58,12 +55,12 @@ final GoRouter router = GoRouter(
         final user = authState.user!;
 
         // Prevent non-admins from accessing admin routes
-        if (state.uri.toString().startsWith('/admin') && !user.isStaff) {
+        if (state.uri.toString().startsWith('/admin') && !user.is_staff!) {
           return '/client/dashboard'; // Redirect unauthorized users
         }
 
         // Prevent staff/admin from accessing client-only pages
-        if (state.uri.toString().startsWith('/client') && user.isStaff) {
+        if (state.uri.toString().startsWith('/client') && user.is_staff!) {
           return '/admin/dashboard';
         }
 
@@ -177,7 +174,7 @@ final GoRouter router = GoRouter(
                   path: '/purchase_ticket',
                   builder: (context, state) {
                     final vehicle = state.extra as VehicleModel;
-                    return  TicketsMainClient(vehicle: vehicle);
+                    return TicketsMainClient(vehicle: vehicle);
                   },
                   name: "purchase-ticket",
                   routes: [
@@ -185,20 +182,26 @@ final GoRouter router = GoRouter(
                         path: '/ticket_purchase_summary',
                         name: "parking-ticket-purchase-summary",
                         builder: (context, state) {
-                          final ticketData = state.extra as Map<String, dynamic>;
-                          return  TicketPurchaseSummaryPage(ticketData: ticketData,);
+                          final ticketData =
+                              state.extra as Map<String, dynamic>;
+                          return TicketPurchaseSummaryPage(
+                            ticketData: ticketData,
+                          );
                         }),
                     GoRoute(
                         path: '/buy_for_other',
                         name: "buy-parking-for-other",
                         builder: (context, state) =>
                             const BuyTicketForOtherPage()),
-                        GoRoute(
-                        path: '/purchase_successful', 
+                    GoRoute(
+                        path: '/purchase_successful',
                         name: "ticket-purchase-successful",
                         builder: (context, state) {
-                          final ticketData = state.extra as Map<String, dynamic>;
-                          return  TicketPurchaseSuccessfulPage(ticketData: ticketData,);
+                          final ticketData =
+                              state.extra as Map<String, dynamic>;
+                          return TicketPurchaseSuccessfulPage(
+                            ticketData: ticketData,
+                          );
                         }),
                   ]),
               GoRoute(
@@ -226,5 +229,3 @@ final GoRouter router = GoRouter(
     ),
   ],
 );
-
-
