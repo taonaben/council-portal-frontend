@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:gap/gap.dart';
 import 'package:portal/constants/colors.dart';
 import 'package:portal/constants/dimensions.dart';
 import 'package:portal/core/utils/string_methods.dart';
@@ -66,6 +67,7 @@ class _CustomTextfieldState extends State<CustomTextfield> {
                 fontSize: 14,
                 fontWeight: FontWeight.bold),
           ),
+          const Gap(5),
           TextFormField(
             validator: (value) {
               String? result = widget.validator?.call(value);
@@ -117,7 +119,7 @@ class _CustomTextfieldState extends State<CustomTextfield> {
               child: Text(
                 _errorText!,
                 style: const TextStyle(
-                  color: redColor,
+                  color: secondaryColor,
                   fontSize: 12,
                 ),
               ),

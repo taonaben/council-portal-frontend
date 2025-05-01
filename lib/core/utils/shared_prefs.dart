@@ -30,10 +30,10 @@ Future<bool> getSPBoolean(String id) async {
 
 Future<void> saveSP(String key, String token) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  prefs.setString(key, token);
+  await prefs.setString(key, token);  // Make sure to await this
 }
 
 Future<String> getSP(String id) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  return prefs.getString(id) ?? ""; // Return empty string if null
+  return prefs.getString(id) ?? ""; 
 }

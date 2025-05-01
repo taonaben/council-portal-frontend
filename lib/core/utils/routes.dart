@@ -34,6 +34,7 @@ import 'package:portal/role-admin/features/settings/settings_main.dart';
 import 'package:portal/role-admin/features/water_management/water_main.dart';
 import 'package:portal/shared/features/auth/providers/auth_providers.dart';
 import 'package:portal/shared/features/auth/views/login_page.dart';
+import 'package:portal/shared/features/auth/views/registration_page.dart';
 import 'package:portal/shared/global/documents/privacy_policy.dart';
 import 'package:portal/shared/global/documents/terms_of_service.dart';
 
@@ -69,6 +70,9 @@ final GoRouter router = GoRouter(
         return null; // No redirection if everything is fine
       },
     ),
+    GoRoute(
+        path: '/register',
+        builder: (context, state) => const RegistrationPage()),
 
     GoRoute(
         path: '/terms-of-service',

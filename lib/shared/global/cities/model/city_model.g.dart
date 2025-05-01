@@ -9,8 +9,8 @@ part of 'city_model.dart';
 CityModel _$CityModelFromJson(Map<String, dynamic> json) => CityModel(
       id: json['id'] as String,
       name: json['name'] as String,
-      districts:
-          (json['districts'] as List<dynamic>).map((e) => e as String).toList(),
+      sections:
+          (json['sections'] as List<dynamic>).map((e) => e as String).toList(),
       longitude: json['longitude'] as String,
       latitude: json['latitude'] as String,
     );
@@ -18,7 +18,7 @@ CityModel _$CityModelFromJson(Map<String, dynamic> json) => CityModel(
 Map<String, dynamic> _$CityModelToJson(CityModel instance) => <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
-      'districts': instance.districts,
+      'sections': instance.sections,
       'longitude': instance.longitude,
       'latitude': instance.latitude,
     };

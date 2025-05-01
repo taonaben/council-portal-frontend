@@ -50,33 +50,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
     return Scaffold(
       backgroundColor: background2,
-      appBar: AppBar(
-        backgroundColor: background2,
-        elevation: 0,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 16.0),
-            child: GestureDetector(
-              onTap: () => context.go('/register'),
-              child: const Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Text(
-                    'Register',
-                    style: TextStyle(color: textColor1, fontSize: 14),
-                  ),
-                  Gap(8),
-                  Icon(
-                    CupertinoIcons.arrow_right,
-                    color: textColor1,
-                    size: 16,
-                  )
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
+      
       body: Center(
         child: LayoutBuilder(
           builder: (context, constraints) {
@@ -89,14 +63,14 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   maxWidth: width,
                   minHeight: MediaQuery.of(context).size.height * 0.5,
                 ),
-                child: loginForm(authNotifier));
+                child: loginForm());
           },
         ),
       ),
     );
   }
 
-  Widget loginForm(AuthNotifier authNotifier) {
+  Widget loginForm() {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: SingleChildScrollView(
@@ -158,27 +132,44 @@ class _LoginPageState extends ConsumerState<LoginPage> {
               ),
               const Gap(16),
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Checkbox(
-                    value: rememberMe,
-                    activeColor: primaryColor,
-                    checkColor: textColor2,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    side: const BorderSide(
-                      color: textColor1,
-                      width: 1.5,
-                    ),
-                    onChanged: (value) {
-                      setState(() {
-                        rememberMe = value!;
-                      });
-                    },
+                  Row(
+                    children: [
+                      Checkbox(
+                        value: rememberMe,
+                        activeColor: primaryColor,
+                        checkColor: textColor2,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        side: const BorderSide(
+                          color: textColor1,
+                          width: 1.5,
+                        ),
+                        onChanged: (value) {
+                          setState(() {
+                            rememberMe = value!;
+                          });
+                        },
+                      ),
+                      const Text(
+                        'Remember me',
+                        style: TextStyle(color: textColor1),
+                      ),
+                    ],
                   ),
-                  const Text(
-                    'Remember me',
-                    style: TextStyle(color: textColor1),
+                  RichText(
+                    textAlign: TextAlign.center,
+                    text: TextSpan(
+                      text: 'Forgot Password?',
+                      style: const TextStyle(
+                        color: primaryColor,
+                        decoration: TextDecoration.underline,
+                      ),
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () => context.go('/forgot-password'),
+                    ),
                   ),
                 ],
               ),
@@ -220,7 +211,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   : CustomFilledButton(
                       btnLabel: 'Login',
                       onTap: () async {
-                        if (_formKey.currentState!.validate()) {
+                        if (_formKey.currentState!.validate() &&
+                            !areControllersEmpty()) {
                           if (isLoading) return; // Prevent multiple taps
                           login();
                         } else {
@@ -229,19 +221,30 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                             color: redColor,
                           ).showSnackBar(context);
                         }
-                        DevLogs.logInfo(
-                            'Login button pressed with username: ${usernameEmailController.text} and password: ${passwordController.text}');
+                      
                       },
                     ),
               const Gap(16),
-              TextButton(
-                child: const Text(
-                  'Forgot Password?',
-                  style: TextStyle(color: textColor1),
+              RichText(
+                textAlign: TextAlign.center,
+                text: TextSpan(
+                  style: const TextStyle(
+                    color: textColor1,
+                    fontSize: 12,
+                  ),
+                  children: [
+                    const TextSpan(text: 'Don\'t have an account? '),
+                    TextSpan(
+                      text: 'Register',
+                      style: const TextStyle(
+                        color: primaryColor,
+                        decoration: TextDecoration.underline,
+                      ),
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () => context.go('/register'),
+                    ),
+                  ],
                 ),
-                onPressed: () {
-                  context.go('/forgot-password');
-                },
               ),
             ],
           ),
@@ -292,5 +295,10 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     await saveSP('saved_password', encodedPassword);
     await saveSP('credentials_expiry',
         DateTime.now().add(const Duration(days: 7)).toIso8601String());
+  }
+
+  bool areControllersEmpty() {
+    return usernameEmailController.text.isEmpty ||
+        passwordController.text.isEmpty;
   }
 }
