@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:portal/core/navigation/main_navigation.dart';
+import 'package:portal/features/accounts/views/account_main.dart';
 import 'package:portal/features/auth/model/user_model.dart';
 import 'package:portal/features/parking/main/parking_main.dart';
 import 'package:portal/features/parking/tickets/views/buy_for_other_page.dart';
@@ -54,12 +55,13 @@ final GoRouter router = GoRouter(
       },
     ),
     GoRoute(
-      path: '/home/:current_page',
-      name: "home",
-      builder: (context, state) {
-        final currentPage = int.parse(state.pathParameters['current_page'] ?? '0');
-        return MainNavigation(currentIndex: currentPage);
-      }),
+        path: '/home/:current_page',
+        name: "home",
+        builder: (context, state) {
+          final currentPage =
+              int.parse(state.pathParameters['current_page'] ?? '0');
+          return MainNavigation(currentIndex: currentPage);
+        }),
     GoRoute(
         path: '/terms-of-service',
         builder: (context, state) => const TermsOfService()),
@@ -122,14 +124,16 @@ final GoRouter router = GoRouter(
     GoRoute(
         path: '/client/settings',
         builder: (context, state) => const SettingsMain()),
-
-        GoRoute(
+    GoRoute(
         path: '/client/profile',
         name: "user_profile",
         builder: (context, state) {
           final user = state.extra as User;
-          return  ProfileMain(user: user);
+          return ProfileMain(user: user);
         }),
-
+    GoRoute(
+        path: '/client/accounts',
+        name: "accounts",
+        builder: (context, state) => const AccountMain()),
   ],
 );

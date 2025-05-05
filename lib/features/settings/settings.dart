@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:portal/components/widgets/custom_circularProgressIndicator.dart';
 import 'package:portal/components/widgets/custom_divider.dart';
 import 'package:portal/constants/colors.dart';
 import 'package:portal/constants/dimensions.dart';
@@ -69,7 +70,8 @@ class _ProfileMainState extends ConsumerState<SettingsMain> {
       error: (err, stack) {
         return Center(child: Text('Error: $err'));
       },
-      loading: () => const Center(child: CircularProgressIndicator()),
+      loading: () => const Center(
+          child: CustomCircularProgressIndicator(color: textColor2)),
     );
   }
 
@@ -124,7 +126,7 @@ class _ProfileMainState extends ConsumerState<SettingsMain> {
               title:
                   const Text('Accounts', style: TextStyle(color: textColor1)),
               trailing: const CupertinoListTileChevron(),
-              onTap: () {},
+              onTap: () => context.pushNamed("accounts"),
             ),
           ],
         ),
