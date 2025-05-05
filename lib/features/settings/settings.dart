@@ -5,12 +5,15 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:portal/components/widgets/custom_circularProgressIndicator.dart';
 import 'package:portal/components/widgets/custom_divider.dart';
+import 'package:portal/components/widgets/custom_snackbar.dart';
 import 'package:portal/constants/colors.dart';
 import 'package:portal/constants/dimensions.dart';
 import 'package:portal/core/utils/shared_prefs.dart';
 import 'package:portal/features/auth/model/user_model.dart';
 import 'package:portal/features/auth/providers/user_provider.dart';
+import 'package:portal/features/auth/services/auth_services.dart';
 import 'package:portal/features/auth/services/user_services.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SettingsMain extends ConsumerStatefulWidget {
   const SettingsMain({super.key});
@@ -151,7 +154,7 @@ class _ProfileMainState extends ConsumerState<SettingsMain> {
               title: const Text('Terms & Conditions',
                   style: TextStyle(color: textColor1)),
               trailing: const CupertinoListTileChevron(),
-              onTap: () {},
+              onTap: () => context.pushNamed("terms-of-service"),
             ),
             CupertinoListTile(
               leading: const Icon(CupertinoIcons.moon, color: textColor1),
@@ -173,7 +176,7 @@ class _ProfileMainState extends ConsumerState<SettingsMain> {
               title: const Text('Privacy Policy',
                   style: TextStyle(color: textColor1)),
               trailing: const CupertinoListTileChevron(),
-              onTap: () {},
+              onTap: () => context.pushNamed('privacy-policy'),
             ),
           ],
         ),
@@ -199,7 +202,43 @@ class _ProfileMainState extends ConsumerState<SettingsMain> {
               leading:
                   const Icon(CupertinoIcons.square_arrow_left, color: redColor),
               title: const Text('Logout', style: TextStyle(color: redColor)),
-              onTap: () {},
+              onTap: () {
+                showCupertinoDialog(
+                  context: context,
+                  builder: (context) {
+                    return CupertinoAlertDialog(
+                      title: const Text('Logout'),
+                      content: const Text('Are you sure you want to logout?'),
+                      actions: [
+                        CupertinoDialogAction(
+                          isDefaultAction: true,
+                          onPressed: () => Navigator.of(context).pop(),
+                          child: const Text('Cancel'),
+                        ),
+                        CupertinoDialogAction(
+                          isDestructiveAction: true,
+                          onPressed: () async {
+                            final result = await AuthServices().logout();
+
+                            if (result) {
+                              await clearSP();
+                              context.goNamed("login");
+                            } else {
+                              const CustomSnackbar(
+                                      message:
+                                          "Logout failed. Please try again.",
+                                      color: redColor)
+                                  .showSnackBar(context);
+                            }
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text('Logout'),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
             ),
           ],
         ),

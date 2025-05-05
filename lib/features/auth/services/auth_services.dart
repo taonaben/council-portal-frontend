@@ -48,64 +48,20 @@ class AuthServices {
     }
   }
 
-  Future<ApiResponse> register(RegistrationModel userData) async {
+  Future<bool> logout() async {
     try {
-      final response = await authApi.register(userData);
+      final response = await authApi.logout();
       if (response.success) {
-        saveSP("token", response.data["access"]);
-        saveSP("refresh_token", response.data["refresh"]);
-        saveSP("user", response.data["user"]);
-        return response;
-      }
-      throw Exception('Registration failed');
-    } catch (e) {
-      DevLogs.logError("Registration error: $e");
-      return ApiResponse(
-          success: false, message: "Registration error", data: {});
-    }
-  }
-
-  Future<User> submitUserData({
-    required String username,
-    required String first_name,
-    required String email,
-    required String password,
-    required String password2,
-    required String last_name,
-    required String phone_number,
-    required String city,
-  }) async {
-    try {
-      RegistrationModel user = RegistrationModel(
-        username: username,
-        email: email,
-        password: password,
-        password2: password2,
-        first_name: first_name,
-        last_name: last_name,
-        phone_number: phone_number,
-        city: city,
-      );
-
-      final response = await register(user);
-      if (response.success) {
-        DevLogs.logInfo("User data submitted successfully");
-
-        final userId = response.data["user"] is int
-            ? response.data["user"]
-            : response.data["user"]?["id"];
-
-        if (userId == null) throw Exception("Invalid user data in response");
-
-        final user = await UserService().getUserById(userId);
-        return user;
+        await clearSP();
+        DevLogs.logInfo("User logged out successfully");
+        return true;
       } else {
-        DevLogs.logError("Failed to submit user data: ${response.message}");
-        return User.empty();
+        DevLogs.logError("Logout failed: ${response.message}");
+        return false;
       }
     } catch (e) {
-      DevLogs.logError("Submit user data error: $e");
-      return User.empty();
+      DevLogs.logError("Logout error: $e");
+      return false;
     }
   }
 }

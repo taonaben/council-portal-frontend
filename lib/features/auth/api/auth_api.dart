@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:portal/constants/keys_and_urls.dart';
 import 'package:portal/core/utils/api_response.dart';
 import 'package:portal/core/utils/logs.dart';
+import 'package:portal/core/utils/shared_prefs.dart';
 import 'package:portal/features/auth/model/registration_model.dart';
 import 'package:portal/features/auth/model/user_model.dart';
 
@@ -63,43 +64,42 @@ class AuthApi {
       );
     }
   }
-
-  Future<ApiResponse> register(RegistrationModel userData) async {
-    String url = '$baseUrl/auth/register/';
-    Map<String, dynamic> body = userData as Map<String, dynamic>;
-
-    DevLogs.logInfo('Register URL: $url');
+Future<ApiResponse> logout() async {
+    String url = '$baseUrl/auth/logout/';
+    String token = await getSP("token");
 
     try {
-      final response = await http.post(
+      var response = await http.post(
         Uri.parse(url),
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
+          'Authorization': 'Bearer $token',
         },
-        body: jsonEncode(body),
+        body: jsonEncode({"refresh": token}),
+      ).timeout(const Duration(seconds: 30)
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         return ApiResponse(
           success: true,
-          message: 'Registration successful',
+          message: "Logout successful",
           data: jsonDecode(response.body),
         );
       } else {
-        DevLogs.logError('Registration failed: ${response.body}');
         return ApiResponse(
-            success: false,
-            data: [],
-            message: response.body ?? 'Registration failed');
+          success: false,
+          message: 'Logout failed: ${response.reasonPhrase}',
+          data: [],
+        );
       }
     } catch (e) {
-      DevLogs.logError('Error: $e');
       return ApiResponse(
         success: false,
-        message: 'Error: $e',
+        message: 'Unexpected error: $e',
         data: [],
       );
     }
   }
+
 }

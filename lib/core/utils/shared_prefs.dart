@@ -39,3 +39,9 @@ Future<String> getSP(String id) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   return prefs.getString(id) ?? "";
 }
+
+Future<void> clearSP() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  await prefs.clear();
+  DevLogs.logInfo("Shared Preferences cleared"); // Add logging
+}

@@ -64,9 +64,12 @@ final GoRouter router = GoRouter(
         }),
     GoRoute(
         path: '/terms-of-service',
+        name: "terms-of-service"
+        ,
         builder: (context, state) => const TermsOfService()),
     GoRoute(
-        path: '/privacy-policy',
+        path: '/privacy_policy',
+        name: "privacy-policy",
         builder: (context, state) => const PrivacyPolicy()),
     GoRoute(
         path: '/client/parking',
