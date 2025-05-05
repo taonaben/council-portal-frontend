@@ -23,7 +23,7 @@ class _VehicleManagementState extends ConsumerState<VehicleManagement> {
         if (vehicles.isEmpty) {
           return const Center(
             child: Text('No vehicles found'),
-          );
+          ); 
         } else {
           return ListView.builder(
             itemCount: vehicles.length,

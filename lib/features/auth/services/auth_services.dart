@@ -13,8 +13,6 @@ class AuthServices {
   Future<User> login(String username, String password) async {
     final String usernameEmail = username.trim();
 
-    final usernameRegex =
-        RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
     try {
       // if (!usernameRegex.hasMatch(usernameEmail)) {
       //   throw Exception('Invalid email format');
@@ -22,19 +20,24 @@ class AuthServices {
 
       final response = await authApi.login(usernameEmail, password);
       if (response.success) {
-        saveSP("token", response.data["access"]);
-        saveSP("refresh_token", response.data["refresh"]);
-        saveSP(
-            "user",
-            response.data["user"]
-                .toString()); // Convert to string before saving
+        // Ensure the values are strings before saving
+        final accessToken = response.data["access"]?.toString();
+        final refreshToken = response.data["refresh"]?.toString();
+        final userId = response.data["user"]?.toString();
 
-        // Get user ID directly as int
-        final userId = response.data["user"] as int;
-        final user = await UserService().getUserById(userId);
+        if (accessToken == null || refreshToken == null || userId == null) {
+          throw Exception('Invalid response data');
+        }
+
+        await saveSP("token", accessToken);
+        await saveSP("refresh_token", refreshToken);
+        await saveSP("user", userId);
+
+        // Get user ID as int for API call
+        final userIdInt = int.parse(userId);
+        final user = await UserService().getUserById(userIdInt);
 
         DevLogs.logInfo("User logged in: ${user.username}");
-
         return user;
       }
       throw Exception('Login failed');

@@ -1,3 +1,4 @@
+import 'package:portal/core/utils/logs.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> saveBool(String key, bool value) async {
@@ -30,10 +31,11 @@ Future<bool> getSPBoolean(String id) async {
 
 Future<void> saveSP(String key, String token) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  await prefs.setString(key, token);  // Make sure to await this
+  DevLogs.logInfo("Saving to SP - Key: $key, Value: $token"); // Add logging
+  await prefs.setString(key, token);
 }
 
 Future<String> getSP(String id) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  return prefs.getString(id) ?? ""; 
+  return prefs.getString(id) ?? "";
 }

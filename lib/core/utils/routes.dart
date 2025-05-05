@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:portal/core/navigation/main_navigation.dart';
+import 'package:portal/features/auth/model/user_model.dart';
 import 'package:portal/features/parking/main/parking_main.dart';
 import 'package:portal/features/parking/tickets/views/buy_for_other_page.dart';
 import 'package:portal/features/parking/tickets/views/purchase_successful.dart';
@@ -11,6 +12,7 @@ import 'package:portal/features/parking/vehicles/api/vehicle_list.dart';
 import 'package:portal/features/parking/vehicles/models/vehicle_model.dart';
 import 'package:portal/features/parking/vehicles/views/vehicle_detail.dart';
 import 'package:portal/features/parking/vehicles/views/vehicle_management.dart';
+import 'package:portal/features/profile/profile_main.dart';
 import 'package:portal/features/settings/settings.dart';
 import 'package:portal/features/water/views/water_main.dart';
 import 'package:portal/features/alida_ai/alida_ai_main.dart';
@@ -119,6 +121,15 @@ final GoRouter router = GoRouter(
         builder: (context, state) => const AlidaAiMain()),
     GoRoute(
         path: '/client/settings',
-        builder: (context, state) => const SettingsPage()),
+        builder: (context, state) => const SettingsMain()),
+
+        GoRoute(
+        path: '/client/profile',
+        name: "user_profile",
+        builder: (context, state) {
+          final user = state.extra as User;
+          return  ProfileMain(user: user);
+        }),
+
   ],
 );

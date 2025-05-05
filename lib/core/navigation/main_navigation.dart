@@ -37,7 +37,7 @@ class _MainNavigationState extends State<MainNavigation> {
     ParkingMainClient(),
     AlidaAiMain(),
     NotificationsMain(),
-    ProfileMain(),
+    SettingsMain(),
   ];
 
   @override
@@ -52,65 +52,31 @@ class _MainNavigationState extends State<MainNavigation> {
   }
 
   Widget _buildMobileView(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        centerTitle: true,
-        actions: [
-          Tooltip(
-            message: "Profile",
-            child: IconButton(
-              icon: const Icon(CupertinoIcons.person, color: textColor2),
-              onPressed: () => context.go('/profile'),
-            ),
-          ),
-          Tooltip(
-            message: 'Notifications',
-            child: Stack(
-              children: [
-                IconButton(
-                  onPressed: () => context.go('/notifications'),
-                  icon: const Icon(CupertinoIcons.bell, color: textColor2),
-                ),
-                Positioned(
-                  top: 6,
-                  right: 10,
-                  child: Container(
-                    width: 10,
-                    height: 10,
-                    decoration: BoxDecoration(
-                      color: primaryColor,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-      body: IndexedStack(
-        index: _currentIndex,
-        children: _screens,
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: (index) => setState(() => _currentIndex = index),
-        selectedItemColor: primaryColor,
-        unselectedItemColor: Colors.grey,
-        items: const [
-          BottomNavigationBarItem(
-              icon: Icon(Icons.water_drop_outlined), label: 'Water'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.local_parking_outlined), label: 'Parking'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.smart_toy_outlined), label: 'Alida AI'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.inbox_outlined), label: 'Notifications'),
-          BottomNavigationBarItem(
-              icon: Icon(CupertinoIcons.person), label: 'Settings'),
-        ],
+    return SafeArea(
+      bottom: false,
+      child: Scaffold(
+        body: IndexedStack(
+          index: _currentIndex,
+          children: _screens,
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          currentIndex: _currentIndex,
+          onTap: (index) => setState(() => _currentIndex = index),
+          selectedItemColor: primaryColor,
+          unselectedItemColor: Colors.grey,
+          items: const [
+            BottomNavigationBarItem(
+                icon: Icon(Icons.water_drop_outlined), label: 'Water'),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.local_parking_outlined), label: 'Parking'),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.smart_toy_outlined), label: 'Alida AI'),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.inbox_outlined), label: 'Notifications'),
+            BottomNavigationBarItem(
+                icon: Icon(CupertinoIcons.settings), label: 'Settings'),
+          ],
+        ),
       ),
     );
   }

@@ -9,48 +9,94 @@ import 'package:portal/core/utils/shared_prefs.dart';
 import 'package:http/http.dart' as http;
 
 class UserApi {
-  final Dio _dio = Dio();
   Future<ApiResponse> getUser(int userId) async {
-    String url = "$baseUrl/users/$userId";
     String token = await getSP("token");
-
-    DevLogs.logInfo("Token: $token");
-
     if (token.isEmpty) {
       return ApiResponse(
         success: false,
-        message: 'Token is null',
-        data: [],
+        message: 'No authentication token found',
+        data: null,
       );
     }
 
+    final url = Uri.parse("$baseUrl/users/$userId");
     try {
-      var response = await http.get(
-        Uri.parse(url),
+      final response = await http.get(
+        url,
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
-          'Authorization': ' Bearer $token',
+          'Authorization': 'Bearer $token',
         },
-      );
+      ).timeout(const Duration(seconds: 10));
 
-      if (response.statusCode == 200 || response.statusCode == 201) {
+      if (response.statusCode == 200) {
+        final decodedData = jsonDecode(response.body);
         return ApiResponse(
           success: true,
-          data: jsonDecode(response.body), // Need to decode the JSON response
+          data: decodedData,
           message: 'Success',
         );
       } else {
         return ApiResponse(
-            success: false,
-            data: [],
-            message: 'Failed with status code: ${response.statusCode}');
+          success: false,
+          data: null,
+          message: 'Server returned ${response.statusCode}',
+        );
       }
     } catch (e) {
       return ApiResponse(
         success: false,
-        message: 'Error: $e',
-        data: [],
+        message: e.toString(),
+        data: null,
+      );
+    }
+  }
+
+  Future<ApiResponse> updateUser(int userId, Map<String, dynamic> data) async {
+    final url = Uri.parse("$baseUrl/users/$userId");
+    String token = await getSP("token");
+
+    if (token.isEmpty) {
+      return ApiResponse(
+        success: false,
+        message: 'No authentication token found',
+        data: null,
+      );
+    }
+
+    try {
+      final response = await http
+          .patch(
+            url,
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json',
+              'Authorization': 'Bearer $token',
+            },
+            body: jsonEncode(data),
+          )
+          .timeout(const Duration(seconds: 10));
+
+      if (response.statusCode == 200) {
+        final decodedData = jsonDecode(response.body);
+        return ApiResponse(
+          success: true,
+          data: decodedData,
+          message: 'Success',
+        );
+      } else {
+        return ApiResponse(
+          success: false,
+          data: null,
+          message: 'Server returned ${response.statusCode}',
+        );
+      }
+    } catch (e) {
+      return ApiResponse(
+        success: false,
+        message: e.toString(),
+        data: null,
       );
     }
   }

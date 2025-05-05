@@ -16,7 +16,6 @@ import 'package:portal/core/utils/logs.dart';
 import 'package:portal/core/utils/shared_prefs.dart';
 import 'package:portal/features/auth/model/user_model.dart';
 import 'package:portal/features/auth/services/auth_services.dart';
-import 'package:portal/features/auth/users_list.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:portal/features/auth/providers/auth_providers.dart';
 

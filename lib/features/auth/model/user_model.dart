@@ -32,6 +32,32 @@ class User {
     this.properties,
   });
 
+  User copyWith({
+    int? id,
+    String? username,
+    String? first_name,
+    String? last_name,
+    String? email,
+    String? phone_number,
+    String? city,
+    bool? is_superuser,
+    bool? is_staff,
+    bool? is_active,
+  }) {
+    return User(
+      id: id ?? this.id,
+      username: username ?? this.username,
+      first_name: first_name ?? this.first_name,
+      last_name: last_name ?? this.last_name,
+      email: email ?? this.email,
+      phone_number: phone_number ?? this.phone_number,
+      city: city ?? this.city,
+      is_superuser: is_superuser ?? this.is_superuser,
+      is_staff: is_staff ?? this.is_staff,
+      is_active: is_active ?? this.is_active,
+    );
+  }
+
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
   Map<String, dynamic> toJson() => _$UserToJson(this);

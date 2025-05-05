@@ -10,7 +10,6 @@ import 'package:portal/features/auth/model/registration_model.dart';
 import 'package:portal/features/auth/model/user_model.dart';
 
 class AuthApi {
-
   Future<ApiResponse> login(String username, String password) async {
     String url = '$baseUrl/auth/login/';
     Map<String, String> body = {
@@ -21,17 +20,20 @@ class AuthApi {
     DevLogs.logInfo('Login URL: $url');
 
     try {
-       await Future.delayed(const Duration(seconds: 2));
-      final response = await http.post(
-        Uri.parse(url),
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
-        body: jsonEncode(body),
-      ).timeout(const Duration(seconds: 30));
+      await Future.delayed(const Duration(seconds: 2));
+      final response = await http
+          .post(
+            Uri.parse(url),
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json',
+            },
+            body: jsonEncode(body),
+          )
+          .timeout(const Duration(seconds: 30));
 
       if (response.statusCode == 200 || response.statusCode == 201) {
+        DevLogs.logInfo('Login successful: ${response.body}');
         return ApiResponse(
           success: true,
           message: "Login successful",
