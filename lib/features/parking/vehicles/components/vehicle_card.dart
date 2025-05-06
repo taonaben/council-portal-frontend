@@ -33,7 +33,7 @@ class _VehicleCardState extends State<VehicleCard> {
           ),
           leading: ClipRRect(
             borderRadius: BorderRadius.circular(uniBorderRadius),
-            child: Image.asset(widget.vehicle.image),
+            child: Image.asset(widget.vehicle.image!),
           ),
           title: Text(
             widget.vehicle.plate_number,
@@ -74,7 +74,7 @@ class _VehicleCardState extends State<VehicleCard> {
 
   changeStatus() {
     setState(() {
-      widget.vehicle.is_active = !widget.vehicle.is_active;
+      widget.vehicle.is_active = !widget.vehicle.is_active!;
     });
   }
 }

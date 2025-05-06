@@ -29,6 +29,12 @@ class _TicketPurchaseSummaryPageState extends State<TicketPurchaseSummaryPage> {
     VehicleModel vehicle = widget.ticketData['vehicle'];
 
     return Scaffold(
+      appBar: AppBar(
+        title: const Text("Confirm Payment"),
+        centerTitle: true,
+        backgroundColor: background1,
+        elevation: 0,
+      ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

@@ -96,7 +96,7 @@ class Ecocash extends StatelessWidget {
 
     try {
       var result = ticketsCrud.submitTicket(
-          vehicle_id: vehicle_id,
+          vehicle_id: vehicle_id!,
           issued_length: issued_length,
           issued_at: issued_at,
           expiry_at: expiry_at,

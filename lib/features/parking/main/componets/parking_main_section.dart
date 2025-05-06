@@ -116,22 +116,22 @@ class ParkingMainSection extends ConsumerWidget {
         ),
         "route": "my-vehicles",
       },
-      {
-        "text": "Alerts",
-        "icon": const Icon(
-          CupertinoIcons.bell,
-          color: textColor2,
-        ),
-        "route": "",
-      },
-      {
-        "text": "Account",
-        "icon": const Icon(
-          Icons.settings_outlined,
-          color: textColor2,
-        ),
-        "route": "",
-      },
+      // {
+      //   "text": "Alerts",
+      //   "icon": const Icon(
+      //     CupertinoIcons.bell,
+      //     color: textColor2,
+      //   ),
+      //   "route": "",
+      // },
+      // {
+      //   "text": "Account",
+      //   "icon": const Icon(
+      //     Icons.settings_outlined,
+      //     color: textColor2,
+      //   ),
+      //   "route": "",
+      // },
     ];
     return SizedBox(
       // height: 350, // Adjust this value based on your needs

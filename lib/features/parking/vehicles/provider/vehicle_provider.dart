@@ -17,6 +17,16 @@ final allVehiclesProvider = FutureProvider<List<VehicleModel>>((ref) async {
   }
 });
 
+final getVehicleByIdProvider =
+    FutureProvider.family<VehicleModel, String>((ref, vehicleId) async {
+  try {
+    final vehicles = await ref.watch(allVehiclesProvider.future);
+    return vehicles.firstWhere((vehicle) => vehicle.id == vehicleId);
+  } catch (e) {
+    throw Exception('Error fetching vehicle by ID: $e');
+  }
+});
+
 final activeVehicleProvider =
     StateNotifierProvider<ActiveVehicleNotifier, VehicleModel?>((ref) {
   return ActiveVehicleNotifier();

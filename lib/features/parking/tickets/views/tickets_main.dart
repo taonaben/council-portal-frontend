@@ -80,6 +80,12 @@ class _TicketsMainClientState extends State<TicketsMainClient> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text("Buy Ticket"),
+        centerTitle: true,
+        backgroundColor: background1,
+        elevation: 0,
+      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0),

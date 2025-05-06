@@ -19,7 +19,7 @@ class WaterBillingApi {
             },
           ));
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 || response.statusCode == 201) {
         return ApiResponse(
           success: true,
           data: response.data,

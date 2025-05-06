@@ -85,7 +85,7 @@ class _VehicleDetailState extends ConsumerState<VehicleDetail> {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(uniBorderRadius),
                   child: Image.asset(
-                    widget.vehicle.image,
+                    widget.vehicle.image!,
                     fit: BoxFit.cover,
                     width: 80,
                     height: 80,
