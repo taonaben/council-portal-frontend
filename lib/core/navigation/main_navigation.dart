@@ -7,7 +7,7 @@ import 'package:portal/constants/colors.dart';
 import 'package:portal/core/navigation/main_header.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:portal/features/alida_ai/alida_ai_main.dart';
-import 'package:portal/features/notifications/notifications_main.dart';
+import 'package:portal/features/notifications/views/notifications_main.dart';
 import 'package:portal/features/parking/main/parking_main.dart';
 import 'package:portal/features/profile/profile_main.dart';
 import 'package:portal/features/settings/settings.dart';

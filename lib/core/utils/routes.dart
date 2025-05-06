@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:portal/core/navigation/main_navigation.dart';
 import 'package:portal/features/accounts/views/account_main.dart';
 import 'package:portal/features/auth/model/user_model.dart';
+import 'package:portal/features/notifications/views/notification_settings.dart';
 import 'package:portal/features/parking/main/parking_main.dart';
 import 'package:portal/features/parking/tickets/views/buy_for_other_page.dart';
 import 'package:portal/features/parking/tickets/views/purchase_successful.dart';
@@ -138,5 +139,9 @@ final GoRouter router = GoRouter(
         path: '/client/accounts',
         name: "accounts",
         builder: (context, state) => const AccountMain()),
+        GoRoute(
+        path: '/client/notification_settings',
+        name: "notification-settings",
+        builder: (context, state) => const NotificationSettings()),
   ],
 );

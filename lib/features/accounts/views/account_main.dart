@@ -15,6 +15,10 @@ class AccountMain extends ConsumerWidget {
     return allAccountsAsyncValue.when(
       data: (data) {
         return Scaffold(
+          appBar: AppBar(
+            title: const Text('Accounts'),
+            backgroundColor: background1,
+          ),
           body: data.isEmpty
               ? const Center(child: Text('No accounts found'))
               : ListView.builder(
@@ -29,7 +33,8 @@ class AccountMain extends ConsumerWidget {
                 ),
         );
       },
-      loading: () => const Center(child: CustomCircularProgressIndicator(color: textColor2)),
+      loading: () => const Center(
+          child: CustomCircularProgressIndicator(color: textColor2)),
       error: (error, stack) => Center(child: Text('Error: $error')),
     );
   }

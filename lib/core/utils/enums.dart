@@ -96,3 +96,9 @@ enum CustomPassStrength implements PasswordStrengthItem {
     }
   }
 }
+
+enum NotificationType {
+  parking,
+  water,
+  account,
+}

@@ -55,17 +55,19 @@ class _AlidaAiMainState extends State<AlidaAiMain> {
 
   Widget createChatTextBox() {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 25.0),
+      padding: const EdgeInsets.only(bottom: 25.0, left: 8, right: 8),
       child: Container(
-          padding: const EdgeInsets.all(10),
-          width: MediaQuery.of(context).size.width * 0.6,
-          decoration: BoxDecoration(
-            color: background2,
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: Column(
-            children: [
-              TextFormField(
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: background2,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Expanded(
+              child: TextFormField(
                 maxLines: 10,
                 minLines: 1,
                 decoration: const InputDecoration(
@@ -75,20 +77,17 @@ class _AlidaAiMainState extends State<AlidaAiMain> {
                 ),
                 style: const TextStyle(color: textColor1),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  contextChip(),
-                  IconButton(
-                      onPressed: () {},
-                      icon: const Icon(
-                        CupertinoIcons.paperplane,
-                        color: primaryColor,
-                      ))
-                ],
-              )
-            ],
-          )),
+            ),
+            IconButton(
+              onPressed: () {},
+              icon: const Icon(
+                CupertinoIcons.paperplane,
+                color: primaryColor,
+              ),
+            )
+          ],
+        ),
+      ),
     );
   }
 

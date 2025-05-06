@@ -168,6 +168,17 @@ class _ProfileMainState extends ConsumerState<SettingsMain> {
                     });
                   }),
             ),
+             CupertinoListTile(
+              leading: const Icon(
+                CupertinoIcons.bell,
+                color: textColor1,
+              ),
+              title: const Text('Manage Notification ',
+                  style: TextStyle(color: textColor1)),
+              trailing: const CupertinoListTileChevron(),
+              onTap: () => context.pushNamed('notification-settings'),
+            ),
+
             CupertinoListTile(
               leading: const Icon(
                 CupertinoIcons.shield,
