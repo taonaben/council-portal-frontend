@@ -7,10 +7,11 @@ import 'package:portal/components/widgets/custom_outlined_btn.dart';
 import 'package:portal/constants/colors.dart';
 import 'package:portal/constants/dimensions.dart';
 import 'package:portal/core/utils/string_methods.dart';
+import 'package:portal/features/parking/tickets/model/parking_ticket_model.dart';
 import 'package:portal/features/parking/vehicles/models/vehicle_model.dart';
 
 class TicketPurchaseSuccessfulPage extends StatelessWidget {
-  final Map<String, dynamic> ticketData;
+  final ParkingTicketModel ticketData;
   const TicketPurchaseSuccessfulPage({super.key, required this.ticketData});
 
   @override
@@ -47,15 +48,15 @@ class TicketPurchaseSuccessfulPage extends StatelessWidget {
   }
 
   Widget buildTicketDetails() {
-    VehicleModel vehicle = ticketData["vehicle"];
+    // VehicleModel vehicle = ticketData["vehicle"];
 
-    // Prepare ticket data
-    var plate_number = vehicle.plate_number;
+    // // Prepare ticket data
+    // var plate_number = vehicle.plate_number;
 
-    var issued_length = ticketData["issued_length"];
-    var issued_at = ticketData["issued_at"];
-    var expiry_at = ticketData["expiry_at"];
-    var amount = ticketData["amount"];
+    // var issued_length = ticketData["issued_length"];
+    // var issued_at = ticketData["issued_at"];
+    // var expiry_at = ticketData["expiry_at"];
+    // var amount = ticketData["amount"];
     return Container(
       padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
@@ -67,12 +68,16 @@ class TicketPurchaseSuccessfulPage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: [
-          buildRow(title: 'Ticket Number', value: "123456"),
-          buildRow(title: 'Vehicle', value: plate_number),
-          buildRow(title: 'City', value: "New York"),
-          buildRow(title: 'Issued At', value: dateTimeFormatted(issued_at)),
-          buildRow(title: 'Expiry At', value: dateTimeFormatted(expiry_at)),
-          buildRow(title: 'Amount', value: "USD\$$amount"),
+          buildRow(title: 'Ticket Number', value: ticketData.ticket_number!),
+          buildRow(title: 'Vehicle', value: ticketData.vehicle),
+          buildRow(title: 'City', value: ticketData.city!),
+          buildRow(
+              title: 'Issued At',
+              value: dateTimeFormatted(ticketData.issued_at)),
+          buildRow(
+              title: 'Expiry At',
+              value: dateTimeFormatted(ticketData.expiry_at)),
+          buildRow(title: 'Amount', value: "USD\$${ticketData.amount}"),
         ],
       ),
     );
@@ -109,6 +114,7 @@ class TicketPurchaseSuccessfulPage extends StatelessWidget {
         Text(
           value,
           textAlign: TextAlign.end,
+          overflow: TextOverflow.ellipsis,
         ),
       ],
     );

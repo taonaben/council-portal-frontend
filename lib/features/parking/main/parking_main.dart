@@ -7,6 +7,7 @@ import 'package:portal/components/widgets/custom_snackbar.dart';
 import 'package:portal/constants/colors.dart';
 import 'package:portal/features/parking/main/componets/parking_main_section.dart';
 import 'package:portal/features/parking/main/componets/parking_timer.dart';
+import 'package:portal/features/parking/tickets/provider/parking_ticket_provider.dart';
 import 'package:portal/features/parking/vehicles/provider/vehicle_provider.dart';
 
 class ParkingMainClient extends ConsumerWidget {
@@ -15,26 +16,41 @@ class ParkingMainClient extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final activeVehicleAsyncValue = ref.watch(activeVehicleProvider);
+    final activeTicketAsyncValue = ref.watch(activeTicketProvider);
 
     return Scaffold(
       body: activeVehicleAsyncValue.when(
         data: (activeVehicle) {
-          return SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  buildHeader(context),
-                  buildSubHeader(context),
-                  const Gap(16),
-                  ParkingTimer(),
-                  const Gap(8),
-                  ParkingMainSection(
-                    activeVehicle: activeVehicle!,
+          return activeTicketAsyncValue.when(
+            data: (activeTicket) {
+              return SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      buildHeader(context),
+                      buildSubHeader(context),
+                      const Gap(16),
+                      ParkingTimer(activeTicket: activeTicket!,),
+                      const Gap(8),
+                      ParkingMainSection(
+                        activeVehicle: activeVehicle!,
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              );
+            },
+            error: (err, stack) {
+              CustomSnackbar(
+                message: 'Error: $err',
+                color: redColor,
+              ).showSnackBar(context);
+              return const SizedBox();
+            },
+            loading: () => const CustomCircularProgressIndicator(
+              color: textColor2,
             ),
           );
         },

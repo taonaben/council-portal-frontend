@@ -323,9 +323,18 @@ class _TicketsMainClientState extends State<TicketsMainClient> {
     return true;
   }
 
+  int getMinutes() {
+    if (checkTicketValidity()) {
+      int hour = int.parse(timeController.text);
+      return hour * 60;
+    }
+    return 0;
+  }
+
   Widget buildSelectRecipient() {
     Map<String, dynamic> ticketData = {
       "vehicle": widget.vehicle,
+      "issued_minutes": getMinutes(),
       "issued_time": timeController.text.toString(),
       "issued_at": null,
       "expiry_at": null,
@@ -354,11 +363,10 @@ class _TicketsMainClientState extends State<TicketsMainClient> {
             const Gap(4),
             Expanded(
                 child: CustomFilledButton(
-              btnLabel: "Buy For Other",
+              btnLabel: "Buy Bundles",
               onTap: () => checkTicketValidity() == false
                   ? null
-                  : context.pushNamed("buy-parking-for-other",
-                      extra: ticketData),
+                  : context.pushNamed("buy-bundles", extra: ticketData),
               expand: true,
               backgroundColor: checkTicketValidity() == false
                   ? secondaryColor.withOpacity(0.5)

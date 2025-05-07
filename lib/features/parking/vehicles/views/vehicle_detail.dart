@@ -34,12 +34,11 @@ class _VehicleDetailState extends ConsumerState<VehicleDetail> {
           tickets = tickets
               .where((ticket) => ticket.vehicle == widget.vehicle.id)
               .toList();
+
           tickets.sort((a, b) {
-            if (a.expiry_at == null && b.expiry_at == null) return 0;
-            if (a.expiry_at == null) return -1;
-            if (b.expiry_at == null) return 1;
-            return DateTime.parse(a.expiry_at!)
-                .compareTo(DateTime.parse(b.expiry_at!));
+            final dateA = DateTime.parse(a.issued_at!);
+            final dateB = DateTime.parse(b.issued_at!);
+            return dateB.compareTo(dateA); // Sort in descending order
           });
           if (tickets.isEmpty) {
             return const Center(

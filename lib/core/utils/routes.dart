@@ -6,7 +6,8 @@ import 'package:portal/features/accounts/views/account_main.dart';
 import 'package:portal/features/auth/model/user_model.dart';
 import 'package:portal/features/notifications/views/notification_settings.dart';
 import 'package:portal/features/parking/main/parking_main.dart';
-import 'package:portal/features/parking/tickets/views/buy_for_other_page.dart';
+import 'package:portal/features/parking/tickets/model/parking_ticket_model.dart';
+import 'package:portal/features/parking/tickets/views/buy_bundles_page.dart';
 import 'package:portal/features/parking/tickets/views/purchase_successful.dart';
 import 'package:portal/features/parking/tickets/views/ticket_history_page.dart';
 import 'package:portal/features/parking/tickets/views/ticket_purchase_summary_page.dart';
@@ -94,19 +95,19 @@ final GoRouter router = GoRouter(
                       );
                     }),
                 GoRoute(
-                    path: '/buy_for_other',
-                    name: "buy-parking-for-other",
-                    builder: (context, state) => const BuyTicketForOtherPage()),
+                    path: '/buy_bundles',
+                    name: "buy-bundles",
+                    builder: (context, state) => const BuyBundlesPage()),
                 GoRoute(
                     path: '/purchase_successful',
                     name: "ticket-purchase-successful",
                     builder: (context, state) {
-                      final ticketData = state.extra as Map<String, dynamic>;
+                      final ticketData = state.extra as ParkingTicketModel;
                       return TicketPurchaseSuccessfulPage(
                         ticketData: ticketData,
                       );
                     }),
-              ]),
+              ]), 
           GoRoute(
               path: '/ticket_history',
               name: "ticket-history",

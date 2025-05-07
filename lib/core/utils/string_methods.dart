@@ -1,4 +1,6 @@
 import 'dart:math';
+import 'package:intl/intl.dart';
+
 
 String generateRandomString(int length) {
   const characters =
@@ -30,7 +32,7 @@ String capitalize(String input) {
 String dateFormatted(dynamic date) {
   if (date is String) {
     try {
-      date = DateTime.parse(date);
+      date = DateTime.parse(date).toLocal();
     } catch (e) {
       return '00-00-0000';
     }
@@ -44,7 +46,7 @@ String dateFormatted(dynamic date) {
 String timeFormatted(dynamic date) {
   if (date is String) {
     try {
-      date = DateTime.parse(date);
+      date = DateTime.parse(date).toLocal();
     } catch (e) {
       return '00:00';
     }
@@ -58,7 +60,7 @@ String timeFormatted(dynamic date) {
 String dateTimeFormatted(dynamic date) {
   if (date is String) {
     try {
-      date = DateTime.parse(date);
+      date = DateTime.parse(date).toLocal();
     } catch (e) {
       return '0000-00-00 00:00';
     }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class BuyTicketForOtherPage extends StatelessWidget {
-  const BuyTicketForOtherPage({super.key});
+class BuyBundlesPage extends StatelessWidget {
+  const BuyBundlesPage({super.key});
 
   @override
   Widget build(BuildContext context) {

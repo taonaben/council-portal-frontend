@@ -2,40 +2,39 @@ import 'package:flutter/cupertino.dart';
 import 'package:portal/components/widgets/custom_snackbar.dart';
 import 'package:portal/constants/colors.dart';
 import 'package:portal/core/utils/logs.dart';
+import 'package:portal/features/parking/tickets/model/parking_ticket_model.dart';
 import 'package:portal/features/parking/tickets/services/parking_ticket_services.dart';
 
 class TicketsCrud {
-  Future<bool> submitTicket({
-    required String vehicle_id,
-    required String issued_length,
-    required DateTime issued_at,
-    required DateTime expiry_at,
-    required double amount,
+  Future<ParkingTicketModel?> submitTicket({
+    required String vehicleId,
+    required int issuedMinutes,
     required BuildContext context,
   }) async {
     try {
-      var parkingServices = ParkingTicketServices();
-      bool result = await parkingServices.submitTicket(
-          vehicle_id: vehicle_id,
-          issued_length: issued_length,
-        );
+      final parkingServices = ParkingTicketServices();
+      final isSuccess = await parkingServices.submitTicket(
+        vehicleId: vehicleId,
+        issuedMinutes: issuedMinutes,
+      );
 
-      if (result) {
-        return true;
+      if (isSuccess != null) {
+        return isSuccess;
       } else {
         const CustomSnackbar(
-                message: 'Failed to submit ticket. Please try again.',
+                message: "Failed to buy ticket. Please try again later.",
                 color: redColor)
             .showSnackBar(context);
-        return false;
+
+        return null;
       }
     } catch (e) {
       DevLogs.logError("Error: ${e.toString()}");
       const CustomSnackbar(
-        message: 'An error occurred. Please try again.',
-        color: redColor,
-      ).showSnackBar(context);
-      return false;
+              message: "Failed to buy ticket. Please try again later.",
+              color: redColor)
+          .showSnackBar(context);
+      return null;
     }
   }
 }

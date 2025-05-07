@@ -7,13 +7,14 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:portal/constants/colors.dart';
 import 'package:portal/constants/dimensions.dart';
 import 'package:portal/core/utils/string_methods.dart';
+import 'package:portal/features/parking/tickets/model/parking_ticket_model.dart';
 
 class ParkingTimer extends StatefulWidget {
-  final Duration initialDuration;
+  final ParkingTicketModel activeTicket;
 
   const ParkingTimer({
     super.key,
-    this.initialDuration = const Duration(minutes: 30),
+    required this.activeTicket,
   });
 
   @override
@@ -28,9 +29,18 @@ class _ParkingTimerState extends State<ParkingTimer> {
   @override
   void initState() {
     super.initState();
-    _endTime = DateTime.now().add(widget.initialDuration);
-    _updateRemainingTime();
-    _startTimer();
+    try {
+      if (widget.activeTicket.expiry_at != null) {
+        _endTime = DateTime.parse(widget.activeTicket.expiry_at!);
+        _updateRemainingTime();
+        _startTimer();
+      } else {
+        _remainingTime = Duration.zero;
+      }
+    } catch (e) {
+      _remainingTime = Duration.zero;
+      debugPrint('Error initializing timer: $e');
+    }
   }
 
   @override
@@ -40,11 +50,16 @@ class _ParkingTimerState extends State<ParkingTimer> {
   }
 
   void _updateRemainingTime() {
-    final now = DateTime.now();
-    if (_endTime.isAfter(now)) {
-      _remainingTime = _endTime.difference(now);
-    } else {
+    try {
+      final now = DateTime.now();
+      if (_endTime.isAfter(now)) {
+        _remainingTime = _endTime.difference(now);
+      } else {
+        _remainingTime = Duration.zero;
+      }
+    } catch (e) {
       _remainingTime = Duration.zero;
+      debugPrint('Error updating remaining time: $e');
     }
   }
 
@@ -69,7 +84,7 @@ class _ParkingTimerState extends State<ParkingTimer> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(uniBorderRadius),
       ),
-      shadowColor:  blackColor.withOpacity(0.5),
+      shadowColor: blackColor.withOpacity(0.5),
       elevation: 5,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -101,19 +116,10 @@ class _ParkingTimerState extends State<ParkingTimer> {
     final minutes = twoDigits(_remainingTime.inMinutes.remainder(60));
     final seconds = twoDigits(_remainingTime.inSeconds.remainder(60));
 
-    // return Row(
-    //   mainAxisAlignment: MainAxisAlignment.center,
-    //   children: [
-    //     _buildTimeLabel(hours, 'hours', true),
-    //     // const Gap(8),
-    //     _buildTimeLabel(minutes, 'minutes', false),
-    //     // const Gap(8),
-    //     _buildTimeLabel(seconds, 'seconds', false),
-    //   ],
-    // );
-
     return Text(
-      "${hours != "00" ? "${hours}h" : ""}${minutes}m ${seconds}s left",
+      _remainingTime > Duration.zero
+          ? "${hours != "00" ? "${hours}h" : ""}${minutes}m ${seconds}s left"
+          : "00h 00m 00s left",
       style: const TextStyle(
         fontSize: 30,
         fontWeight: FontWeight.w900,
@@ -129,9 +135,9 @@ class _ParkingTimerState extends State<ParkingTimer> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          'Paid: ${timeFormatted(DateTime.now())} ',
+          'Paid: ${timeFormatted(widget.activeTicket.issued_at)} ',
           textAlign: TextAlign.center,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 10,
             color: textColor1,
           ),

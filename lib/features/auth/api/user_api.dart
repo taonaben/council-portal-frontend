@@ -19,7 +19,7 @@ class UserApi {
       );
     }
 
-    final url = Uri.parse("$baseUrl/users/$userId");
+    final url = Uri.parse("$baseUrl/users/$userId/");
     try {
       final response = await http.get(
         url,

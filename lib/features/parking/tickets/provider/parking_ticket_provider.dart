@@ -7,6 +7,11 @@ final allTicketsProvider =
   try {
     return ParkingTicketServices().fetchAllTickets().then((value) {
       if (value.isNotEmpty) {
+        value.sort((a, b) {
+          final dateA = DateTime.parse(a.issued_at!);
+          final dateB = DateTime.parse(b.issued_at!);
+          return dateB.compareTo(dateA); // Sort in descending order
+        }); // Sort latest first
         return value;
       } else {
         throw Exception('No tickets found');
@@ -17,6 +22,22 @@ final allTicketsProvider =
   }
 });
 
+final activeTicketProvider = FutureProvider<ParkingTicketModel?>((ref) async {
+  try {
+    return ParkingTicketServices().fetchAllTickets().then((value) {
+      if (value.isNotEmpty) {
+        final activeTicket = value.firstWhere(
+            (ticket) => ticket.status == 'active',
+            orElse: () => ParkingTicketModel.empty());
+        return activeTicket;
+      } else {
+        return ParkingTicketModel.empty();
+      }
+    });
+  } catch (e) {
+    throw Exception('Error fetching tickets: $e');
+  }
+});
 
 final parkingTicketsByVehicleProvider =
     FutureProviderFamily<List<ParkingTicketModel>, String>((ref, id) async {
@@ -32,4 +53,3 @@ final parkingTicketsByVehicleProvider =
     throw Exception('Error fetching tickets: $e');
   }
 });
-

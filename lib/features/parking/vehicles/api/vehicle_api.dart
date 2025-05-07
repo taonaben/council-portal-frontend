@@ -11,7 +11,7 @@ import 'package:portal/features/parking/vehicles/models/vehicle_model.dart';
 class VehicleApi {
   final Dio dio = Dio();
   Future<ApiResponse> fetchVehicles() async {
-    String url = "$baseUrl/vehicles/all";
+    String url = "$baseUrl/vehicles/all/";
     String token = await getSP("token");
 
     try {

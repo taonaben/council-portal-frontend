@@ -63,51 +63,52 @@ class ParkingTicketServices {
     }
   }
 
-
-
-  Future<bool> addTicket(ParkingTicketModel ticket) async {
+  Future<ParkingTicketModel?> addTicket(Map<String, dynamic> body) async {
     try {
-      var result = await ticketApi.addTicket(ticket);
-      if (result.success) {
+      var result = await ticketApi.addTicket(body);
+      if (result.success && result.data != null) {
+        final dataMap = result.data as Map<String, dynamic>;
+
+        // Check if the ticket is already a ParkingTicketModel instance
+        var ticketData = dataMap['ticket'];
+        ParkingTicketModel ticket = ticketData is ParkingTicketModel
+            ? ticketData
+            : ParkingTicketModel.fromJson(ticketData as Map<String, dynamic>);
+
         DevLogs.logInfo('Ticket added successfully: ${ticket.toJson()}');
-        return true;
+        return ticket;
       }
-      DevLogs.logError('Error adding ticket: ${result.message}');
-      return false;
+      DevLogs.logError('Error adding ticket add: ${result.message}');
+      return null;
     } catch (e) {
-      DevLogs.logError('Error: ${e.toString()}');
-      return false;
+      DevLogs.logError('Error in add services: ${e.toString()}');
+      return null;
     }
   }
 
-  Future<bool> submitTicket({
-    required String vehicle_id,
-    required String issued_length,
+  Future<ParkingTicketModel?> submitTicket({
+    required String vehicleId,
+    required int issuedMinutes,
   }) async {
     try {
-      var uuid = const Uuid();
-      String uuidString = uuid.v4(); // Generates a UUID v4 string
+      Map<String, dynamic> body = {
+        "vehicle": vehicleId,
+        "minutes_issued": issuedMinutes,
+      };
 
-      String user = await getSP("user");
+      var ticket = await addTicket(body);
 
-      ParkingTicketModel ticket = ParkingTicketModel(
-        id: uuidString,
-        ticket_number: generateTicketNumber(),
-        user: int.parse(user),
-        vehicle: vehicle_id,
-        city: cities[random.nextInt(cities.length)],
-        issued_length: issued_length,
-        status: "active",
-      );
+      if (ticket != null) {
+        DevLogs.logInfo('Ticket submitted successfully: ${ticket.toJson()}');
+        return ticket;
+      }
 
-      return await addTicket(ticket);
+      return null;
     } catch (e) {
-      DevLogs.logError('Error: ${e.toString()}');
-      return false;
+      DevLogs.logError('Error in submit services: ${e.toString()}');
+      return null;
     }
   }
-
-
 
   Future<ParkingTicketModel?> getTicketById(String id) async {
     try {

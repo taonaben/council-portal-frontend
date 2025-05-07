@@ -108,7 +108,7 @@ class ParkingTicketCard extends StatelessWidget {
         ),
         buildRow(
           title: 'Duration',
-          value: ticket.issued_length!,
+          value: "${ticket.minutes_issued! / 60} hours",
         ),
       ],
     );

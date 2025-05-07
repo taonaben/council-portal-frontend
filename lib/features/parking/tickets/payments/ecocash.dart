@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:portal/components/widgets/custom_circularProgressIndicator.dart';
 import 'package:portal/components/widgets/custom_filled_btn.dart';
 import 'package:portal/components/widgets/custom_outlined_btn.dart';
 import 'package:portal/components/widgets/custom_snackbar.dart';
@@ -79,38 +80,37 @@ class Ecocash extends StatelessWidget {
     BuildContext context,
   ) async {
     var ticketsCrud = TicketsCrud();
-    DateTime now = DateTime.now();
 
     VehicleModel vehicle = ticketData["vehicle"];
-    int issued_time = int.parse(ticketData["issued_time"]);
 
     // Prepare ticket data
-    var vehicle_id = vehicle.id;
-    var issued_length = ticketData["issued_time"];
-    var issued_at = now;
-    var expiry_at = now.add(Duration(hours: issued_time));
-    var amount = ticketData["amount"];
-
-    ticketData["issued_at"] = issued_at;
-    ticketData["expiry_at"] = expiry_at;
+    var vehicleId = vehicle.id;
+    int issuedMinutes = ticketData["issued_minutes"];
 
     try {
-      var result = ticketsCrud.submitTicket(
-          vehicle_id: vehicle_id!,
-          issued_length: issued_length,
-          issued_at: issued_at,
-          expiry_at: expiry_at,
-          amount: amount,
+      showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (context) => const Center(
+                child: CustomCircularProgressIndicator(color: textColor2),
+              ));
+
+      var result = await ticketsCrud.submitTicket(
+          vehicleId: vehicleId!,
+          issuedMinutes: issuedMinutes,
           context: context);
 
       DevLogs.logInfo("Ticket Data: $ticketData");
-      DevLogs.logInfo("list no: ${allTickets.length}");
 
-      context.pop(); // Close the Ecocash dialog
-      context.pushNamed(
-        "ticket-purchase-successful",
-        extra: ticketData,
-      );
+      if (result != null) {
+        // context.pop(); // Close the Ecocash dialog
+        context.pushReplacementNamed(
+          "ticket-purchase-successful",
+          extra: result,
+        );
+      }
+
+      Navigator.pop(context);
     } catch (e) {
       DevLogs.logError("Error $e");
       CustomSnackbar(message: "Error $e", color: redColor)

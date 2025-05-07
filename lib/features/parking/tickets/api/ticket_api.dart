@@ -7,9 +7,16 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class TicketApi {
+  String? _cachedToken;
+
+  Future<String> _getToken() async {
+    _cachedToken ??= await getSP("token");
+    return _cachedToken!;
+  }
+  
   Future<ApiResponse> fetchAllTickets() async {
     String url = "$baseUrl/parking_tickets/all/";
-    String token = await getSP("token");
+    String token = await _getToken();
 
     try {
       final response = await http.get(
@@ -57,7 +64,7 @@ class TicketApi {
 
   Future<ApiResponse> getTicketById(String id) async {
     String url = "$baseUrl/parking_tickets/$id";
-    String token = await getSP("token");
+    String token = await _getToken();
 
     try {
       final response = await http.get(
@@ -98,7 +105,7 @@ class TicketApi {
 
   Future<ApiResponse> fetchAllTicketsByVehicleId(String id) async {
     String url = "$baseUrl/parking_tickets/$id/";
-    String token = await getSP("token");
+    String token = await _getToken();
 
     DevLogs.logInfo("Url push: $url");
 
@@ -148,7 +155,7 @@ class TicketApi {
 
   Future<ApiResponse> updateTicket(String id, ParkingTicketModel ticket) async {
     String url = "$baseUrl/parking_tickets/$id";
-    String token = await getSP("token");
+    String token = await _getToken();
 
     try {
       final response = await http.put(
@@ -187,7 +194,7 @@ class TicketApi {
 
   Future<ApiResponse> fetchTicketsByVehicleId(String vehicleId) async {
     String url = "$baseUrl/parking_tickets/$vehicleId";
-    String token = await getSP("token");
+    String token = await _getToken();
 
     try {
       final response = await http.get(
@@ -227,9 +234,9 @@ class TicketApi {
     }
   }
 
-  Future<ApiResponse> addTicket(ParkingTicketModel ticket) async {
-    String url = "$baseUrl/parking_tickets/all";
-    String token = await getSP("token");
+  Future<ApiResponse> addTicket(Map<String, dynamic> body) async {
+    String url = "$baseUrl/parking_tickets/all/";
+    String token = await _getToken();
 
     try {
       final response = await http.post(
@@ -239,14 +246,14 @@ class TicketApi {
           'Accept': 'application/json',
           'Authorization': 'Bearer $token',
         },
-        body: jsonEncode(ticket.toJson()),
+        body: jsonEncode(body),
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         return ApiResponse(
           success: true,
           message: "success",
-          data: {'ticket': ticket},
+          data: {'ticket': ParkingTicketModel.fromJson(jsonDecode(response.body))},
         );
       } else {
         DevLogs.logError('Failed with status code: ${response.statusCode}');
