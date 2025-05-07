@@ -7,11 +7,14 @@ import 'package:portal/features/auth/model/user_model.dart';
 import 'package:portal/features/notifications/views/notification_settings.dart';
 import 'package:portal/features/parking/main/parking_main.dart';
 import 'package:portal/features/parking/tickets/model/parking_ticket_model.dart';
-import 'package:portal/features/parking/tickets/views/buy_bundles_page.dart';
-import 'package:portal/features/parking/tickets/views/purchase_successful.dart';
-import 'package:portal/features/parking/tickets/views/ticket_history_page.dart';
-import 'package:portal/features/parking/tickets/views/ticket_purchase_summary_page.dart';
-import 'package:portal/features/parking/tickets/views/tickets_main.dart';
+import 'package:portal/features/parking/tickets/views/bundles/bundle_purchase_successful.dart';
+import 'package:portal/features/parking/tickets/views/bundles/buy_bundles_page.dart';
+import 'package:portal/features/parking/tickets/views/bundles/my_bundles_page.dart';
+import 'package:portal/features/parking/tickets/views/bundles/select_bundle_payment.dart';
+import 'package:portal/features/parking/tickets/views/tickets/purchase_successful.dart';
+import 'package:portal/features/parking/tickets/views/tickets/ticket_history_page.dart';
+import 'package:portal/features/parking/tickets/views/tickets/ticket_purchase_summary_page.dart';
+import 'package:portal/features/parking/tickets/views/tickets/tickets_main.dart';
 import 'package:portal/features/parking/vehicles/api/vehicle_list.dart';
 import 'package:portal/features/parking/vehicles/models/vehicle_model.dart';
 import 'package:portal/features/parking/vehicles/views/vehicle_detail.dart';
@@ -95,9 +98,31 @@ final GoRouter router = GoRouter(
                       );
                     }),
                 GoRoute(
-                    path: '/buy_bundles',
-                    name: "buy-bundles",
-                    builder: (context, state) => const BuyBundlesPage()),
+                  path: '/buy_bundles',
+                  name: "buy-bundles",
+                  builder: (context, state) {
+                    return const BuyBundlesPage();
+                  },
+                  routes: [
+                    GoRoute(
+                      path: "/select_bundle_payment",
+                      name: "select-bundle-payment",
+                      builder: (context, state) {
+                        final bundle = state.extra as Map<String, dynamic>;
+                        return SelectBundlePayment(
+                          bundle: bundle,
+                        );
+                      },
+                    ),
+                    GoRoute(
+                        path: '/purchase_successful',
+                        name: "bundle-purchase-successful",
+                        builder: (context, state) {
+                          final bundle = state.extra as Map<String, dynamic>;
+                          return BundlePurchaseSuccessfulPage(bundle: bundle);
+                        }),
+                  ],
+                ),
                 GoRoute(
                     path: '/purchase_successful',
                     name: "ticket-purchase-successful",
@@ -107,7 +132,14 @@ final GoRouter router = GoRouter(
                         ticketData: ticketData,
                       );
                     }),
-              ]), 
+              ]),
+          GoRoute(
+              path: '/my_bundles',
+              name: "my-bundles",
+              builder: (context, state) {
+                final vehicleId = state.extra as String;
+                return MyBundlesPage(vehicleId: vehicleId,);
+              }),
           GoRoute(
               path: '/ticket_history',
               name: "ticket-history",

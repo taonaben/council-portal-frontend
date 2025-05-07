@@ -43,7 +43,7 @@ class TicketApi {
           success: true,
           message: "success",
           data: {'tickets': tickets},
-        );
+        ); 
       } else {
         DevLogs.logError('Failed with status code: ${response.statusCode}');
         return ApiResponse(

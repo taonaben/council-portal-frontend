@@ -105,13 +105,15 @@ class ParkingMainSection extends ConsumerWidget {
         "extra": vehicle,
       },
       {
-        "text": "History",
+        "text": "My Bundles",
         "icon": const Icon(
-          CupertinoIcons.clock,
+          CupertinoIcons.rectangle_3_offgrid,
           color: textColor2,
         ),
-        "route": "ticket-history",
+        "route": "my-bundles",
+        "extra": vehicle.id.toString(),
       },
+
       {
         "text": "My Cars",
         "icon": const Icon(
@@ -120,14 +122,15 @@ class ParkingMainSection extends ConsumerWidget {
         ),
         "route": "my-vehicles",
       },
-      // {
-      //   "text": "Alerts",
-      //   "icon": const Icon(
-      //     CupertinoIcons.bell,
-      //     color: textColor2,
-      //   ),
-      //   "route": "",
-      // },
+      {
+        "text": "History",
+        "icon": const Icon(
+          CupertinoIcons.clock,
+          color: textColor2,
+        ),
+        "route": "ticket-history",
+      },
+
       // {
       //   "text": "Account",
       //   "icon": const Icon(

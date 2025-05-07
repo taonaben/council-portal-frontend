@@ -7,27 +7,23 @@ import 'package:portal/components/widgets/custom_filled_btn.dart';
 import 'package:portal/constants/colors.dart';
 import 'package:portal/constants/dimensions.dart';
 import 'package:portal/features/parking/tickets/payments/bank_transfer.dart';
-import 'package:portal/features/parking/tickets/payments/ecocash.dart';
 import 'package:portal/features/parking/tickets/payments/card_payment.dart';
+import 'package:portal/features/parking/tickets/payments/ecocash.dart';
 import 'package:portal/features/parking/tickets/payments/onemoney.dart';
-import 'package:portal/features/parking/vehicles/models/vehicle_model.dart';
 
-class TicketPurchaseSummaryPage extends StatefulWidget {
-  final Map<String, dynamic> ticketData;
-  const TicketPurchaseSummaryPage({super.key, required this.ticketData});
+class SelectBundlePayment extends StatefulWidget {
+  final Map<String, dynamic> bundle;
+  const SelectBundlePayment({super.key, required this.bundle});
 
   @override
-  State<TicketPurchaseSummaryPage> createState() =>
-      _TicketPurchaseSummaryPageState();
+  State<SelectBundlePayment> createState() => _SelectBundlePaymentState();
 }
 
-class _TicketPurchaseSummaryPageState extends State<TicketPurchaseSummaryPage> {
+class _SelectBundlePaymentState extends State<SelectBundlePayment> {
   PaymentMethod? _selectedPayment;
 
   @override
   Widget build(BuildContext context) {
-    VehicleModel vehicle = widget.ticketData['vehicle'];
-
     return Scaffold(
       appBar: AppBar(
         title: const Text("Confirm Payment"),
@@ -38,7 +34,7 @@ class _TicketPurchaseSummaryPageState extends State<TicketPurchaseSummaryPage> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          buildHeader(vehicle),
+          buildHeader(),
           const Gap(16),
           const Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -56,7 +52,7 @@ class _TicketPurchaseSummaryPageState extends State<TicketPurchaseSummaryPage> {
     );
   }
 
-  Widget buildHeader(VehicleModel vehicle) {
+  Widget buildHeader() {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
@@ -76,42 +72,37 @@ class _TicketPurchaseSummaryPageState extends State<TicketPurchaseSummaryPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ListTile(
-              leading: CircleAvatar(
-                  backgroundColor: background2,
-                  child: Icon(
-                    Icons.directions_car_filled_outlined,
-                    color: textColor1,
-                  )),
-              title: Text("${vehicle.brand} ${vehicle.model}"),
-              subtitle: Text(
-                vehicle.plate_number,
-                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-              ),
-            ),
+            buildRow(
+                title: "Bundle", value: "${widget.bundle["quantity"]} tickets"),
+            const Gap(8),
             const CustomDivider(
-              color: secondaryColor,
+              color: textColor2,
               isBroken: true,
             ),
-            const Text("Your Order", style: TextStyle(color: secondaryColor)),
-            const Gap(16),
-            boughtTicketCard(),
+            const Gap(8),
+            buildRow(
+                title: "Ticket Minutes",
+                value: "${widget.bundle["ticket_minutes"]} minutes"),
+            const Gap(8),
+            buildRow(title: "Price", value: "USD \$${widget.bundle["price"]}"),
           ],
         ),
       ),
     );
   }
 
-  Widget boughtTicketCard() {
+  Widget buildRow({required String title, required String value}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text("${widget.ticketData["issued_time"]} hours",
-            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
         Text(
-          "USD\$ ${widget.ticketData["amount"]}",
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-        )
+          title,
+          textAlign: TextAlign.start,
+        ),
+        Text(
+          value,
+          textAlign: TextAlign.end,
+        ),
       ],
     );
   }
@@ -119,34 +110,30 @@ class _TicketPurchaseSummaryPageState extends State<TicketPurchaseSummaryPage> {
   Widget buildBody() {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: buildPaymentSection(),
-    );
-  }
-
-  Widget buildPaymentSection() {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: background1,
-        borderRadius: BorderRadius.circular(uniBorderRadius),
-        boxShadow: [
-          BoxShadow(
-            color: blackColor.withOpacity(0.5),
-            offset: const Offset(0, 4),
-            blurRadius: 8,
-            spreadRadius: 1,
-          ),
-        ],
-      ),
-      child: ListView.separated(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        itemCount: PaymentMethod.values.length,
-        separatorBuilder: (context, index) => const SizedBox(height: 8),
-        itemBuilder: (context, index) {
-          final method = PaymentMethod.values[index];
-          return buildPaymentOption(method);
-        },
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: background1,
+          borderRadius: BorderRadius.circular(uniBorderRadius),
+          boxShadow: [
+            BoxShadow(
+              color: blackColor.withOpacity(0.5),
+              offset: const Offset(0, 4),
+              blurRadius: 8,
+              spreadRadius: 1,
+            ),
+          ],
+        ),
+        child: ListView.separated(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: PaymentMethod.values.length,
+          separatorBuilder: (context, index) => const SizedBox(height: 8),
+          itemBuilder: (context, index) {
+            final method = PaymentMethod.values[index];
+            return buildPaymentOption(method);
+          },
+        ),
       ),
     );
   }
@@ -219,7 +206,7 @@ class _TicketPurchaseSummaryPageState extends State<TicketPurchaseSummaryPage> {
             children: [
               const Text("Total"),
               Text(
-                "USD\$ ${widget.ticketData["amount"]}",
+                "USD\$ ${widget.bundle["price"]}",
                 style: const TextStyle(
                     color: redColor, fontWeight: FontWeight.bold, fontSize: 18),
               )
@@ -242,21 +229,28 @@ class _TicketPurchaseSummaryPageState extends State<TicketPurchaseSummaryPage> {
     );
   }
 
-  final Map<PaymentMethod,
+  late final Map<PaymentMethod,
           Widget Function(BuildContext, Map<String, dynamic> ticketData)>
-      _paymentDialogs = {
-    PaymentMethod.ecocash: (context, ticketData) => Ecocash(
-          ticketData: ticketData,
-        ),
-    PaymentMethod.oneMoney: (context, ticketData) =>
-        Onemoney(ticketData: ticketData),
-    PaymentMethod.bankTransfer: (context, ticketData) => BankTransfer(
-          ticketData: ticketData,
-        ),
-    PaymentMethod.card: (context, ticketData) => CardPayment(
-          ticketData: ticketData,
-        ),
-  };
+      _paymentDialogs;
+
+  @override
+  void initState() {
+    super.initState();
+    _paymentDialogs = {
+      PaymentMethod.ecocash: (context, ticketData) => EcoCash(
+            purchasedItem: ItemPurchased.bundle,
+            bundleData: widget.bundle,
+          ),
+      PaymentMethod.oneMoney: (context, ticketData) =>
+          Onemoney(ticketData: ticketData),
+      PaymentMethod.bankTransfer: (context, ticketData) => BankTransfer(
+            ticketData: ticketData,
+          ),
+      PaymentMethod.card: (context, ticketData) => CardPayment(
+            ticketData: ticketData,
+          ),
+    };
+  }
 
   void _handlePayment() {
     if (_selectedPayment == null) return;
@@ -265,7 +259,7 @@ class _TicketPurchaseSummaryPageState extends State<TicketPurchaseSummaryPage> {
     if (dialogBuilder != null) {
       showDialog(
         context: context,
-        builder: (context) => dialogBuilder(context, widget.ticketData),
+        builder: (context) => dialogBuilder(context, widget.bundle),
       );
     } else {
       debugPrint('No payment method selected');

@@ -13,34 +13,35 @@ class AuthServices {
   Future<User> login(String username, String password) async {
     final String usernameEmail = username.trim();
 
-   
     try {
       // if (!usernameRegex.hasMatch(usernameEmail)) {
       //   throw Exception('Invalid email format');
       // }
 
       final response = await authApi.login(usernameEmail, password);
-     if (response.success) {
-      // Ensure the values are strings before saving
-      final accessToken = response.data["access"]?.toString();
-      final refreshToken = response.data["refresh"]?.toString();
-      final userId = response.data["user"]?.toString();
+      if (response.success) {
+        // Ensure the values are strings before saving
+        final accessToken = response.data["access"]?.toString();
+        final refreshToken = response.data["refresh"]?.toString();
+        final userId = response.data["user"]?.toString();
 
-      if (accessToken == null || refreshToken == null || userId == null) {
-        throw Exception('Invalid response data');
+        if (accessToken == null || refreshToken == null || userId == null) {
+          throw Exception('Invalid response data');
+        }
+
+        await saveSP("token", accessToken);
+        await saveSP("refresh_token", refreshToken);
+        await saveSP("user", userId);
+
+        // Get user ID as int for API call
+        final userIdInt = int.parse(userId);
+        final user = await UserService().getUserById(userIdInt);
+
+        await saveSP("city", user.city.toString());
+
+        DevLogs.logInfo("User logged in: ${user.username}");
+        return user;
       }
-
-      await saveSP("token", accessToken);
-      await saveSP("refresh_token", refreshToken);
-      await saveSP("user", userId);
-
-      // Get user ID as int for API call
-      final userIdInt = int.parse(userId);
-      final user = await UserService().getUserById(userIdInt);
-
-      DevLogs.logInfo("User logged in: ${user.username}");
-      return user;
-    }
       throw Exception('Login failed');
     } catch (e) {
       DevLogs.logError("Login error: $e");
