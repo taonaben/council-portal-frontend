@@ -16,3 +16,20 @@ final allTicketsProvider =
     throw Exception('Error fetching tickets: $e');
   }
 });
+
+
+final parkingTicketsByVehicleProvider =
+    FutureProviderFamily<List<ParkingTicketModel>, String>((ref, id) async {
+  try {
+    return ParkingTicketServices().fetchTicketsByVehicleId(id).then((value) {
+      if (value.isNotEmpty) {
+        return value;
+      } else {
+        throw Exception('No tickets found');
+      }
+    });
+  } catch (e) {
+    throw Exception('Error fetching tickets: $e');
+  }
+});
+

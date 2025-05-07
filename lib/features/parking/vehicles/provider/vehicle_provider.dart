@@ -27,11 +27,17 @@ final getVehicleByIdProvider =
   }
 });
 
-final activeVehicleProvider =
-    StateNotifierProvider<ActiveVehicleNotifier, VehicleModel?>((ref) {
-  return ActiveVehicleNotifier();
+final activeVehicleProvider = FutureProvider<VehicleModel?>((ref) async {
+  try {
+    final vehicles = await VehicleServices().fetchVehicles();
+    return vehicles.firstWhere(
+      (vehicle) => vehicle.is_active == true,
+      // orElse: () => null,
+    );
+  } catch (e) {
+    throw Exception('Error fetching active vehicle: $e');
+  }
 });
-
 class ActiveVehicleNotifier extends StateNotifier<VehicleModel?> {
   ActiveVehicleNotifier() : super(null) {
     // Initialize with the active vehicle if one exists

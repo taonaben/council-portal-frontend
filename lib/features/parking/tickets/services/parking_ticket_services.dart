@@ -36,6 +36,35 @@ class ParkingTicketServices {
     }
   }
 
+  Future<List<ParkingTicketModel>> fetchTicketsByVehicleId(String id) async {
+    try {
+      var result = await ticketApi.fetchTicketsByVehicleId(id);
+      if (result.success || result.data != null) {
+        final dataMap = result.data as Map<String, dynamic>;
+        List<dynamic> ticketsList = dataMap['tickets'];
+
+        DevLogs.logInfo('Fetched tickets in services: ${ticketsList.length}');
+
+        if (ticketsList.isNotEmpty && ticketsList.first is ParkingTicketModel) {
+          return ticketsList.cast<ParkingTicketModel>();
+        }
+
+        // Otherwise, map the JSON objects to ParkingTicketModel instances
+        return ticketsList
+            .map((ticket) =>
+                ParkingTicketModel.fromJson(ticket as Map<String, dynamic>))
+            .toList();
+      }
+      DevLogs.logError('Error fetching tickets: ${result.message}');
+      return [];
+    } catch (e) {
+      DevLogs.logError('Error in services: ${e.toString()}');
+      return [];
+    }
+  }
+
+
+
   Future<bool> addTicket(ParkingTicketModel ticket) async {
     try {
       var result = await ticketApi.addTicket(ticket);
@@ -78,23 +107,7 @@ class ParkingTicketServices {
     }
   }
 
-  Future<List<ParkingTicketModel>> fetchTicketsByVehicleId(
-      String vehicleId) async {
-    try {
-      var result = await ticketApi.fetchTicketsByVehicleId(vehicleId);
-      if (result.success || result.data != null) {
-        final dataMap = result.data as Map<String, dynamic>;
-        List<dynamic> ticketsList = dataMap['tickets'];
 
-        return ticketsList
-            .map((ticket) => ParkingTicketModel.fromJson(ticket))
-            .toList();
-      }
-    } catch (e) {
-      DevLogs.logError('Error: ${e.toString()}');
-    }
-    return [];
-  }
 
   Future<ParkingTicketModel?> getTicketById(String id) async {
     try {

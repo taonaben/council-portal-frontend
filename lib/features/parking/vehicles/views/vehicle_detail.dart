@@ -24,45 +24,51 @@ class _VehicleDetailState extends ConsumerState<VehicleDetail> {
   @override
   Widget build(BuildContext context) {
     final allTicketsAsyncValue = ref.watch(allTicketsProvider);
-    return allTicketsAsyncValue.when(
-      data: (tickets) {
-        tickets = tickets
-            .where((ticket) => ticket.vehicle == widget.vehicle.id)
-            .toList();
-        tickets.sort((a, b) {
-          if (a.expiry_at == null && b.expiry_at == null) return 0;
-          if (a.expiry_at == null) return -1;
-          if (b.expiry_at == null) return 1;
-          return DateTime.parse(a.expiry_at!)
-              .compareTo(DateTime.parse(b.expiry_at!));
-        });
-        if (tickets.isEmpty) {
-          return const Center(
-            child: Text('No tickets found'),
-          );
-        } else {
-          return Scaffold(
-            backgroundColor: background2,
-            body: Column(
-              children: [
-                const SizedBox(height: 16),
-                carDetail(),
-                const SizedBox(height: 16),
-                Expanded(child: ticketSection(tickets: tickets)),
-              ],
-            ),
-          );
-        }
-      },
-      error: (err, stack) {
-        CustomSnackbar(
-          message: 'Error: $err',
-          color: redColor,
-        ).showSnackBar(context);
-        return const SizedBox();
-      },
-      loading: () => const CustomCircularProgressIndicator(
-        color: textColor2,
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: background2,
+        foregroundColor: textColor1,
+      ),
+      body: allTicketsAsyncValue.when(
+        data: (tickets) {
+          tickets = tickets
+              .where((ticket) => ticket.vehicle == widget.vehicle.id)
+              .toList();
+          tickets.sort((a, b) {
+            if (a.expiry_at == null && b.expiry_at == null) return 0;
+            if (a.expiry_at == null) return -1;
+            if (b.expiry_at == null) return 1;
+            return DateTime.parse(a.expiry_at!)
+                .compareTo(DateTime.parse(b.expiry_at!));
+          });
+          if (tickets.isEmpty) {
+            return const Center(
+              child: Text('No tickets found'),
+            );
+          } else {
+            return Scaffold(
+              backgroundColor: background2,
+              body: Column(
+                children: [
+                  const SizedBox(height: 16),
+                  carDetail(),
+                  const SizedBox(height: 16),
+                  Expanded(child: ticketSection(tickets: tickets)),
+                ],
+              ),
+            );
+          }
+        },
+        error: (err, stack) {
+          CustomSnackbar(
+            message: 'Error: $err',
+            color: redColor,
+          ).showSnackBar(context);
+          return const SizedBox();
+        },
+        loading: () => const CustomCircularProgressIndicator(
+          color: textColor2,
+        ),
       ),
     );
   }
@@ -90,12 +96,20 @@ class _VehicleDetailState extends ConsumerState<VehicleDetail> {
                 radius: 40,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(uniBorderRadius),
-                  child: Image.asset(
-                    widget.vehicle.image!,
-                    fit: BoxFit.cover,
-                    width: 80,
-                    height: 80,
-                  ),
+                  child: widget.vehicle.image != null &&
+                          widget.vehicle.image!.isNotEmpty
+                      ? Image.network(
+                          widget.vehicle.image!,
+                          errorBuilder: (context, error, stackTrace) =>
+                              const Icon(
+                            Icons.error,
+                            color: secondaryColor,
+                          ),
+                        )
+                      : const Icon(
+                          Icons.directions_car,
+                          color: secondaryColor,
+                        ),
                 ),
               ),
               const SizedBox(width: 16),

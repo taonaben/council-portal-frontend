@@ -13,16 +13,11 @@ import 'package:portal/features/parking/vehicles/models/vehicle_model.dart';
 import 'package:portal/features/parking/vehicles/provider/vehicle_provider.dart';
 
 class ParkingMainSection extends ConsumerWidget {
-  ParkingMainSection({super.key});
+  final VehicleModel activeVehicle;
+  ParkingMainSection({super.key, required this.activeVehicle});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final activeVehicle = ref.watch(activeVehicleProvider);
-
-    if (activeVehicle == null) {
-      return const Center(child: Text("No vehicle data available"));
-    }
-
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(uniBorderRadius),
@@ -59,13 +54,22 @@ class ParkingMainSection extends ConsumerWidget {
             const Gap(16),
             Row(
               children: [
-                Text(
-                  vehicle.plate_number,
-                  style: const TextStyle(
-                    // fontFamily: GoogleFonts.staatliches().fontFamily,
-                    color: textColor1,
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
+                GestureDetector(
+                  onTap: () => context.pushNamed(
+                    'vehicle-details',
+                    pathParameters: {
+                      'plate_number': activeVehicle.plate_number
+                    },
+                    extra: activeVehicle,
+                  ),
+                  child: Text(
+                    vehicle.plate_number,
+                    style: const TextStyle(
+                      // fontFamily: GoogleFonts.staatliches().fontFamily,
+                      color: textColor1,
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ],

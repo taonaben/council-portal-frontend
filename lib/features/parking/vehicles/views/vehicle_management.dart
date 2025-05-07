@@ -18,31 +18,37 @@ class _VehicleManagementState extends ConsumerState<VehicleManagement> {
   @override
   Widget build(BuildContext context) {
     final allVehiclesAsyncValue = ref.watch(allVehiclesProvider);
-    return allVehiclesAsyncValue.when(
-      data: (vehicles) {
-        if (vehicles.isEmpty) {
-          return const Center(
-            child: Text('No vehicles found'),
-          ); 
-        } else {
-          return ListView.builder(
-            itemCount: vehicles.length,
-            itemBuilder: (context, index) {
-              final vehicle = vehicles[index];
-              return VehicleCard(vehicle: vehicle);
-            },
-          );
-        }
-      },
-      error: (err, stack) {
-        CustomSnackbar(
-          message: 'Error: $err',
-          color: redColor,
-        ).showSnackBar(context);
-        return const SizedBox();
-      },
-      loading: () => const CustomCircularProgressIndicator(
-        color: textColor2,
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('My Vehicles'),
+        centerTitle: true,
+      ),
+      body: allVehiclesAsyncValue.when(
+        data: (vehicles) {
+          if (vehicles.isEmpty) {
+            return const Center(
+              child: Text('No vehicles found'),
+            );
+          } else {
+            return ListView.builder(
+              itemCount: vehicles.length,
+              itemBuilder: (context, index) {
+                final vehicle = vehicles[index];
+                return VehicleCard(vehicle: vehicle);
+              },
+            );
+          }
+        },
+        error: (err, stack) {
+          CustomSnackbar(
+            message: 'Error: $err',
+            color: redColor,
+          ).showSnackBar(context);
+          return const SizedBox();
+        },
+        loading: () => const CustomCircularProgressIndicator(
+          color: textColor2,
+        ),
       ),
     );
   }

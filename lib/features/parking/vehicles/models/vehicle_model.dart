@@ -62,6 +62,8 @@ class VehicleModel {
     );
   }
 
+  
+
   factory VehicleModel.fromJson(Map<String, dynamic> json) =>
       _$VehicleModelFromJson(json);
   Map<String, dynamic> toJson() => _$VehicleModelToJson(this);

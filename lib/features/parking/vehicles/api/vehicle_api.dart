@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:portal/constants/keys_and_urls.dart';
 import 'package:portal/core/utils/api_response.dart';
+import 'package:portal/core/utils/logs.dart';
 import 'package:portal/core/utils/shared_prefs.dart';
 import 'package:portal/features/parking/vehicles/api/vehicle_list.dart';
 import 'package:dio/dio.dart';
@@ -22,9 +25,16 @@ class VehicleApi {
           ));
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        List<VehicleModel> vehicles = (response.data as List)
-            .map((vehicle) => VehicleModel.fromJson(vehicle))
-            .toList();
+        var jsonResponse = response.data; // Use response.data directly
+
+        List<dynamic> data = jsonResponse["results"];
+
+        List<VehicleModel> vehicles =
+            data.map((vehicle) => VehicleModel.fromJson(vehicle)).toList();
+
+        DevLogs.logInfo("Fetched vehicles in Api: ${vehicles.length}");
+        DevLogs.logInfo(
+            "Fetched vehicles in Api: ${vehicles.map((vehicle) => vehicle.toJson()).toList()}");
 
         return ApiResponse(
           success: true,
@@ -32,6 +42,8 @@ class VehicleApi {
           data: {'vehicles': vehicles},
         );
       } else {
+        DevLogs.logError(
+            "Failed with status code in api: ${response.statusCode}");
         return ApiResponse(
           success: false,
           message: 'Failed with status code: ${response.statusCode}',
@@ -39,6 +51,7 @@ class VehicleApi {
         );
       }
     } catch (e) {
+      DevLogs.logError("Error in api: $e");
       return ApiResponse(
         success: false,
         message: e.toString(),
@@ -122,11 +135,14 @@ class VehicleApi {
   }
 
   Future<ApiResponse> updateVehicle(VehicleModel vehicle) async {
-    String url = "$baseUrl/vehicles/${vehicle.id}";
+    String url = "$baseUrl/vehicles/${vehicle.id}/";
     String token = await getSP("token");
 
+    DevLogs.logInfo("Patching: $url");
+    DevLogs.logInfo("Payload being sent: ${vehicle.toJson()}");
+
     try {
-      var response = await dio.patch(url,
+      var response = await dio.put(url,
           data: vehicle.toJson(),
           options: Options(
             headers: {
@@ -135,6 +151,8 @@ class VehicleApi {
               'Authorization': 'Bearer $token',
             },
           ));
+      DevLogs.logInfo("Status code: ${response.statusCode}");
+      DevLogs.logInfo("Response data: ${response.data}");
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         return ApiResponse(
@@ -150,6 +168,11 @@ class VehicleApi {
         );
       }
     } catch (e) {
+      if (e is DioException) {
+        DevLogs.logError("DioException: ${e.response?.data}");
+      } else {
+        DevLogs.logError("Error: $e");
+      }
       return ApiResponse(
         success: false,
         message: e.toString(),

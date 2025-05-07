@@ -8,7 +8,7 @@ import 'dart:convert';
 
 class TicketApi {
   Future<ApiResponse> fetchAllTickets() async {
-    String url = "$baseUrl/parking_tickets/all";
+    String url = "$baseUrl/parking_tickets/all/";
     String token = await getSP("token");
 
     try {
@@ -29,7 +29,8 @@ class TicketApi {
             data.map((ticket) => ParkingTicketModel.fromJson(ticket)).toList();
 
         DevLogs.logInfo("Fetched tickets in Api: ${tickets.length}");
-        DevLogs.logInfo("Fetched tickets in Api: ${tickets.map((ticket) => ticket.toJson()).toList()}");
+        DevLogs.logInfo(
+            "Fetched tickets in Api: ${tickets.map((ticket) => ticket.toJson()).toList()}");
 
         return ApiResponse(
           success: true,
@@ -91,6 +92,56 @@ class TicketApi {
         success: false,
         message: e.toString(),
         data: {'ticket': null},
+      );
+    }
+  }
+
+  Future<ApiResponse> fetchAllTicketsByVehicleId(String id) async {
+    String url = "$baseUrl/parking_tickets/$id/";
+    String token = await getSP("token");
+
+    DevLogs.logInfo("Url push: $url");
+
+    try {
+      final response = await http.get(
+        Uri.parse(url),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var jsonResponse = jsonDecode(response.body); // Decode as a Map
+        List<dynamic> data =
+            jsonResponse['results']; // Access the 'tickets' field
+        List<ParkingTicketModel> tickets =
+            data.map((ticket) => ParkingTicketModel.fromJson(ticket)).toList();
+
+        DevLogs.logInfo("Fetched tickets in Api: ${tickets.length}");
+        DevLogs.logInfo(
+            "Fetched tickets in Api: ${tickets.map((ticket) => ticket.toJson()).toList()}");
+
+        return ApiResponse(
+          success: true,
+          message: "success",
+          data: {'tickets': tickets},
+        );
+      } else {
+        DevLogs.logError('Failed with status code: ${response.statusCode}');
+        return ApiResponse(
+          success: false,
+          message: 'Failed with status code: ${response.statusCode}',
+          data: {'tickets': []},
+        );
+      }
+    } catch (e) {
+      DevLogs.logError("Error fetching tickets: ${e.toString()}");
+      return ApiResponse(
+        success: false,
+        message: e.toString(),
+        data: {'tickets': []},
       );
     }
   }

@@ -12,8 +12,17 @@ class VehicleServices {
         final dataMap = response.data as Map<String, dynamic>;
         List<dynamic> vehiclesList = dataMap['vehicles'];
 
+        DevLogs.logInfo("Fetched Vehicles in services: ${vehiclesList.length}");
+
+        // Check if the items in vehiclesList are already VehicleModel instances
+        if (vehiclesList.isNotEmpty && vehiclesList.first is VehicleModel) {
+          return vehiclesList.cast<VehicleModel>();
+        }
+
+        // Otherwise, map the JSON objects to VehicleModel instances
         return vehiclesList
-            .map((vehicle) => VehicleModel.fromJson(vehicle))
+            .map((vehicle) =>
+                VehicleModel.fromJson(vehicle as Map<String, dynamic>))
             .toList();
       }
     } catch (e) {
