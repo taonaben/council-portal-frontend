@@ -8,6 +8,7 @@ import 'package:portal/features/notifications/views/notification_settings.dart';
 import 'package:portal/features/parking/main/parking_main.dart';
 import 'package:portal/features/parking/tickets/views/buy_for_other_page.dart';
 import 'package:portal/features/parking/tickets/views/purchase_successful.dart';
+import 'package:portal/features/parking/tickets/views/ticket_history_page.dart';
 import 'package:portal/features/parking/tickets/views/ticket_purchase_summary_page.dart';
 import 'package:portal/features/parking/tickets/views/tickets_main.dart';
 import 'package:portal/features/parking/vehicles/api/vehicle_list.dart';
@@ -65,8 +66,7 @@ final GoRouter router = GoRouter(
         }),
     GoRoute(
         path: '/terms-of-service',
-        name: "terms-of-service"
-        ,
+        name: "terms-of-service",
         builder: (context, state) => const TermsOfService()),
     GoRoute(
         path: '/privacy_policy',
@@ -108,6 +108,10 @@ final GoRouter router = GoRouter(
                     }),
               ]),
           GoRoute(
+              path: '/ticket_history',
+              name: "ticket-history",
+              builder: (context, state) => const TicketHistoryPage()),
+          GoRoute(
               path: '/vehicles',
               builder: (context, state) => const VehicleManagement(),
               name: "my-vehicles",
@@ -139,7 +143,7 @@ final GoRouter router = GoRouter(
         path: '/client/accounts',
         name: "accounts",
         builder: (context, state) => const AccountMain()),
-        GoRoute(
+    GoRoute(
         path: '/client/notification_settings',
         name: "notification-settings",
         builder: (context, state) => const NotificationSettings()),

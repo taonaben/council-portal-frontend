@@ -27,16 +27,46 @@ String capitalize(String input) {
   return input[0].toUpperCase() + input.substring(1);
 }
 
-String dateFormatted(DateTime date) {
-  return '${twoDigits(date.day)}-${twoDigits(date.month)}-${date.year}';
+String dateFormatted(dynamic date) {
+  if (date is String) {
+    try {
+      date = DateTime.parse(date);
+    } catch (e) {
+      return '00-00-0000';
+    }
+  }
+  if (date is DateTime) {
+    return '${twoDigits(date.day)}-${twoDigits(date.month)}-${date.year}';
+  }
+  return '00-00-0000';
 }
 
-String timeFormatted(DateTime date) {
-  return '${twoDigits(date.hour)}:${twoDigits(date.minute)}';
+String timeFormatted(dynamic date) {
+  if (date is String) {
+    try {
+      date = DateTime.parse(date);
+    } catch (e) {
+      return '00:00';
+    }
+  }
+  if (date is DateTime) {
+    return '${twoDigits(date.hour)}:${twoDigits(date.minute)}';
+  }
+  return '00:00';
 }
 
-String dateTimeFormatted(DateTime date) {
-  return '${date.year}-${twoDigits(date.month)}-${twoDigits(date.day)} ${timeFormatted(date)}';
+String dateTimeFormatted(dynamic date) {
+  if (date is String) {
+    try {
+      date = DateTime.parse(date);
+    } catch (e) {
+      return '0000-00-00 00:00';
+    }
+  }
+  if (date is DateTime) {
+    return '${date.year}-${twoDigits(date.month)}-${twoDigits(date.day)} ${timeFormatted(date)}';
+  }
+  return '0000-00-00 00:00';
 }
 
 String numberFormatted(String number) {

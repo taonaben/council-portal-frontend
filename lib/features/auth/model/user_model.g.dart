@@ -18,7 +18,7 @@ User _$UserFromJson(Map<String, dynamic> json) => User(
       is_staff: json['is_staff'] as bool?,
       is_active: json['is_active'] as bool?,
       accounts: (json['accounts'] as List<dynamic>?)
-          ?.map((e) => e as String)
+          ?.map((e) => (e as num).toInt())
           .toList(),
       properties: (json['properties'] as List<dynamic>?)
           ?.map((e) => e as String)

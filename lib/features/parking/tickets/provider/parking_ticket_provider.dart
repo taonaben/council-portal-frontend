@@ -2,9 +2,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:portal/features/parking/tickets/model/parking_ticket_model.dart';
 import 'package:portal/features/parking/tickets/services/parking_ticket_services.dart';
 
-final allTicketsProvider = FutureProvider<List<ParkingTicketModel>>((ref) async {
+final allTicketsProvider =
+    FutureProvider<List<ParkingTicketModel>>((ref) async {
   try {
-    return ParkingTicketServices().fetchTickets().then((value) {
+    return ParkingTicketServices().fetchAllTickets().then((value) {
       if (value.isNotEmpty) {
         return value;
       } else {

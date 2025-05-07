@@ -8,7 +8,7 @@ class User {
   final String username;
   final String first_name;
   final String last_name;
-  final List<String>? accounts;
+  final List<int>? accounts;
   final String email;
   final String phone_number;
   final List<String>? properties;

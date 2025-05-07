@@ -4,29 +4,32 @@ part 'parking_ticket_model.g.dart';
 
 @JsonSerializable()
 class ParkingTicketModel {
-  String id; //auto
-  String ticket_number; //auto
-  String user; //auto
+  String? id; //auto
+  String? ticket_number; //auto
+  int? user; //auto
   String vehicle; //manual
-  String city; //auto
-  String issued_length; //manual
-  DateTime issued_at; //manual
-  DateTime expiry_at; //manual
-  double amount; //manual
-  String status; //auto
+  String? city; //auto
+  String? issued_length; //manual
+  String? issued_at; //manual
+  String? expiry_at; //manual
+  double? amount; //manual
+  String? status; //auto
+  // String? extend_time;
 
   ParkingTicketModel({
-    required this.id,
-    required this.ticket_number,
-    required this.user,
+    this.id,
+    this.ticket_number,
+    this.user,
     required this.vehicle,
-    required this.city,
-    required this.issued_length,
-    required this.issued_at,
-    required this.expiry_at,
-    required this.amount,
-    required this.status,
+    this.city,
+    this.issued_length,
+    this.issued_at,
+    this.expiry_at,
+    this.amount,
+    this.status,
+    // this.extend_time,
   });
+
   factory ParkingTicketModel.fromJson(Map<String, dynamic> json) =>
       _$ParkingTicketModelFromJson(json);
   Map<String, dynamic> toJson() => _$ParkingTicketModelToJson(this);

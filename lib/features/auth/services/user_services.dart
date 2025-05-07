@@ -16,6 +16,8 @@ class UserService {
     if (result.success) {
       try {
         Map<String, dynamic> userData = result.data as Map<String, dynamic>;
+
+        DevLogs.logInfo('User data: $userData');
         return User.fromJson(userData);
       } catch (e) {
         DevLogs.logError('Parsing error: $e');

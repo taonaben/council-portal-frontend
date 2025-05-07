@@ -18,9 +18,7 @@ class TicketsCrud {
       bool result = await parkingServices.submitTicket(
           vehicle_id: vehicle_id,
           issued_length: issued_length,
-          issued_at: issued_at,
-          expiry_at: expiry_at,
-          amount: amount);
+        );
 
       if (result) {
         return true;

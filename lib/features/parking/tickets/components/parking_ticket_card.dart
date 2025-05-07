@@ -42,7 +42,8 @@ class ParkingTicketCard extends StatelessWidget {
               children: [
                 GestureDetector(
                   onTap: () {
-                    Clipboard.setData(ClipboardData(text: ticket.ticket_number))
+                    Clipboard.setData(
+                            ClipboardData(text: ticket.ticket_number!))
                         .then((_) {
                       const CustomSnackbar(
                         message: "Copied",
@@ -90,11 +91,11 @@ class ParkingTicketCard extends StatelessWidget {
       children: [
         buildRow(
           title: 'Status',
-          value: capitalize(ticket.status),
+          value: capitalize(ticket.status!),
         ),
         buildRow(
           title: 'City',
-          value: capitalize(ticket.city),
+          value: capitalize(ticket.city!),
         ),
         buildRow(
           title: 'Time',
@@ -103,11 +104,11 @@ class ParkingTicketCard extends StatelessWidget {
         ),
         buildRow(
           title: 'Issued',
-          value: dateFormatted(ticket.issued_at),
+          value: dateFormatted(ticket.issued_at!),
         ),
         buildRow(
           title: 'Duration',
-          value: ticket.issued_length,
+          value: ticket.issued_length!,
         ),
       ],
     );

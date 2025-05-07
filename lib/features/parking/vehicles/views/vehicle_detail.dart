@@ -9,7 +9,7 @@ import 'package:portal/constants/dimensions.dart';
 import 'package:portal/core/utils/string_methods.dart';
 import 'package:portal/features/parking/tickets/model/parking_ticket_model.dart';
 import 'package:portal/features/parking/tickets/provider/parking_ticket_provider.dart';
-import 'package:portal/features/parking/vehicles/components/parking_ticket_card.dart';
+import 'package:portal/features/parking/tickets/components/parking_ticket_card.dart';
 import 'package:portal/features/parking/vehicles/models/vehicle_model.dart';
 
 class VehicleDetail extends ConsumerStatefulWidget {
@@ -29,7 +29,13 @@ class _VehicleDetailState extends ConsumerState<VehicleDetail> {
         tickets = tickets
             .where((ticket) => ticket.vehicle == widget.vehicle.id)
             .toList();
-        tickets.sort((a, b) => a.expiry_at.compareTo(b.expiry_at));
+        tickets.sort((a, b) {
+          if (a.expiry_at == null && b.expiry_at == null) return 0;
+          if (a.expiry_at == null) return -1;
+          if (b.expiry_at == null) return 1;
+          return DateTime.parse(a.expiry_at!)
+              .compareTo(DateTime.parse(b.expiry_at!));
+        });
         if (tickets.isEmpty) {
           return const Center(
             child: Text('No tickets found'),

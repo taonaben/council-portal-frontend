@@ -106,7 +106,7 @@ class ParkingMainSection extends ConsumerWidget {
           CupertinoIcons.clock,
           color: textColor2,
         ),
-        "route": "",
+        "route": "ticket-history",
       },
       {
         "text": "My Cars",
