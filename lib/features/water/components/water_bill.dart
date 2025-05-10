@@ -10,7 +10,8 @@ import 'package:portal/features/water/model/water_bill_model.dart';
 
 class WaterBill extends StatelessWidget {
   final WaterBillModel waterBill;
-  const WaterBill({super.key, required this.waterBill});
+  final bool? showActions;
+  const WaterBill({super.key, required this.waterBill, this.showActions = false});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +27,7 @@ class WaterBill extends StatelessWidget {
           const Gap(8),
           buildSummariesSection(),
           const Gap(8),
-          waterBill.payment_status!.toLowerCase() == "pending"
+          showActions == true
               ? buildFooter(context)
               : const SizedBox.shrink(),
         ],

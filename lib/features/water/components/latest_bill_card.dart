@@ -114,10 +114,12 @@ class CurrentBillCard extends ConsumerWidget {
     final currentBillAsyncValue =
         ref.watch(getLatestWaterBillProvider(account.id!.toInt()));
     return currentBillAsyncValue.when(
-      data: (bill) => WaterBill(waterBill: bill!),
+      data: (bill) => WaterBill(
+        waterBill: bill!,
+        showActions: true,
+      ),
       loading: () => const CustomCircularProgressIndicator(color: textColor2),
       error: (error, stack) => const Text('Error fetching bill'),
     );
   }
-  
 }
