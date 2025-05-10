@@ -1,15 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:portal/components/widgets/custom_divider.dart';
 import 'package:portal/components/widgets/custom_snackbar.dart';
 import 'package:portal/constants/colors.dart';
 import 'package:portal/constants/dimensions.dart';
 import 'package:portal/core/utils/string_methods.dart';
+import 'package:portal/features/cities/providers/cities_providers.dart';
 import 'package:portal/features/parking/tickets/model/parking_ticket_model.dart';
 
-class ParkingTicketCard extends StatelessWidget {
+class ParkingTicketCard extends ConsumerWidget {
   final ParkingTicketModel ticket;
   const ParkingTicketCard({super.key, required this.ticket});
 
@@ -24,7 +26,7 @@ class ParkingTicketCard extends StatelessWidget {
    */
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Card(
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(uniBorderRadius)),
@@ -79,14 +81,15 @@ class ParkingTicketCard extends StatelessWidget {
               color: textColor2,
             ),
             const Gap(8),
-            ticketDetails(),
+            ticketDetails(ref),
           ],
         ),
       ),
     );
   }
 
-  Widget ticketDetails() {
+  Widget ticketDetails(WidgetRef ref) {
+    final cityAsyncValue = ref.watch(cityByIdProvider(ticket.city!));
     return Column(
       children: [
         buildRow(
@@ -95,7 +98,13 @@ class ParkingTicketCard extends StatelessWidget {
         ),
         buildRow(
           title: 'City',
-          value: capitalize(ticket.city!),
+          value: cityAsyncValue.when(
+            data: (city) {
+              return city?.name.toLowerCase() ?? 'No city found';
+            },
+            loading: () => 'Loading...',
+            error: (error, stack) => 'Error fetching city',
+          ),
         ),
         buildRow(
           title: 'Time',
@@ -104,7 +113,7 @@ class ParkingTicketCard extends StatelessWidget {
         ),
         buildRow(
           title: 'Issued',
-          value: dateFormatted(ticket.issued_at!),
+          value: timeAgo(ticket.issued_at!),
         ),
         buildRow(
           title: 'Duration',

@@ -71,6 +71,36 @@ String dateTimeFormatted(dynamic date) {
   return '0000-00-00 00:00';
 }
 
+String timeAgo(dynamic date) {
+  DateTime dateTime;
+  if (date is String) {
+    try {
+      dateTime = DateTime.parse(date).toLocal();
+    } catch (e) {
+      return 'Invalid date';
+    }
+  } else if (date is DateTime) {
+    dateTime = date.toLocal();
+  } else {
+    return 'Invalid date';
+  }
+
+  final now = DateTime.now();
+  final difference = now.difference(dateTime);
+
+  if (difference.inMinutes < 1) {
+    return 'Just now';
+  } else if (difference.inMinutes < 60) {
+    return '${difference.inMinutes} min${difference.inMinutes > 1 ? 's' : ''} ago';
+  } else if (difference.inHours < 24) {
+    return '${difference.inHours} hr${difference.inHours > 1 ? 's' : ''} ago';
+  } else if (difference.inDays < 7) {
+    return '${difference.inDays} day${difference.inDays > 1 ? 's' : ''} ago';
+  } else {
+    return dateFormatted(dateTime);
+  }
+}
+
 String numberFormatted(String number) {
   return number.toString().replaceAllMapped(
       RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},');

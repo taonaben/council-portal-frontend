@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:portal/components/widgets/custom_filled_btn.dart';
@@ -7,15 +8,16 @@ import 'package:portal/components/widgets/custom_outlined_btn.dart';
 import 'package:portal/constants/colors.dart';
 import 'package:portal/constants/dimensions.dart';
 import 'package:portal/core/utils/string_methods.dart';
+import 'package:portal/features/cities/providers/cities_providers.dart';
 import 'package:portal/features/parking/tickets/model/parking_ticket_model.dart';
 import 'package:portal/features/parking/vehicles/models/vehicle_model.dart';
 
-class TicketPurchaseSuccessfulPage extends StatelessWidget {
+class TicketPurchaseSuccessfulPage extends ConsumerWidget {
   final ParkingTicketModel ticketData;
   const TicketPurchaseSuccessfulPage({super.key, required this.ticketData});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
       body: Padding(
@@ -38,7 +40,7 @@ class TicketPurchaseSuccessfulPage extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 )),
             const Gap(16),
-            buildTicketDetails(),
+            buildTicketDetails(ref),
             const Gap(32),
             buildButtonSection(context)
           ],
@@ -47,16 +49,9 @@ class TicketPurchaseSuccessfulPage extends StatelessWidget {
     );
   }
 
-  Widget buildTicketDetails() {
-    // VehicleModel vehicle = ticketData["vehicle"];
+  Widget buildTicketDetails(WidgetRef ref) {
+    final cityAsyncValue = ref.watch(cityByIdProvider(ticketData.city!));
 
-    // // Prepare ticket data
-    // var plate_number = vehicle.plate_number;
-
-    // var issued_length = ticketData["issued_length"];
-    // var issued_at = ticketData["issued_at"];
-    // var expiry_at = ticketData["expiry_at"];
-    // var amount = ticketData["amount"];
     return Container(
       padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
@@ -70,7 +65,16 @@ class TicketPurchaseSuccessfulPage extends StatelessWidget {
         children: [
           buildRow(title: 'Ticket Number', value: ticketData.ticket_number!),
           buildRow(title: 'Vehicle', value: ticketData.vehicle),
-          buildRow(title: 'City', value: ticketData.city!),
+          buildRow(
+            title: 'City',
+            value: cityAsyncValue.when(
+              data: (city) {
+                return city?.name.toLowerCase() ?? 'No city found';
+              },
+              loading: () => 'Loading...',
+              error: (error, stack) => 'Error fetching city',
+            ),
+          ),
           buildRow(
               title: 'Issued At',
               value: dateTimeFormatted(ticketData.issued_at)),
