@@ -22,14 +22,23 @@ class CurrentBillCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        header(ref),
-        const Gap(10),
-        buildBillDetails(ref),
-        const Gap(10),
-      ],
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        decoration: BoxDecoration(
+          color: background1,
+          border: Border.all(color: background2),
+          borderRadius: BorderRadius.circular(uniBorderRadius + 2),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            header(ref),
+            buildBillDetails(ref),
+            const Gap(10),
+          ],
+        ),
+      ),
     );
   }
 
@@ -42,7 +51,10 @@ class CurrentBillCard extends ConsumerWidget {
       width: double.infinity,
       decoration: BoxDecoration(
         color: background2,
-        borderRadius: BorderRadius.circular(uniBorderRadius),
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(uniBorderRadius),
+          topRight: Radius.circular(uniBorderRadius),
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

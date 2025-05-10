@@ -20,7 +20,7 @@ class ParkingMainSection extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(uniBorderRadius),
+        borderRadius: BorderRadius.circular(uniBorderRadius + 2),
         border: Border.all(
           color: background2,
           // width: 2,
