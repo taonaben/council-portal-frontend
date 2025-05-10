@@ -40,4 +40,44 @@ class WaterBillingServices {
       return null;
     }
   }
+
+  Future<WaterBillModel?> getLatestWaterBill(int accountId) async {
+    try {
+      DevLogs.logInfo('Fetching latest water bill for account ID: $accountId');
+      final response = await waterApi.getLatestWaterBill(accountId);
+      if (response.success) {
+        final waterBill = response.data['water_bill'] as WaterBillModel;
+        DevLogs.logInfo(
+            'Successfully fetched water bill: ${waterBill.toJson()}');
+        return waterBill;
+      } else {
+        DevLogs.logError('Failed to fetch water bill: ${response.message}');
+        throw Exception(response.message);
+      }
+    } catch (e) {
+      DevLogs.logError('Error fetching latest water bill: $e');
+      return null;
+    }
+  }
+
+  Future<WaterBillModel?> payWaterBill(String id, double amount) async {
+    try {
+      final response = await waterApi.payWaterBill(id, amount);
+      if (response.success) {
+        Map<String, dynamic> dataMap = response.data as Map<String, dynamic>;
+
+        if (dataMap.isNotEmpty && dataMap['water_bill'] is WaterBillModel) {
+          return dataMap['water_bill'] as WaterBillModel;
+        }
+
+        return WaterBillModel.fromJson(dataMap);
+      } else {
+        throw Exception('Failed to pay the water bill');
+      }
+    } catch (e) {
+      DevLogs.logError(
+          'Error paying water bill (ID: $id, Amount: $amount): $e');
+      return null;
+    }
+  }
 }

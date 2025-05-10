@@ -38,6 +38,7 @@ class AuthServices {
         final user = await UserService().getUserById(userIdInt);
 
         await saveSP("city", user.city.toString());
+        await saveSP("user_full_name", '${user.first_name} ${user.last_name}');
 
         DevLogs.logInfo("User logged in: ${user.username}");
         return user;

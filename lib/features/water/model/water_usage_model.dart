@@ -7,7 +7,7 @@ class WaterUsageModel {
   final double previous_reading;
   final double current_reading;
   final double consumption;
-  final DateTime date_recorded;
+  final String date_recorded;
 
   WaterUsageModel({
     required this.previous_reading,

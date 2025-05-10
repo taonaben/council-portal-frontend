@@ -4,6 +4,7 @@ part 'account_model.g.dart';
 
 @JsonSerializable()
 class AccountModel {
+  final int? id;
   final String account_number;
   final int user;
   final String property;
@@ -11,6 +12,7 @@ class AccountModel {
   final DateTime created_at;
 
   AccountModel({
+    this.id,
     required this.user,
     required this.account_number,
     required this.property,

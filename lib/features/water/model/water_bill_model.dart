@@ -8,30 +8,38 @@ part 'water_bill_model.g.dart';
 
 @JsonSerializable()
 class WaterBillModel {
-  final String id;
-  final String user;
-  final String city;
-  final String bill_number;
-  final double credit;
-  final WaterUsageModel water_usage;
-  final ChargesModel charges;
-  final WaterDebtModel water_debt;
-  final BillingPeriodModel billing_period;
-  final double total_amount;
-  final DateTime created_at;
+  final String? id;
+  final int? user;
+  final String? city; // Made nullable
+  final String? bill_number; // Made nullable
+  final double? credit; // Made nullable
+  final int? account;
+  final WaterUsageModel? water_usage;
+  final ChargesModel? charges;
+  final WaterDebtModel? water_debt;
+  final BillingPeriodModel? billing_period;
+  final double? total_amount;
+  final double? amount_paid;
+  final double? remaining_balance;
+  final String? payment_status; // Made nullable
+  final String? created_at; // Made nullable
 
   WaterBillModel({
-    required this.id,
-    required this.user,
-    required this.city,
-    required this.bill_number,
-    required this.credit,
-    required this.water_usage,
-    required this.charges,
-    required this.water_debt,
-    required this.billing_period,
-    required this.total_amount,
-    required this.created_at,
+    this.id,
+    this.user,
+    this.city,
+    this.bill_number,
+    this.credit,
+    this.account,
+    this.water_usage,
+    this.charges,
+    this.water_debt,
+    this.billing_period,
+    this.total_amount,
+    this.amount_paid,
+    this.remaining_balance,
+    this.payment_status,
+    this.created_at,
   });
 
   factory WaterBillModel.fromJson(Map<String, dynamic> json) =>

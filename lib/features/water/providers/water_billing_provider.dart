@@ -20,3 +20,12 @@ final getWaterBillByIdProvider =
     return null;
   }
 });
+
+final getLatestWaterBillProvider = FutureProvider.family<WaterBillModel?, int>((ref, accountId) async {
+  final waterBillServices = WaterBillingServices();
+  try {
+    return waterBillServices.getLatestWaterBill(accountId);
+  } catch (e) {
+    return null;
+  }
+});

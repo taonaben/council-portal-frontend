@@ -4,12 +4,12 @@ part 'billing_period_model.g.dart';
 
 @JsonSerializable()
 class BillingPeriodModel {
-  final DateTime last_recipt_date;
-  final DateTime bill_date;
-  final DateTime due_date;
+  final String last_receipt_date;
+  final String bill_date;
+  final String due_date;
 
   BillingPeriodModel({
-    required this.last_recipt_date,
+    required this.last_receipt_date,
     required this.bill_date,
     required this.due_date,
   });

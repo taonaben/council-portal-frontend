@@ -4,10 +4,10 @@ part 'water_debt_model.g.dart';
 
 @JsonSerializable()
 class WaterDebtModel {
-  final over_90_days;
-  final over_60_days;
-  final over_30_days;
-  final total_debt;
+  final double over_90_days;
+  final double over_60_days;
+  final double over_30_days;
+  final double total_debt;
 
   WaterDebtModel({
     required this.over_90_days,
