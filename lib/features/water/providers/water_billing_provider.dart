@@ -2,10 +2,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:portal/features/water/model/water_bill_model.dart';
 import 'package:portal/features/water/services/water_billing_services.dart';
 
-final allWaterBillProvider = FutureProvider<List<WaterBillModel>>((ref) async {
+final accountWaterBillsProvider =
+    FutureProvider.family<List<WaterBillModel>, int>((ref, accountId) async {
   final waterBillServices = WaterBillingServices();
   try {
-    return waterBillServices.getWaterBill();
+    return waterBillServices.getWaterBillsByAccount(accountId);
   } catch (e) {
     return <WaterBillModel>[];
   }
@@ -21,7 +22,8 @@ final getWaterBillByIdProvider =
   }
 });
 
-final getLatestWaterBillProvider = FutureProvider.family<WaterBillModel?, int>((ref, accountId) async {
+final getLatestWaterBillProvider =
+    FutureProvider.family<WaterBillModel?, int>((ref, accountId) async {
   final waterBillServices = WaterBillingServices();
   try {
     return waterBillServices.getLatestWaterBill(accountId);

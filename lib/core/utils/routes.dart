@@ -21,6 +21,7 @@ import 'package:portal/features/parking/vehicles/views/vehicle_detail.dart';
 import 'package:portal/features/parking/vehicles/views/vehicle_management.dart';
 import 'package:portal/features/profile/profile_main.dart';
 import 'package:portal/features/settings/settings.dart';
+import 'package:portal/features/water/views/account_history_page.dart';
 import 'package:portal/features/water/views/water_main.dart';
 import 'package:portal/features/alida_ai/alida_ai_main.dart';
 import 'package:portal/features/auth/providers/auth_providers.dart';
@@ -138,7 +139,9 @@ final GoRouter router = GoRouter(
               name: "my-bundles",
               builder: (context, state) {
                 final vehicleId = state.extra as String;
-                return MyBundlesPage(vehicleId: vehicleId,);
+                return MyBundlesPage(
+                  vehicleId: vehicleId,
+                );
               }),
           GoRoute(
               path: '/ticket_history',
@@ -159,6 +162,13 @@ final GoRouter router = GoRouter(
                 ),
               ]),
         ]),
+    GoRoute(
+        path: '/client/water_bills_by_account/:account_id',
+        name: "water-bills-by-account",
+        builder: (context, state) {
+          final accountId = int.parse(state.pathParameters['account_id']!);
+          return AccountWaterBillsHistoryPage(accountId: accountId);
+        }),
     GoRoute(
         path: '/client/alida-ai',
         builder: (context, state) => const AlidaAiMain()),

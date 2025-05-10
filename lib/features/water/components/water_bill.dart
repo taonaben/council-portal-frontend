@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:portal/components/widgets/custom_divider.dart';
 import 'package:portal/components/widgets/custom_filled_btn.dart';
 import 'package:portal/constants/colors.dart';
@@ -25,7 +26,9 @@ class WaterBill extends StatelessWidget {
           const Gap(8),
           buildSummariesSection(),
           const Gap(8),
-          buildFooter(),
+          waterBill.payment_status!.toLowerCase() == "pending"
+              ? buildFooter(context)
+              : const SizedBox.shrink(),
         ],
       ),
     );
@@ -84,11 +87,6 @@ class WaterBill extends StatelessWidget {
           borderRadius: BorderRadius.circular(uniBorderRadius),
         ),
         defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-        // columnWidths: const {
-        //   0: FixedColumnWidth(100),
-        //   1: FixedColumnWidth(100),
-        //   2: FixedColumnWidth(100),
-        // },
         children: [
           TableRow(
             decoration: BoxDecoration(
@@ -187,7 +185,7 @@ class WaterBill extends StatelessWidget {
     );
   }
 
-  Widget buildFooter() {
+  Widget buildFooter(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -196,7 +194,12 @@ class WaterBill extends StatelessWidget {
         Expanded(
           child: CustomFilledButton(
             btnLabel: "Account History",
-            onTap: () {},
+            onTap: () => context.pushNamed(
+              "water-bills-by-account",
+              pathParameters: {
+                "account_id": waterBill.account.toString(),
+              },
+            ),
             backgroundColor: secondaryColor,
           ),
         ),

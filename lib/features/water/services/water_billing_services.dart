@@ -6,13 +6,18 @@ import 'package:portal/features/water/model/water_bill_model.dart';
 class WaterBillingServices {
   final waterApi = WaterBillingApi();
 
-  Future<List<WaterBillModel>> getWaterBill() async {
+  Future<List<WaterBillModel>> getWaterBillsByAccount(int accountId) async {
     try {
-      final response = await waterApi.getWaterBill();
-      if (response.success) {
-        Map<String, dynamic> dataMap = response.data as Map<String, dynamic>;
+      final response = await waterApi.getWaterBillsByAccount(accountId);
+      if (response.success || response.data != null) {
+        final dataMap = response.data as Map<String, dynamic>;
 
-        List<dynamic> waterBillList = dataMap['data'];
+        List<dynamic> waterBillList = dataMap['water_bills'];
+
+        if (waterBillList.isNotEmpty && waterBillList.first is WaterBillModel) {
+          return waterBillList.cast<WaterBillModel>();
+        }
+
         return waterBillList
             .map(
                 (json) => WaterBillModel.fromJson(json as Map<String, dynamic>))

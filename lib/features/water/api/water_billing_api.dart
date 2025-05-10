@@ -9,8 +9,8 @@ import 'package:portal/features/water/model/water_bill_model.dart';
 
 class WaterBillingApi {
   final Dio dio = Dio();
-  Future<ApiResponse> getWaterBill() async {
-    String url = "$baseUrl/water_bill_list/";
+  Future<ApiResponse> getWaterBillsByAccount(int accountId) async {
+    String url = "$baseUrl/water/water_bill_list_by_account/$accountId/";
     String token = await getSP("token");
 
     try {
@@ -23,13 +23,24 @@ class WaterBillingApi {
             },
           ));
 
+      DevLogs.logInfo('Response: ${response.data}');
+
       if (response.statusCode == 200 || response.statusCode == 201) {
+        // Use response.data directly - it's already deserialized by Dio
+        var jsonResponse = response.data;
+        List<dynamic> data = jsonResponse['results'];
+        List<WaterBillModel> waterBills =
+            data.map((bill) => WaterBillModel.fromJson(bill)).toList();
         return ApiResponse(
           success: true,
-          data: response.data,
+          data: {
+            "water_bills": waterBills,
+          },
           message: "success",
         );
       } else {
+        DevLogs.logError(
+            'Failed to fetch water bills. Status code: ${response.statusMessage}');
         return ApiResponse(
           success: false,
           data: null,
@@ -37,6 +48,7 @@ class WaterBillingApi {
         );
       }
     } catch (e) {
+      DevLogs.logError('Error in API call: $e');
       return ApiResponse(
         success: false,
         data: null,

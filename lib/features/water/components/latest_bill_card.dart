@@ -119,4 +119,5 @@ class CurrentBillCard extends ConsumerWidget {
       error: (error, stack) => const Text('Error fetching bill'),
     );
   }
+  
 }
