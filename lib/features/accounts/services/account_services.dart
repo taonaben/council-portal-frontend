@@ -8,17 +8,22 @@ class AccountServices {
   Future<List<AccountModel>> getAccount() async {
     try {
       final response = await accountsApi.getAccount();
-      if (response.success) {
+      if (response.success && response.data != null) {
         Map<String, dynamic> dataMap = response.data as Map<String, dynamic>;
-        List<dynamic> accountList = dataMap['data'];
+        List<dynamic> accountList = dataMap['results']; // Use 'results' key
+        DevLogs.logInfo('Fetched accounts: ${accountList.length}');
+
         return accountList
-            .map((json) => AccountModel.fromJson(json as Map<String, dynamic>))
+            .map((account) =>
+                AccountModel.fromJson(account as Map<String, dynamic>))
             .toList();
       } else {
-        throw Exception('Failed to fetch account data');
+        DevLogs.logError(
+            'Error fetching accounts in services: ${response.message}');
+        return [];
       }
     } catch (e) {
-      print('Error: $e');
+      DevLogs.logError('Error in services: $e');
       return [];
     }
   }
@@ -35,7 +40,6 @@ class AccountServices {
     } catch (e) {
       DevLogs.logError('Error: $e');
       return null;
-      
     }
   }
 }

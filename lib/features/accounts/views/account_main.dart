@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:portal/components/widgets/custom_circularProgressIndicator.dart';
 import 'package:portal/constants/colors.dart';
+import 'package:portal/constants/dimensions.dart';
+import 'package:portal/core/utils/string_methods.dart';
+import 'package:portal/features/accounts/components/account_card.dart';
 import 'package:portal/features/accounts/model/account_model.dart';
 import 'package:portal/features/accounts/provider/account_provider.dart';
 
@@ -25,10 +28,7 @@ class AccountMain extends ConsumerWidget {
                   itemCount: data.length,
                   itemBuilder: (context, index) {
                     AccountModel account = data[index];
-                    return ListTile(
-                      title: Text(account.account_number),
-                      subtitle: Text(account.water_meter_number),
-                    );
+                    return AccountCard(account: account);
                   },
                 ),
         );

@@ -1,13 +1,14 @@
 import 'package:dio/dio.dart';
 import 'package:portal/constants/keys_and_urls.dart';
 import 'package:portal/core/utils/api_response.dart';
+import 'package:portal/core/utils/logs.dart';
 import 'package:portal/core/utils/shared_prefs.dart';
 
 class AccountApi {
   final Dio dio = Dio();
 
   Future<ApiResponse> getAccount() async {
-    String url = "$baseUrl/accounts/all";
+    String url = "$baseUrl/accounts/all/";
     String token = await getSP("token");
 
     try {
@@ -19,6 +20,8 @@ class AccountApi {
               'Authorization': 'Bearer $token',
             },
           ));
+
+        DevLogs.logInfo("Response: ${response.data}");
 
       if (response.statusCode == 200) {
         return ApiResponse(
@@ -43,7 +46,7 @@ class AccountApi {
   }
 
   Future<ApiResponse> getAccountById(String id) async {
-    String url = "$baseUrl/accounts/$id";
+    String url = "$baseUrl/accounts/$id/";
     String token = await getSP("token");
     try {
       var response = await dio.get(url,

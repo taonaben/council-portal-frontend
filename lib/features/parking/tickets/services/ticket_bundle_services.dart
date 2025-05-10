@@ -10,7 +10,7 @@ class TicketBundleServices {
       var result = await ticketBundlesApi.fetchBundles();
       if (result.success || result.data != null) {
         final dataMap = result.data as Map<String, dynamic>;
-        List<dynamic> bundlesList = dataMap['bundles'];
+        List<dynamic> bundlesList = dataMap['bundles']; 
 
         DevLogs.logInfo('Fetched bundles: ${bundlesList.length}');
 

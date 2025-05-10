@@ -6,7 +6,7 @@ import 'package:portal/core/utils/shared_prefs.dart';
 class WaterBillingApi {
   final Dio dio = Dio();
   Future<ApiResponse> getWaterBill() async {
-    String url = "$baseUrl/water_bill_list";
+    String url = "$baseUrl/water_bill_list/";
     String token = await getSP("token");
 
     try {

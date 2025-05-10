@@ -139,6 +139,26 @@ class _ProfileMainState extends ConsumerState<SettingsMain> {
             borderRadius: BorderRadius.circular(uniBorderRadius),
           ),
           backgroundColor: background1,
+          separatorColor: textColor1,
+          children: [
+            CupertinoListTile(
+              leading: const Icon(
+                CupertinoIcons.exclamationmark_bubble,
+                color: textColor1,
+              ),
+              title: const Text('Report an Issue',
+                  style: TextStyle(color: textColor1)),
+              trailing: const CupertinoListTileChevron(),
+              onTap: () {},
+            ),
+          ],
+        ),
+        CupertinoListSection.insetGrouped(
+          decoration: BoxDecoration(
+            color: background2,
+            borderRadius: BorderRadius.circular(uniBorderRadius),
+          ),
+          backgroundColor: background1,
           separatorColor: textColor2,
           children: [
             CupertinoListTile(
@@ -168,7 +188,7 @@ class _ProfileMainState extends ConsumerState<SettingsMain> {
                     });
                   }),
             ),
-             CupertinoListTile(
+            CupertinoListTile(
               leading: const Icon(
                 CupertinoIcons.bell,
                 color: textColor1,
@@ -178,7 +198,6 @@ class _ProfileMainState extends ConsumerState<SettingsMain> {
               trailing: const CupertinoListTileChevron(),
               onTap: () => context.pushNamed('notification-settings'),
             ),
-
             CupertinoListTile(
               leading: const Icon(
                 CupertinoIcons.shield,
