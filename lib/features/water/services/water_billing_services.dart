@@ -65,23 +65,25 @@ class WaterBillingServices {
     }
   }
 
-  Future<WaterBillModel?> payWaterBill(String id, double amount) async {
+  Future<WaterBillModel?> payWaterBill(
+      String id, WaterBillModel updatedBill) async {
     try {
-      final response = await waterApi.payWaterBill(id, amount);
+      if (updatedBill.amount_paid == null || updatedBill.amount_paid! <= 0) {
+        throw Exception('Invalid payment amount: ${updatedBill.amount_paid}');
+      }
+
+      DevLogs.logInfo(
+          'Paying water bill with ID: $id and amount: ${updatedBill.amount_paid}');
+      final response = await waterApi.payWaterBill(id, updatedBill);
+
       if (response.success) {
         Map<String, dynamic> dataMap = response.data as Map<String, dynamic>;
-
-        if (dataMap.isNotEmpty && dataMap['water_bill'] is WaterBillModel) {
-          return dataMap['water_bill'] as WaterBillModel;
-        }
-
         return WaterBillModel.fromJson(dataMap);
       } else {
-        throw Exception('Failed to pay the water bill');
+        throw Exception('Failed to pay the water bill: ${response.message}');
       }
     } catch (e) {
-      DevLogs.logError(
-          'Error paying water bill (ID: $id, Amount: $amount): $e');
+      DevLogs.logError('Error paying water bill (ID: $id): $e');
       return null;
     }
   }

@@ -67,7 +67,7 @@ class UserApi {
 
     try {
       final response = await http
-          .patch(
+          .put(
             url,
             headers: {
               'Content-Type': 'application/json',
@@ -78,7 +78,9 @@ class UserApi {
           )
           .timeout(const Duration(seconds: 10));
 
-      if (response.statusCode == 200) {
+  
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
         final decodedData = jsonDecode(response.body);
         return ApiResponse(
           success: true,

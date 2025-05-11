@@ -32,12 +32,18 @@ class _PayWaterBillState extends State<PayWaterBill> {
 
   @override
   void initState() {
+    final amount_to_pay =
+        widget.waterBill.total_amount! - widget.waterBill.amount_paid!;
     super.initState();
     amountController = TextEditingController();
-    amountController.text = widget.waterBill.total_amount.toString();
+    amountController.text = amount_to_pay.toString();
     _paymentDialogs = {
-      PaymentMethod.ecocash: (context, ticketData) => const EcoCash(
+      PaymentMethod.ecocash: (context, ticketData) => EcoCash(
             purchasedItem: ItemPurchased.water,
+            waterData: {
+              "bill": widget.waterBill,
+              "amount": double.parse(amountController.text),
+            },
           ),
       PaymentMethod.oneMoney: (context, ticketData) => Onemoney(),
       PaymentMethod.bankTransfer: (context, ticketData) => BankTransfer(),

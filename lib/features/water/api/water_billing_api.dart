@@ -139,20 +139,23 @@ class WaterBillingApi {
     }
   }
 
-  Future<ApiResponse> payWaterBill(String id, double amount) async {
-    String url = "$baseUrl/water_bill/$id/";
+  Future<ApiResponse> payWaterBill(
+      String id, WaterBillModel updatedBill) async {
+    String url = "$baseUrl/water/water_bill/$id/";
     String token = await getSP("token");
     try {
+      DevLogs.logInfo('Sending updated water bill: ${updatedBill.toJson()}');
       var response = await dio.put(url,
-          data: {"amount_paid": amount},
+          data: jsonEncode(updatedBill.toJson()),
           options: Options(
             headers: {
               'Content-Type': 'application/json',
               'Accept': 'application/json',
-              'Authorization': 'Bearer $token ',
+              'Authorization': 'Bearer $token',
             },
           ));
 
+      DevLogs.logInfo('Response status code: ${response.statusCode}');
       if (response.statusCode == 200 || response.statusCode == 201) {
         return ApiResponse(
           success: true,
@@ -167,6 +170,7 @@ class WaterBillingApi {
         );
       }
     } catch (e) {
+      DevLogs.logError('Error in payWaterBill API call: $e');
       return ApiResponse(
         success: false,
         data: null,

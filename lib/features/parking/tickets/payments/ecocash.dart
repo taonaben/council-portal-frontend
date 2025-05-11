@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:portal/components/widgets/custom_circularProgressIndicator.dart';
@@ -9,25 +10,29 @@ import 'package:portal/components/widgets/custom_snackbar.dart';
 import 'package:portal/components/widgets/custom_textfield.dart';
 import 'package:portal/constants/colors.dart';
 import 'package:portal/core/utils/logs.dart';
-import 'package:portal/features/parking/tickets/api/ticket_list.dart';
 import 'package:portal/features/parking/tickets/functions/tickets_crud.dart';
 import 'package:portal/features/parking/tickets/services/ticket_bundle_services.dart';
 import 'package:portal/features/parking/vehicles/models/vehicle_model.dart';
+import 'package:portal/features/water/model/water_bill_model.dart';
+import 'package:portal/features/water/providers/water_billing_provider.dart';
+import 'package:portal/features/water/services/water_billing_services.dart';
 
 enum ItemPurchased { ticket, bundle, water }
 
-class EcoCash extends StatelessWidget {
+class EcoCash extends ConsumerWidget {
   final Map<String, dynamic>? ticketData;
   final Map<String, dynamic>? bundleData;
+  final Map<String, dynamic>? waterData;
   final ItemPurchased purchasedItem;
   const EcoCash(
-      {super.key, this.ticketData,required this.purchasedItem, this.bundleData});
+      {super.key,
+      this.ticketData,
+      required this.purchasedItem,
+      this.bundleData,
+      this.waterData});
 
   @override
-  Widget build(BuildContext context) {
-    final TextEditingController ecocashNumberController =
-        TextEditingController();
-
+  Widget build(BuildContext context, WidgetRef ref) {
     return Dialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
@@ -38,12 +43,13 @@ class EcoCash extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: buildEcocash(
           context,
+          ref,
         ),
       ),
     );
   }
 
-  Widget buildEcocash(BuildContext context) {
+  Widget buildEcocash(BuildContext context, WidgetRef ref) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.start,
@@ -73,7 +79,7 @@ class EcoCash extends StatelessWidget {
             Expanded(
               child: CustomFilledButton(
                   btnLabel: "Verify",
-                  onTap: () => processEcocashPayment(context)),
+                  onTap: () => processEcocashPayment(context, ref)),
             ),
           ],
         ),
@@ -81,7 +87,7 @@ class EcoCash extends StatelessWidget {
     );
   }
 
-  processEcocashPayment(BuildContext context) async {
+  processEcocashPayment(BuildContext context, WidgetRef ref) async {
     switch (purchasedItem) {
       case ItemPurchased.ticket:
         await handleTicketPayment(context);
@@ -90,14 +96,67 @@ class EcoCash extends StatelessWidget {
         await handleBundlePayment(context);
         break;
       case ItemPurchased.water:
-        await handleWaterPayment(context);
+        await handleWaterPayment(context, ref);
         break;
-      default:
-        null;
     }
   }
 
-  
+  handleWaterPayment(BuildContext context, WidgetRef ref) async {
+    var waterBillingServices = WaterBillingServices();
+
+    WaterBillModel currentWaterBill = waterData!["bill"];
+    double amount = currentWaterBill.amount_paid! + waterData!["amount"];
+
+    if (amount <= 0) {
+     const  CustomSnackbar(
+        message: "Invalid payment amount",
+        color: redColor,
+      ).showSnackBar(context);
+      return;
+    }
+
+    final updatedWaterBill = currentWaterBill.copyWith(
+      amount_paid: amount,
+    );
+
+    try {
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => const Center(
+          child: CustomCircularProgressIndicator(color: textColor2),
+        ),
+      );
+
+      DevLogs.logInfo("Paying water bill with amount: $amount");
+      var result = await waterBillingServices.payWaterBill(
+          updatedWaterBill.id!, updatedWaterBill);
+
+      Navigator.pop(context); // Close the loading indicator
+
+      if (result != null) {
+        ref.refresh(getLatestWaterBillProvider(updatedWaterBill.account!));
+        ref.refresh(accountWaterBillsProvider(updatedWaterBill.account!));
+        Navigator.pop(context);
+        const CustomSnackbar(
+          message: "Water bill paid successfully",
+          color: primaryColor,
+        ).showSnackBar(context);
+      } else {
+        const CustomSnackbar(
+          message: "Error paying water bill",
+          color: redColor,
+        ).showSnackBar(context);
+      }
+    } catch (e) {
+      Navigator.pop(context); // Close the loading indicator
+      DevLogs.logError("Error $e");
+      CustomSnackbar(
+        message: "Error $e",
+        color: redColor,
+      ).showSnackBar(context);
+    }
+  }
 
   handleBundlePayment(BuildContext context) async {
     var bundleServices = TicketBundleServices();
@@ -126,7 +185,7 @@ class EcoCash extends StatelessWidget {
             extra: bundleData);
       } else {
         Navigator.pop(context);
-        CustomSnackbar(message: "Error purchasing bundle", color: redColor)
+       const CustomSnackbar(message: "Error purchasing bundle", color: redColor)
             .showSnackBar(context);
       }
     } catch (e) {

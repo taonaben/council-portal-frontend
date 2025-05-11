@@ -35,7 +35,9 @@ class WaterBill extends StatelessWidget {
           const Gap(8),
           buildSummariesSection(),
           const Gap(8),
-          showActions == true ? buildFooter(context) : const SizedBox.shrink(),
+          showActions == true && waterBill.remaining_balance! > 0
+              ? buildFooter(context)
+              : const SizedBox.shrink(),
         ],
       ),
     );
@@ -187,7 +189,10 @@ class WaterBill extends StatelessWidget {
         buildRow(
             title: 'Amount Due', value: waterBill.total_amount, isBold: true),
         buildRow(title: "amount paid", value: waterBill.amount_paid),
-        buildRow(title: "remaining Balance", value: waterBill.remaining_balance)
+        buildRow(
+            title: "remaining Balance", value: waterBill.remaining_balance),
+        const Gap(8),
+        buildRow(title: "Status", value: waterBill.payment_status)
       ],
     );
   }
