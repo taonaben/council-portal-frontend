@@ -19,9 +19,9 @@ enum ItemPurchased { ticket, bundle, water }
 class EcoCash extends StatelessWidget {
   final Map<String, dynamic>? ticketData;
   final Map<String, dynamic>? bundleData;
-  final ItemPurchased? purchasedItem;
+  final ItemPurchased purchasedItem;
   const EcoCash(
-      {super.key, this.ticketData, this.purchasedItem, this.bundleData});
+      {super.key, this.ticketData,required this.purchasedItem, this.bundleData});
 
   @override
   Widget build(BuildContext context) {
@@ -90,12 +90,14 @@ class EcoCash extends StatelessWidget {
         await handleBundlePayment(context);
         break;
       case ItemPurchased.water:
-        // await handleWaterPayment(context);
+        await handleWaterPayment(context);
         break;
       default:
         null;
     }
   }
+
+  
 
   handleBundlePayment(BuildContext context) async {
     var bundleServices = TicketBundleServices();

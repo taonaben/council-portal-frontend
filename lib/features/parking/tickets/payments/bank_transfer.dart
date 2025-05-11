@@ -13,8 +13,8 @@ import 'package:portal/features/parking/tickets/functions/tickets_crud.dart';
 import 'package:portal/features/parking/vehicles/models/vehicle_model.dart';
 
 class BankTransfer extends StatelessWidget {
-  final Map<String, dynamic> ticketData;
-  const BankTransfer({super.key, required this.ticketData});
+  final Map<String, dynamic>? ticketData;
+  const BankTransfer({super.key,  this.ticketData});
 
   @override
   Widget build(BuildContext context) {
@@ -76,11 +76,11 @@ class BankTransfer extends StatelessWidget {
   void handleBankPayment(BuildContext context) async {
     var ticketsCrud = TicketsCrud();
 
-    VehicleModel vehicle = ticketData["vehicle"];
+    VehicleModel vehicle = ticketData!["vehicle"];
 
     // Prepare ticket data
     var vehicleId = vehicle.id;
-    int issuedMinutes = ticketData["issued_minutes"];
+    int issuedMinutes = ticketData!["issued_minutes"];
 
     try {
       showDialog(

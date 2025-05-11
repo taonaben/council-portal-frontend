@@ -247,6 +247,7 @@ class _TicketPurchaseSummaryPageState extends State<TicketPurchaseSummaryPage> {
       _paymentDialogs = {
     PaymentMethod.ecocash: (context, ticketData) => EcoCash(
           ticketData: ticketData,
+          purchasedItem: ItemPurchased.ticket,
         ),
     PaymentMethod.oneMoney: (context, ticketData) =>
         Onemoney(ticketData: ticketData),

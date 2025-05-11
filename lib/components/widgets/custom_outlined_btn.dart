@@ -7,12 +7,14 @@ class CustomOutlinedButton extends StatefulWidget {
   final bool? expand;
   final Function()? onTap;
   final Color? borderColor;
+  final Color? backgroundColor;
   final Color? textColor;
 
   const CustomOutlinedButton(
       {super.key,
       required this.btnLabel,
       required this.onTap,
+      this.backgroundColor,
       this.expand,
       this.borderColor,
       this.textColor});
@@ -82,7 +84,7 @@ class _CustomOutlinedButtonState extends State<CustomOutlinedButton>
                 horizontal: widget.expand == true ? 0 : 16,
               ),
               decoration: BoxDecoration(
-                color: background1,
+                color: widget.backgroundColor ?? background1,
                 borderRadius: BorderRadius.circular(uniBorderRadius),
                 border: Border.all(
                   color: widget.borderColor ?? primaryColor,

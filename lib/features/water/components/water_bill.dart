@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:portal/components/widgets/custom_divider.dart';
@@ -7,6 +8,7 @@ import 'package:portal/constants/colors.dart';
 import 'package:portal/constants/dimensions.dart';
 import 'package:portal/core/utils/string_methods.dart';
 import 'package:portal/features/accounts/model/account_model.dart';
+import 'package:portal/features/water/components/pay_water_bill.dart';
 import 'package:portal/features/water/model/water_bill_model.dart';
 
 class WaterBill extends StatelessWidget {
@@ -210,7 +212,15 @@ class WaterBill extends StatelessWidget {
         Expanded(
           child: CustomFilledButton(
             btnLabel: "Pay Now",
-            onTap: () {},
+            onTap: () {
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    return PayWaterBill(
+                      waterBill: waterBill,
+                    );
+                  });
+            },
           ),
         )
       ],
