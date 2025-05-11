@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:portal/core/navigation/main_navigation.dart';
+import 'package:portal/features/accounts/model/account_model.dart';
 import 'package:portal/features/accounts/views/account_main.dart';
 import 'package:portal/features/auth/model/user_model.dart';
 import 'package:portal/features/notifications/views/notification_settings.dart';
@@ -21,8 +22,9 @@ import 'package:portal/features/parking/vehicles/views/vehicle_detail.dart';
 import 'package:portal/features/parking/vehicles/views/vehicle_management.dart';
 import 'package:portal/features/profile/profile_main.dart';
 import 'package:portal/features/settings/settings.dart';
+import 'package:portal/features/water/views/account_water_details.dart';
 import 'package:portal/features/water/views/account_history_page.dart';
-import 'package:portal/features/water/views/water_main.dart';
+import 'package:portal/features/water/views/account_water_main.dart';
 import 'package:portal/features/alida_ai/alida_ai_main.dart';
 import 'package:portal/features/auth/providers/auth_providers.dart';
 import 'package:portal/features/auth/views/login_page.dart';
@@ -168,6 +170,13 @@ final GoRouter router = GoRouter(
         builder: (context, state) {
           final accountId = int.parse(state.pathParameters['account_id']!);
           return AccountWaterBillsHistoryPage(accountId: accountId);
+        }),
+    GoRoute(
+        path: '/client/account_detail',
+        name: "account-detail",
+        builder: (context, state) {
+          final account = state.extra as AccountModel;
+          return AccountWaterDetails(account: account);
         }),
     GoRoute(
         path: '/client/alida-ai',

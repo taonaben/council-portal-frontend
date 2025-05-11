@@ -14,7 +14,7 @@ import 'package:portal/features/water/providers/water_billing_provider.dart';
 import 'package:intl/intl.dart';
 
 class AccountWaterBillsHistoryPage extends ConsumerStatefulWidget {
-  final int accountId;
+  final int accountId; 
   const AccountWaterBillsHistoryPage({super.key, required this.accountId});
 
   @override
@@ -39,7 +39,7 @@ class _AccountWaterBillsHistoryPageState
   }
 
   @override
-  @override
+  
   Widget build(BuildContext context) {
     final allBillsAsyncValue =
         ref.watch(accountWaterBillsProvider(widget.accountId));
@@ -47,10 +47,6 @@ class _AccountWaterBillsHistoryPageState
     return allBillsAsyncValue.when(
       data: (waterBills) {
         return Scaffold(
-          appBar: AppBar(
-            title: const Text("Water Bills History"),
-            centerTitle: true,
-          ),
           body: waterBills.isEmpty
               ? const Center(child: Text("No water bills found"))
               : ListView.builder(
@@ -83,112 +79,109 @@ class _AccountWaterBillsHistoryPageState
         ? dateFormatted(waterBill.created_at!)
         : 'N/A';
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Card(
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(uniBorderRadius),
-            side: const BorderSide(
-              color: textColor2,
-              width: 1,
-            )),
-        elevation: 3,
-        color: background1,
-        margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-        shadowColor: blackColor.withOpacity(.6),
-        child: InkWell(
+    return Card(
+      shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(uniBorderRadius),
-          onTap: () => _toggleExpanded(waterBill.id),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Always visible summary
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Bill #${waterBill.bill_number ?? 'N/A'}',
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                            ),
-                          ),
-                          const Gap(4),
-                          Text(
-                            'Date: $billDate',
-                            style: const TextStyle(
-                              color: secondaryColor,
-                              fontSize: 14,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
+          side: const BorderSide(
+            color: textColor2,
+            width: 1,
+          )),
+      elevation: 3,
+      color: background1,
+      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+      shadowColor: blackColor.withOpacity(.6),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(uniBorderRadius),
+        onTap: () => _toggleExpanded(waterBill.id),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Always visible summary
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          formatter.format(waterBill.total_amount ?? 0),
+                          'Bill #${waterBill.bill_number ?? 'N/A'}',
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 18,
+                            fontSize: 16,
                           ),
                         ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 4),
-                          decoration: BoxDecoration(
-                            color: waterBill.payment_status == 'PAID'
-                                ? primaryColor.withOpacity(0.2)
-                                : redColor.withOpacity(0.2),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Text(
-                            waterBill.payment_status ?? 'PENDING',
-                            style: TextStyle(
-                              color: waterBill.payment_status == 'PAID'
-                                  ? primaryColor
-                                  : redColor,
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                            ),
+                        const Gap(4),
+                        Text(
+                          'Date: $billDate',
+                          style: const TextStyle(
+                            color: secondaryColor,
+                            fontSize: 14,
                           ),
                         ),
                       ],
                     ),
-                  ],
-                ),
-
-                // Expandable section
-                AnimatedSize(
-                  duration: const Duration(milliseconds: 300),
-                  child: isExpanded
-                      ? Column(
-                          children: [
-                            const Divider(height: 24),
-                            WaterBill(waterBill: waterBill),
-                          ],
-                        )
-                      : const SizedBox.shrink(),
-                ),
-
-                // Show hint to expand/collapse
-                Center(
-                  child: Icon(
-                    isExpanded
-                        ? CupertinoIcons.chevron_up
-                        : CupertinoIcons.chevron_down,
-                    color: secondaryColor,
                   ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(
+                        formatter.format(waterBill.total_amount ?? 0),
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: waterBill.payment_status == 'PAID'
+                              ? primaryColor.withOpacity(0.2)
+                              : redColor.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Text(
+                          waterBill.payment_status ?? 'PENDING',
+                          style: TextStyle(
+                            color: waterBill.payment_status == 'PAID'
+                                ? primaryColor
+                                : redColor,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+
+              // Expandable section
+              AnimatedSize(
+                duration: const Duration(milliseconds: 300),
+                child: isExpanded
+                    ? Column(
+                        children: [
+                          const Divider(height: 24),
+                          WaterBill(waterBill: waterBill),
+                        ],
+                      )
+                    : const SizedBox.shrink(),
+              ),
+
+              // Show hint to expand/collapse
+              Center(
+                child: Icon(
+                  isExpanded
+                      ? CupertinoIcons.chevron_up
+                      : CupertinoIcons.chevron_down,
+                  color: secondaryColor,
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

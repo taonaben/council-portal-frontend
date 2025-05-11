@@ -11,7 +11,7 @@ import 'package:portal/features/notifications/views/notifications_main.dart';
 import 'package:portal/features/parking/main/parking_main.dart';
 import 'package:portal/features/profile/profile_main.dart';
 import 'package:portal/features/settings/settings.dart';
-import 'package:portal/features/water/views/water_main.dart';
+import 'package:portal/features/water/views/account_water_main.dart';
 
 class MainNavigation extends StatefulWidget {
   final int currentIndex;
@@ -33,7 +33,7 @@ class _MainNavigationState extends State<MainNavigation> {
   }
 
   final List<Widget> _screens = const [
-    WaterMain(),
+    WaterAccountMain(),
     ParkingMainClient(),
     AlidaAiMain(),
     NotificationsMain(),

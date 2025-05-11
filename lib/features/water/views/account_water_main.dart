@@ -7,8 +7,8 @@ import 'package:portal/features/accounts/model/account_model.dart';
 import 'package:portal/features/accounts/provider/account_provider.dart';
 import 'package:portal/features/water/components/latest_bill_card.dart';
 
-class WaterMain extends ConsumerWidget {
-  const WaterMain({super.key});
+class WaterAccountMain extends ConsumerWidget {
+  const WaterAccountMain({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

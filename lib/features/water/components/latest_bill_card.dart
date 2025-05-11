@@ -117,6 +117,7 @@ class CurrentBillCard extends ConsumerWidget {
       data: (bill) => WaterBill(
         waterBill: bill!,
         showActions: true,
+        account: account,
       ),
       loading: () => const CustomCircularProgressIndicator(color: textColor2),
       error: (error, stack) => const Text('Error fetching bill'),

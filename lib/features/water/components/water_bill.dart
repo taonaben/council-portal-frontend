@@ -6,12 +6,18 @@ import 'package:portal/components/widgets/custom_filled_btn.dart';
 import 'package:portal/constants/colors.dart';
 import 'package:portal/constants/dimensions.dart';
 import 'package:portal/core/utils/string_methods.dart';
+import 'package:portal/features/accounts/model/account_model.dart';
 import 'package:portal/features/water/model/water_bill_model.dart';
 
 class WaterBill extends StatelessWidget {
   final WaterBillModel waterBill;
+  final AccountModel? account;
   final bool? showActions;
-  const WaterBill({super.key, required this.waterBill, this.showActions = false});
+  const WaterBill(
+      {super.key,
+      required this.waterBill,
+      this.showActions = false,
+      this.account});
 
   @override
   Widget build(BuildContext context) {
@@ -27,9 +33,7 @@ class WaterBill extends StatelessWidget {
           const Gap(8),
           buildSummariesSection(),
           const Gap(8),
-          showActions == true
-              ? buildFooter(context)
-              : const SizedBox.shrink(),
+          showActions == true ? buildFooter(context) : const SizedBox.shrink(),
         ],
       ),
     );
@@ -194,12 +198,10 @@ class WaterBill extends StatelessWidget {
       children: [
         Expanded(
           child: CustomFilledButton(
-            btnLabel: "Account History",
+            btnLabel: "View Account",
             onTap: () => context.pushNamed(
-              "water-bills-by-account",
-              pathParameters: {
-                "account_id": waterBill.account.toString(),
-              },
+              "account-detail",
+              extra: account,
             ),
             backgroundColor: secondaryColor,
           ),
