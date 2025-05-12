@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:portal/constants/colors/colors.dart';
+import 'package:portal/constants/colors.dart';
 
 class CustomLinearProgressIndicator extends StatefulWidget {
   final DateTime startTime, endTime;

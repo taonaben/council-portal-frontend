@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:portal/constants/colors/colors.dart';
-import 'package:portal/constants/colors/dimensions.dart';
+import 'package:portal/constants/colors.dart';
+import 'package:portal/constants/dimensions.dart';
 
 class CustomFilledButton extends StatefulWidget {
   final String btnLabel;
@@ -76,8 +76,11 @@ class _CustomFilledButtonState extends State<CustomFilledButton>
           return Transform.scale(
             scale: _scaleAnimation.value,
             child: Container(
+              padding: EdgeInsets.symmetric(
+                vertical: 12,
+                horizontal: widget.expand == true ? 0 : 16,
+              ),
               width: (widget.expand ?? false) ? double.infinity : null,
-              height: 60,
               decoration: BoxDecoration(
                 color: widget.backgroundColor ?? primaryColor,
                 borderRadius: BorderRadius.circular(uniBorderRadius),

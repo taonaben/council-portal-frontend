@@ -1,7 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:portal/components/widgets/custom_circularProgressIndicator.dart';
-import 'package:portal/constants/colors/colors.dart';
+import 'package:portal/constants/colors.dart';
 
 class CustomImageWidget extends StatelessWidget {
   final String imageName;
