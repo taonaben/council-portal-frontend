@@ -29,6 +29,7 @@ class _ProfileMainState extends ConsumerState<SettingsMain> {
   @override
   void initState() {
     super.initState();
+    userId = 1;
     _initializeUserId();
   }
 

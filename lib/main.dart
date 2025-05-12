@@ -27,7 +27,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      bottom: true,
       child: MaterialApp.router(
         title: 'Flutter Demo',
         theme: ThemeData(
@@ -41,6 +40,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         routerConfig: router,
       ),
+      bottom: true,
     );
   }
 }

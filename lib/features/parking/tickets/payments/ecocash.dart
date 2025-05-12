@@ -11,6 +11,7 @@ import 'package:portal/components/widgets/custom_textfield.dart';
 import 'package:portal/constants/colors.dart';
 import 'package:portal/core/utils/logs.dart';
 import 'package:portal/features/parking/tickets/functions/tickets_crud.dart';
+import 'package:portal/features/parking/tickets/provider/parking_ticket_provider.dart';
 import 'package:portal/features/parking/tickets/services/ticket_bundle_services.dart';
 import 'package:portal/features/parking/vehicles/models/vehicle_model.dart';
 import 'package:portal/features/water/model/water_bill_model.dart';
@@ -90,7 +91,7 @@ class EcoCash extends ConsumerWidget {
   processEcocashPayment(BuildContext context, WidgetRef ref) async {
     switch (purchasedItem) {
       case ItemPurchased.ticket:
-        await handleTicketPayment(context);
+        await handleTicketPayment(context, ref);
         break;
       case ItemPurchased.bundle:
         await handleBundlePayment(context);
@@ -108,7 +109,7 @@ class EcoCash extends ConsumerWidget {
     double amount = currentWaterBill.amount_paid! + waterData!["amount"];
 
     if (amount <= 0) {
-     const  CustomSnackbar(
+      const CustomSnackbar(
         message: "Invalid payment amount",
         color: redColor,
       ).showSnackBar(context);
@@ -185,7 +186,8 @@ class EcoCash extends ConsumerWidget {
             extra: bundleData);
       } else {
         Navigator.pop(context);
-       const CustomSnackbar(message: "Error purchasing bundle", color: redColor)
+        const CustomSnackbar(
+                message: "Error purchasing bundle", color: redColor)
             .showSnackBar(context);
       }
     } catch (e) {
@@ -197,6 +199,7 @@ class EcoCash extends ConsumerWidget {
 
   handleTicketPayment(
     BuildContext context,
+    WidgetRef ref,
   ) async {
     var ticketsCrud = TicketsCrud();
 
@@ -222,6 +225,8 @@ class EcoCash extends ConsumerWidget {
       DevLogs.logInfo("Ticket Data: $ticketData");
 
       if (result != null) {
+        ref.refresh(activeTicketProvider);
+        ref.refresh(allTicketsProvider);
         context.pushReplacementNamed(
           "ticket-purchase-successful",
           extra: result,

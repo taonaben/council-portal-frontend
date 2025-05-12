@@ -11,6 +11,7 @@ import 'package:portal/core/utils/string_methods.dart';
 import 'package:portal/features/cities/providers/cities_providers.dart';
 import 'package:portal/features/parking/tickets/model/parking_ticket_model.dart';
 import 'package:portal/features/parking/vehicles/models/vehicle_model.dart';
+import 'package:portal/features/parking/vehicles/provider/vehicle_provider.dart';
 
 class TicketPurchaseSuccessfulPage extends ConsumerWidget {
   final ParkingTicketModel ticketData;
@@ -51,6 +52,7 @@ class TicketPurchaseSuccessfulPage extends ConsumerWidget {
 
   Widget buildTicketDetails(WidgetRef ref) {
     final cityAsyncValue = ref.watch(cityByIdProvider(ticketData.city!));
+    final vehicleAsyncValue = ref.watch(activeVehicleProvider);
 
     return Container(
       padding: const EdgeInsets.all(16.0),
@@ -64,7 +66,16 @@ class TicketPurchaseSuccessfulPage extends ConsumerWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           buildRow(title: 'Ticket Number', value: ticketData.ticket_number!),
-          buildRow(title: 'Vehicle', value: ticketData.vehicle),
+          buildRow(
+              title: 'Vehicle',
+              value: vehicleAsyncValue.when(
+                data: (vehicle) {
+                  return vehicle?.plate_number.toUpperCase() ??
+                      'No vehicle found';
+                },
+                loading: () => 'Loading...',
+                error: (error, stack) => 'Error fetching vehicle',
+              )),
           buildRow(
             title: 'City',
             value: cityAsyncValue.when(

@@ -29,6 +29,19 @@ class _ParkingTimerState extends State<ParkingTimer> {
   @override
   void initState() {
     super.initState();
+    _initializeTimer();
+  }
+
+  @override
+  void didUpdateWidget(covariant ParkingTimer oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.activeTicket != oldWidget.activeTicket) {
+      _timer?.cancel(); // Cancel the old timer
+      _initializeTimer(); // Reinitialize the timer with the new ticket
+    }
+  }
+
+  void _initializeTimer() {
     try {
       if (widget.activeTicket.expiry_at != null) {
         _endTime = DateTime.parse(widget.activeTicket.expiry_at!);
@@ -118,7 +131,7 @@ class _ParkingTimerState extends State<ParkingTimer> {
 
     return Text(
       _remainingTime > Duration.zero
-          ? "${hours != "00" ? "${hours}h" : ""}${minutes}m ${seconds}s left"
+          ? "${hours != "00" ? "${hours}hr" : ""} ${minutes}m ${seconds}s left"
           : "00h 00m 00s left",
       style: const TextStyle(
         fontSize: 30,
@@ -131,6 +144,18 @@ class _ParkingTimerState extends State<ParkingTimer> {
   String id = generateRandomString(16);
 
   Widget _buildFooter() {
+    if (widget.activeTicket.expiry_at == null) {
+      return const Text(
+        'No active ticket',
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          fontSize: 12,
+          color: textColor1,
+          fontWeight: FontWeight.bold,
+        ),
+      );
+    }
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [

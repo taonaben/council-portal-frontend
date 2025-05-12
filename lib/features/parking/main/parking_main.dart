@@ -10,11 +10,22 @@ import 'package:portal/features/parking/main/componets/parking_timer.dart';
 import 'package:portal/features/parking/tickets/provider/parking_ticket_provider.dart';
 import 'package:portal/features/parking/vehicles/provider/vehicle_provider.dart';
 
-class ParkingMainClient extends ConsumerWidget {
+class ParkingMainClient extends ConsumerStatefulWidget {
   const ParkingMainClient({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ParkingMainClient> createState() => _ParkingMainClientState();
+}
+
+class _ParkingMainClientState extends ConsumerState<ParkingMainClient> {
+  @override
+  void initState() {
+    super.initState();
+    ref.read(activeVehicleProvider);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final activeVehicleAsyncValue = ref.watch(activeVehicleProvider);
     final activeTicketAsyncValue = ref.watch(activeTicketProvider);
 
@@ -32,7 +43,9 @@ class ParkingMainClient extends ConsumerWidget {
                       buildHeader(context),
                       buildSubHeader(context),
                       const Gap(16),
-                      ParkingTimer(activeTicket: activeTicket!,),
+                      ParkingTimer(
+                        activeTicket: activeTicket!,
+                      ),
                       const Gap(8),
                       ParkingMainSection(
                         activeVehicle: activeVehicle!,
