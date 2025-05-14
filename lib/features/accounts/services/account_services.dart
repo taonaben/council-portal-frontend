@@ -9,9 +9,23 @@ class AccountServices {
     try {
       final response = await accountsApi.getAccount();
       if (response.success && response.data != null) {
-        Map<String, dynamic> dataMap = response.data as Map<String, dynamic>;
-        List<dynamic> accountList = dataMap['results']; // Use 'results' key
+        // Handle both Map and List response types
+        List<dynamic> accountList;
+        if (response.data is Map<String, dynamic>) {
+          Map<String, dynamic> dataMap = response.data as Map<String, dynamic>;
+          accountList = dataMap['results'];
+        } else if (response.data is List) {
+          accountList = response.data as List;
+        } else {
+          DevLogs.logError(
+              'Unexpected response type: ${response.data.runtimeType}');
+          return [];
+        }
         DevLogs.logInfo('Fetched accounts: ${accountList.length}');
+
+        if (accountList.isNotEmpty && accountList.first is AccountModel) {
+          return accountList.cast<AccountModel>();
+        }
 
         return accountList
             .map((account) =>

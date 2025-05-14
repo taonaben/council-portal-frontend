@@ -27,7 +27,7 @@ class VehicleApi {
       if (response.statusCode == 200 || response.statusCode == 201) {
         var jsonResponse = response.data; // Use response.data directly
 
-        List<dynamic> data = jsonResponse["results"];
+        List<dynamic> data = jsonResponse;
 
         List<VehicleModel> vehicles =
             data.map((vehicle) => VehicleModel.fromJson(vehicle)).toList();
