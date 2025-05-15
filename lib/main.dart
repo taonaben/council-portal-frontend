@@ -26,21 +26,18 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: MaterialApp.router(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: primaryColor),
-          scaffoldBackgroundColor: background1,
-          textTheme: GoogleFonts.dmSansTextTheme(
-            Theme.of(context).textTheme,
-          ),
-          useMaterial3: true,
+    return MaterialApp.router(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: primaryColor),
+        scaffoldBackgroundColor: background1,
+        textTheme: GoogleFonts.dmSansTextTheme(
+          Theme.of(context).textTheme,
         ),
-        debugShowCheckedModeBanner: false,
-        routerConfig: router,
+        useMaterial3: true,
       ),
-      bottom: true,
+      debugShowCheckedModeBanner: false,
+      routerConfig: router,
     );
   }
 }
