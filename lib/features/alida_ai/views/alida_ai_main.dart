@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -6,7 +8,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:portal/components/widgets/custom_snackbar.dart';
 import 'package:portal/constants/colors.dart';
 import 'package:portal/constants/dimensions.dart';
+import 'package:portal/core/utils/shared_prefs.dart';
 import 'package:portal/core/utils/string_methods.dart';
+import 'package:portal/features/alida_ai/components/aiChatBubble.dart';
+import 'package:portal/features/alida_ai/components/userChatBubble.dart';
 import 'package:portal/features/alida_ai/model/alida_model.dart';
 import 'package:portal/features/alida_ai/providers/alida_providers.dart';
 import 'package:portal/features/alida_ai/services/alida_services.dart';
@@ -27,55 +32,67 @@ class _AlidaAiMainState extends ConsumerState<AlidaAiMain> {
   final Map<int, bool> _thumbsUp = {};
   final Map<int, bool> _thumbsDown = {};
 
-  @override
-  void initState() {
-    super.initState();
+  String? _pendingUserMessage;
 
-    ref.refresh(alidaChatHistoryProvider);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+  _scrollToBottom() {
+    Future.delayed(const Duration(milliseconds: 300), () {
       if (_scrollController.hasClients) {
-        _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+        _scrollController.animateTo(
+          _scrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+        );
       }
     });
   }
 
-  List<Map<String, dynamic>> _getMessages = [];
+  @override
+  void initState() {
+    super.initState();
+    // Wait for the first frame and then scroll to bottom after chat loads
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Future.delayed(const Duration(milliseconds: 300), () {
+        if (_scrollController.hasClients) {
+          _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+        }
+      });
+    });
+  }
 
   Future<void> _sendMessage() async {
     final text = _controller.text.trim();
     if (text.isEmpty) return;
 
-    setState(() => _isSending = true);
+    setState(() {
+      _isSending = true;
+      _pendingUserMessage = text;
+    });
 
     try {
-      // Add the new message to the list
-      _getMessages.add({
-        'sender': 'user',
-        'content': text,
-        'created_at': DateTime.now().toIso8601String(),
-      });
       AlidaResponseModel? response =
           await AlidaServices().sendMessageToAlida(text);
 
       if (response == null) {
-        setState(() => _isSending = false);
+        setState(() {
+          _isSending = false;
+          _pendingUserMessage = null;
+        });
         return;
       }
-
-      _getMessages.add({
-        'sender': 'ai',
-        'content': response.response,
-        'created_at': response.created_at,
-      });
     } catch (e) {
-      // Handle any errors that occur during sending
-      setState(() => _isSending = false);
+      setState(() {
+        _isSending = false;
+        _pendingUserMessage = null;
+      });
       return;
     }
 
     _controller.clear();
 
-    setState(() => _isSending = false);
+    setState(() {
+      _isSending = false;
+      _pendingUserMessage = null;
+    });
 
     // Refresh chat history
     ref.invalidate(alidaChatHistoryProvider);
@@ -104,16 +121,11 @@ class _AlidaAiMainState extends ConsumerState<AlidaAiMain> {
         children: [
           Expanded(
             child: chatHistoryAsync.when(
-
               data: (messages) {
-                messages = [
-                  ...messages,
-                  ..._getMessages.map((msg) => AlidaModel(
-                        sender: msg['sender'] as String,
-                        content: msg['content'] as String,
-                        created_at: msg['created_at'] as String,
-                      )),
-                ];
+                // Use only provider messages to avoid duplicates
+                messages.sort((a, b) => DateTime.parse(a.created_at)
+                    .compareTo(DateTime.parse(b.created_at)));
+
                 return discussionPanel(messages);
               },
               loading: () => const Center(child: CircularProgressIndicator()),
@@ -128,7 +140,24 @@ class _AlidaAiMainState extends ConsumerState<AlidaAiMain> {
 
   Widget discussionPanel(List<AlidaModel> messages) {
     // Messages are sorted descending, so reverse for chat order
-    final chatMessages = messages.reversed.toList();
+    final chatMessages = messages.toList();
+    // Add temporary bubbles if sending
+    if (_isSending && _pendingUserMessage != null) {
+      chatMessages.add(
+        AlidaModel(
+          sender: 'user',
+          content: _pendingUserMessage!,
+          created_at: DateTime.now().toIso8601String(),
+        ),
+      );
+      chatMessages.add(
+        AlidaModel(
+          sender: 'ai',
+          content: 'Alida is reading your files...',
+          created_at: DateTime.now().toIso8601String(),
+        ),
+      );
+    }
     return ListView.builder(
       controller: _scrollController,
       itemCount: chatMessages.length,
@@ -139,115 +168,15 @@ class _AlidaAiMainState extends ConsumerState<AlidaAiMain> {
         return Padding(
           padding: const EdgeInsets.symmetric(vertical: 4.0),
           child: isMe
-              ? userChatBubble(message.content)
-              : alidaChatBubble(message.content, index),
+              ? UserChatBubble(message: message.content)
+              : AIChatBubble(
+                  message: message.content,
+                  index: index,
+                  thumbsUp: _thumbsUp,
+                  thumbsDown: _thumbsDown,
+                ),
         );
       },
-    );
-  }
-
-  Widget userChatBubble(String message) {
-    return Align(
-      alignment: Alignment.centerRight,
-      child: Container(
-        constraints: BoxConstraints(
-          maxWidth: MediaQuery.of(context).size.width * 0.7,
-        ),
-        padding: const EdgeInsets.all(14.0),
-        decoration: BoxDecoration(
-          color: secondaryColor.withOpacity(.6),
-          borderRadius: BorderRadius.circular(uniBorderRadius),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.04),
-              blurRadius: 4,
-              offset: const Offset(0, 2),
-            ),
-          ],
-        ),
-        child: SelectableText(
-          message,
-        ),
-      ),
-    );
-  }
-
-  Widget alidaChatBubble(String message, int index) {
-    final thumbsUp = _thumbsUp[index] ?? false;
-    final thumbsDown = _thumbsDown[index] ?? false;
-    return Align(
-      alignment: Alignment.centerLeft,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          SelectableText(
-            message,
-          ),
-          const Gap(16),
-          Row(
-            children: [
-              IconButton(
-                padding: const EdgeInsets.all(0),
-                icon: const Icon(CupertinoIcons.square_on_square, size: 16),
-                onPressed: () {
-                  Clipboard.setData(ClipboardData(text: message)).then((_) {
-                    const CustomSnackbar(
-                      message: "Message copied",
-                      color: primaryColor,
-                    ).showSnackBar(context);
-                  });
-                },
-              ),
-              IconButton(
-                icon: const Icon(CupertinoIcons.speaker_2, size: 16),
-                onPressed: () {
-                  // Add your onPressed logic here
-                },
-              ),
-              IconButton(
-                icon: Icon(
-                    thumbsUp
-                        ? CupertinoIcons.hand_thumbsup_fill
-                        : CupertinoIcons.hand_thumbsup,
-                    size: 16),
-                onPressed: () {
-                  setState(() {
-                    _thumbsUp[index] = !thumbsUp;
-                    if (_thumbsUp[index] == true) {
-                      _thumbsDown[index] = false;
-                    }
-                  });
-
-                  const CustomSnackbar(
-                          message: "Thank you for your feedback",
-                          color: primaryColor)
-                      .showSnackBar(context);
-                },
-              ),
-              IconButton(
-                icon: Icon(
-                    thumbsDown
-                        ? CupertinoIcons.hand_thumbsdown_fill
-                        : CupertinoIcons.hand_thumbsdown,
-                    size: 16),
-                onPressed: () {
-                  setState(() {
-                    _thumbsDown[index] = !thumbsDown;
-                    if (_thumbsDown[index] == true) {
-                      _thumbsUp[index] = false;
-                    }
-                  });
-                  const CustomSnackbar(
-                          message: "Thank you for your feedback",
-                          color: primaryColor)
-                      .showSnackBar(context);
-                },
-              ),
-            ],
-          )
-        ],
-      ),
     );
   }
 
@@ -282,10 +211,9 @@ class _AlidaAiMainState extends ConsumerState<AlidaAiMain> {
             IconButton(
               onPressed: _isSending ? null : _sendMessage,
               icon: _isSending
-                  ? const SizedBox(
-                      width: 24,
-                      height: 24,
-                      child: CircularProgressIndicator(strokeWidth: 2),
+                  ? const Icon(
+                      CupertinoIcons.stop_circle,
+                      color: primaryColor,
                     )
                   : const Icon(
                       CupertinoIcons.paperplane,
