@@ -22,20 +22,25 @@ import 'package:portal/features/parking/vehicles/views/vehicle_detail.dart';
 import 'package:portal/features/parking/vehicles/views/vehicle_management.dart';
 import 'package:portal/features/profile/profile_main.dart';
 import 'package:portal/features/settings/settings.dart';
+import 'package:portal/features/splash_screen/splash_screen.dart';
 import 'package:portal/features/water/views/account_water_details.dart';
 import 'package:portal/features/water/views/account_history_page.dart';
 import 'package:portal/features/water/views/account_water_main.dart';
-import 'package:portal/features/alida_ai/alida_ai_main.dart';
+import 'package:portal/features/alida_ai/views/alida_ai_main.dart';
 import 'package:portal/features/auth/providers/auth_providers.dart';
 import 'package:portal/features/auth/views/login_page.dart';
 import 'package:portal/features/documents/privacy_policy.dart';
 import 'package:portal/features/documents/terms_of_service.dart';
 
 final GoRouter router = GoRouter(
-  initialLocation: '/login',
+  initialLocation: '/',
   debugLogDiagnostics: true,
   // extraCodec: const ExtraCodec(),
   routes: [
+    GoRoute(
+        path: '/',
+        name: "splash",
+        builder: (context, state) => const SplashScreen()),
     GoRoute(
       path: '/login',
       builder: (context, state) => const LoginPage(),

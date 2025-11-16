@@ -6,7 +6,7 @@ import 'package:portal/components/widgets/custom_divider.dart';
 import 'package:portal/constants/colors.dart';
 import 'package:portal/core/navigation/main_header.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
-import 'package:portal/features/alida_ai/alida_ai_main.dart';
+import 'package:portal/features/alida_ai/views/alida_ai_main.dart';
 import 'package:portal/features/notifications/views/notifications_main.dart';
 import 'package:portal/features/parking/main/parking_main.dart';
 import 'package:portal/features/profile/profile_main.dart';
@@ -55,6 +55,7 @@ class _MainNavigationState extends State<MainNavigation> {
     return SafeArea(
       bottom: false,
       child: Scaffold(
+        extendBody: false,
         body: IndexedStack(
           index: _currentIndex,
           children: _screens,
@@ -63,16 +64,20 @@ class _MainNavigationState extends State<MainNavigation> {
           currentIndex: _currentIndex,
           onTap: (index) => setState(() => _currentIndex = index),
           selectedItemColor: primaryColor,
-          unselectedItemColor: Colors.grey,
+          unselectedItemColor: secondaryColor,
+          backgroundColor: background1,
+          elevation: 0,
+          type: BottomNavigationBarType.fixed,
+          showUnselectedLabels: false,
           items: const [
             BottomNavigationBarItem(
                 icon: Icon(Icons.water_drop_outlined), label: 'Water'),
             BottomNavigationBarItem(
                 icon: Icon(Icons.local_parking_outlined), label: 'Parking'),
             BottomNavigationBarItem(
-                icon: Icon(Icons.smart_toy_outlined), label: 'Alida AI'),
+                icon: Icon(CupertinoIcons.circle_grid_hex), label: 'Alida'),
             BottomNavigationBarItem(
-                icon: Icon(Icons.inbox_outlined), label: 'Notifications'),
+                icon: Icon(CupertinoIcons.tray), label: 'Inbox'),
             BottomNavigationBarItem(
                 icon: Icon(CupertinoIcons.settings), label: 'Settings'),
           ],

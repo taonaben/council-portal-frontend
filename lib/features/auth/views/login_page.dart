@@ -29,7 +29,7 @@ class LoginPage extends ConsumerStatefulWidget {
 class _LoginPageState extends ConsumerState<LoginPage> {
   final _formKey = GlobalKey<FormState>();
 
-  final TextEditingController usernameEmailController = TextEditingController();
+  final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
   bool showPassword = false;
@@ -38,10 +38,56 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
   @override
   void dispose() {
-    usernameEmailController.dispose();
+    usernameController.dispose();
     passwordController.dispose();
     super.dispose();
   }
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _tryAutoLogin();
+  // }
+
+  // Future<void> _tryAutoLogin() async {
+  //   final encodedUsername = await getSP('saved_username');
+  //   final encodedPassword = await getSP('saved_password');
+  //   final expiryString = await getSP('credentials_expiry');
+
+  //   try {
+  //     if (encodedUsername.isEmpty ||
+  //         encodedPassword.isEmpty ||
+  //         expiryString.isEmpty) {
+  //       return;
+  //     }
+
+  //     if (encodedUsername != null &&
+  //         encodedPassword != null &&
+  //         expiryString != null) {
+  //       final expiry = DateTime.tryParse(expiryString);
+  //       if (expiry != null && expiry.isAfter(DateTime.now())) {
+  //         final username = utf8.decode(base64.decode(encodedUsername));
+  //         final password = utf8.decode(base64.decode(encodedPassword));
+  //         setState(() => isLoading = true);
+  //         final AuthServices authServices = AuthServices();
+  //         final User? user = await authServices.login(username, password);
+  //         if (user != null || user != User.empty()) {
+  //           context.go('/home/0');
+  //         } else {
+  //           const CustomSnackbar(
+  //                   message: 'Invalid credentials', color: redColor)
+  //               .showSnackBar(context);
+  //           setState(() {
+  //             isLoading = false;
+  //           });
+  //         }
+  //         setState(() => isLoading = false);
+  //       }
+  //     }
+  //   } catch (e) {
+  //     DevLogs.logError('Error in auto-login: $e');
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -99,7 +145,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 onSubmit: (p0) {
                   FocusScope.of(context).nextFocus();
                 },
-                controller: usernameEmailController,
+                controller: usernameController,
               ),
               const Gap(16),
               CustomTextfield(
@@ -257,14 +303,14 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
     final AuthServices authServices = AuthServices();
     final User? user = await authServices.login(
-      usernameEmailController.text.trim(),
+      usernameController.text.trim(),
       passwordController.text.trim(),
     );
 
-    if (user != null && user != User.empty()) {
+    if (user != null || user != User.empty()) {
       if (rememberMe) {
-        await saveCredentials(usernameEmailController.text.trim(),
-            passwordController.text.trim());
+        await saveCredentials(
+            usernameController.text.trim(), passwordController.text.trim());
       }
       context.go('/home/0');
       setState(() {
@@ -279,19 +325,18 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     }
   }
 
-  Future<void> saveCredentials(String email, String password) async {
+  Future<void> saveCredentials(String username, String password) async {
     // Simple encryption - you may want to use a more secure method
-    final encodedEmail = base64.encode(utf8.encode(email));
+    final encodedUsername = base64.encode(utf8.encode(username));
     final encodedPassword = base64.encode(utf8.encode(password));
 
-    await saveSP('saved_email', encodedEmail);
+    await saveSP('saved_username', encodedUsername);
     await saveSP('saved_password', encodedPassword);
     await saveSP('credentials_expiry',
         DateTime.now().add(const Duration(days: 7)).toIso8601String());
   }
 
   bool areControllersEmpty() {
-    return usernameEmailController.text.isEmpty ||
-        passwordController.text.isEmpty;
+    return usernameController.text.isEmpty || passwordController.text.isEmpty;
   }
 }
